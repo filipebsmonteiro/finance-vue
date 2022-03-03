@@ -1,0 +1,47 @@
+// Brand Customization
+.text-light {
+  color: #f5f6ff;
+}
+
+.bg-light {
+  background-color: #f5f6ff;
+}
+
+.bg-brand {
+  background: var(--q-brand-bg-start); /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    var(--q-brand-bg-start),
+    var(--q-brand-bg-end)
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    var(--q-brand-bg-start),
+    var(--q-brand-bg-end)
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.text-brand {
+  color: var(--q-brand-text);
+}
+
+.text-footer {
+  // color: #7f94c7;
+  // color: #82b1ff;
+  color: var(--q-footer-text);
+  font-weight: 400;
+}
+
+.bg-footer {
+  background: var(--q-footer-bg-start); /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    var(--q-footer-bg-start),
+    var(--q-footer-bg-end)
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    var(--q-footer-bg-start),
+    var(--q-footer-bg-end)
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}

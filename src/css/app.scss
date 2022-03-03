@@ -1,1 +1,76 @@
 // app global css in SCSS form
+.container-mobile {
+  max-width: 425px;
+  margin: 0 16px;
+  overflow: auto;
+  @media screen and (min-width: 426px) {
+    border-radius: 15px;
+    margin: 0 auto;
+  }
+}
+
+.shadow-shine {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
+.shadow-clickable {
+  box-shadow: rgba(0, 0, 0, 0.17) 0px -3px 5px 0px inset,
+    0 1px 3px rgb(0 0 0 / 20%), 0 1px 1px rgb(0 0 0 / 14%),
+    0 2px 1px -1px rgb(0 0 0 / 12%);
+  overflow: hidden;
+
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -3px 5px 0px inset;
+    transform: translateY(3px);
+  }
+  &:active {
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -3px 5px 0px inset;
+    transform: translateY(3px);
+  }
+}
+
+.rounded {
+  border-radius: 1.25rem;
+}
+
+#page-title {
+  font-size: 2.5rem;
+}
+
+.page-subtitle {
+  font-size: 2rem;
+  line-height: 2.25rem;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+.border-left-positive {
+  border-left: $green solid 8px;
+}
+.border-left-blue {
+  border-left: $blue solid 8px;
+}
+.border-left-warning {
+  border-left: $warning solid 8px;
+}
+.border-left-negative {
+  border-left: $negative solid 8px;
+}
+
+@keyframes border-pulsate {
+  0% {
+    border-color: rgba(30, 46, 61, 1);
+  }
+  50% {
+    border-color: rgba(30, 46, 61, 0);
+  }
+  100% {
+    border-color: rgba(30, 46, 61, 1);
+  }
+}
+
+.border-pulsate {
+  border: 5px solid rgb(30, 46, 61);
+  animation: border-pulsate 2s infinite;
+}
