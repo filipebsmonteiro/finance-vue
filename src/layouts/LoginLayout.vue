@@ -22,10 +22,10 @@ export default {
   name: "LoginLayout",
   computed: {
     background() {
-      if (this.parceiro)
-        return require("src/assets/parceiros/" + this.parceiro + ".png");
+      // if (this.parceiro)
+      //   return require("src/assets/parceiros/" + this.parceiro + ".png");
 
-      return require("src/assets/veus/bkg-veusinho-cropped.jpg");
+      return require("src/assets/bkg.jpg");
     },
   },
   data() {

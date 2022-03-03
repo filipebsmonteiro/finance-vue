@@ -68,11 +68,8 @@ axios.interceptors.response.use((response) => response, onReject);
 // "export default () => {}" function below (which runs individually
 // for each client)
 
-// SaudeCheckin
-const saudeCheckin = axios.create({ baseURL: environment.saudeCheckin.url });
-saudeCheckin.interceptors.response.use((response) => response, onReject);
-
-const api = axios.create({ baseURL: environment.saudeCheckin.url + '/api/v1/' });
+// API
+const api = axios.create({ baseURL: environment.api.URL });
 api.interceptors.response.use((response) => response, onReject);
 api.useBearerToken = () => {
   api.interceptors.request.use(
@@ -95,7 +92,6 @@ export default boot(({ app }) => {
 })
 
 export {
-  saudeCheckin,
   api
 }
 

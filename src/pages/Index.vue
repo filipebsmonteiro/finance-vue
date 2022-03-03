@@ -1,11 +1,11 @@
 <template>
   <q-page class="flex column">
-    <h2 v-if="user && user.name" class="text-bold q-my-sm">
+    <!-- <h2 v-if="user && user.name" class="text-bold q-my-sm">
       Olá, {{ $formaters.firstName(this.user.name) }}!
     </h2>
     <p v-if="user && user.sexo" class="q-ml-sm">
       Seja bem-vind{{ this.user.sexo === "F" ? "a" : "o" }}!
-    </p>
+    </p> -->
 
     <h2 class="page-subtitle">investimentos</h2>
     <q-carousel

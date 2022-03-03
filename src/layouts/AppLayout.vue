@@ -105,7 +105,7 @@
             text-color="footer"
             icon="o_badge"
             label="Carteirinha"
-            :to="{ name: constants.routes.carteirinha.name }"
+            :to="{ name: '' }"
           />
         </q-fab>
       </q-toolbar>
@@ -115,20 +115,12 @@
 
 <script>
 import Header from "src/components/layout/Header";
-import UserInfoMixin from "src/mixins/UserInfoMixin";
-import CONSTANTS from "src/boot/providers/constants";
 import { mapMutations } from "vuex";
 import { colors, getCssVar, setCssVar } from "quasar";
 
 export default {
   name: "AppLayout",
-  mixins: [UserInfoMixin],
   components: { Header },
-  data() {
-    return {
-      constants: CONSTANTS,
-    };
-  },
   methods: {
     ...mapMutations([
       "auth/setExpirationDate",
@@ -140,9 +132,9 @@ export default {
       this["auth/setExpirationDate"](null);
       this["auth/setAccessToken"](null);
       this["auth/setRefreshToken"](null);
-      this.$q.localStorage.remove(CONSTANTS.localStorage.AUTH_TOKEN);
-      this.$q.localStorage.remove(CONSTANTS.localStorage.AUTH_EXPIRATION);
-      await this.$router.push({ name: CONSTANTS.routes.login.name });
+      this.$q.localStorage.remove(this.$CONST.localStorage.AUTH_TOKEN);
+      this.$q.localStorage.remove(this.$CONST.localStorage.AUTH_EXPIRATION);
+      await this.$router.push({ name: this.$CONST.routes.login.name });
       this.$q.loading.hide();
     },
     changeColors() {

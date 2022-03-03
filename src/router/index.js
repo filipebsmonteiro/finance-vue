@@ -20,8 +20,8 @@ export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
     : process.env.VUE_ROUTER_MODE === "history"
-    ? createWebHistory
-    : createWebHashHistory;
+      ? createWebHistory
+      : createWebHashHistory;
 
   const Router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
@@ -34,6 +34,20 @@ export default route(function (/* { store, ssrContext } */) {
       process.env.MODE === "ssr" ? void 0 : process.env.VUE_ROUTER_BASE
     ),
   });
+
+  Router.beforeEach(($to, $from, $next) => {
+
+    // if ($to.name === constants.routes.login.name && Store.getters['auth/isLogged']) {
+    //   $next({ name: constants.routes.carteirinha.name });
+    //   return;
+    // }
+    // if ($to.meta.middleware && $to.meta.middleware.includes('auth') && !Store.getters['auth/isLogged']) {
+    //   $next({ name: constants.routes.login.name });
+    //   return;
+    // }
+
+    $next()
+  })
 
   return Router;
 });

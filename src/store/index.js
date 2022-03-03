@@ -12,9 +12,12 @@ import { createStore } from "vuex";
  * with the Store instance.
  */
 
+
+import auth from './auth'
+
 const Store = createStore({
   modules: {
-    // example
+    auth
   },
 
   // enable strict mode (adds overhead!)
@@ -25,3 +28,5 @@ const Store = createStore({
 export default store(function (/* { ssrContext } */) {
   return Store;
 });
+
+export { Store }
