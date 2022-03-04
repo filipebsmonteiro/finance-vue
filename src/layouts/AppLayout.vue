@@ -70,7 +70,7 @@
           color="footer"
           icon="las la-dove"
           label="Projeção Liberdade"
-          :to="{ name: '' }"
+          :to="{ name: 'projection' }"
         />
         <q-fab flat vertical-actions-align="right" direction="up">
           <template v-slot:icon>

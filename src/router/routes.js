@@ -14,6 +14,18 @@ const routes = [
       }
     ],
   },
+  {
+    path: "/projection",
+    component: () => import("layouts/AppLayout.vue"),
+    children: [
+      {
+        path: "",
+        name: 'projection',
+        component: () => import("pages/Projection/Basic.vue"),
+        meta: { title: 'Projeção Básica' }
+      },
+    ],
+  },
 
   ...auth,
 
