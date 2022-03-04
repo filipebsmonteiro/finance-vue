@@ -16,7 +16,7 @@
       <template v-slot:header>
         <slot name="header" v-bind="{ item, index }" />
       </template>
-      <slot v-bind="item" />
+      <slot v-bind="{ item, index }" />
     </q-expansion-item>
   </q-list>
   <q-list v-else class="q-mt-lg flex column fit">

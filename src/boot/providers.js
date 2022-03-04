@@ -20,7 +20,14 @@ export default boot(({ app }) => {
     const duration = 1000;
     setVerticalScrollPosition(target, offset, duration);
   }
-
   // app.provide('scrollTo', app.config.globalProperties.$scrollTo)
+
+  app.config.globalProperties.$groupBy = (list, key) => {
+    return list.reduce((acc, cur) => {
+      (acc[cur[key]] = acc[cur[key]] || []).push(cur);
+      return acc;
+    }, {});
+  }
+
 
 });
