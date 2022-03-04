@@ -1,12 +1,9 @@
 <template>
   <div class="flex column">
     <div v-if="loading && items.length === 0">
-      <div
-        v-if="filtersSize && filtersSize > 0"
-        class="flex justify-center q-mt-sm q-mb-lg"
-      >
+      <div class="flex justify-center q-mt-sm q-mb-lg">
         <q-skeleton
-          v-for="key in filterSize"
+          v-for="key in filtersLength"
           :key="key"
           type="QChip"
           class="shadow-1 q-py-md q-mr-md"
@@ -23,26 +20,11 @@
       {{ emptyText }}
     </p>
 
-    <q-list v-if="expansible" class="q-mt-lg flex column fit">
-      <q-expansion-item
-        v-for="(item, idx) in items"
-        :key="idx"
-        :class="{
-          'fit shadow-clickable bg-white rounded-borders q-my-sm': true,
-          [item.classes]: true,
-        }"
-      >
-        <template v-slot:header>
-          <slot name="header" v-bind="item" />
-        </template>
-        <slot v-bind="item" />
-      </q-expansion-item>
-    </q-list>
-    <q-list v-else class="q-mt-lg flex column fit">
-      <q-item v-for="(item, idx) in items" :key="idx">
-        <slot v-bind="item" />
-      </q-item>
-    </q-list>
+    <Simple :items="items" :expansible="expansible" :empty-text="emptyText">
+      <template v-for="(_, name) in $slots" v-slot:[name]="slotData">
+        <slot :name="name" v-bind="slotData" />
+      </template>
+    </Simple>
 
     <q-spinner-dots
       v-if="loading && items.length > 0"
@@ -63,11 +45,22 @@
 </template>
 
 <script>
+import Simple from "src/components/List/Simple.vue";
+
 export default {
+  components: { Simple },
   props: {
     items: {
       type: Array,
       required: true,
+    },
+    expansible: {
+      type: Boolean,
+      default: false,
+    },
+    emptyText: {
+      type: String,
+      default: "No data provided!",
     },
     pagination: {
       type: Object,
@@ -84,16 +77,7 @@ export default {
       type: Boolean,
       required: true,
     },
-    expansible: {
-      type: Boolean,
-      default: false,
-    },
-    emptyText: {
-      type: String,
-      required: true,
-      default: "Nenhum dado Encontrado!",
-    },
-    filtersSize: {
+    filtersLength: {
       type: Number,
       default: 0,
     },

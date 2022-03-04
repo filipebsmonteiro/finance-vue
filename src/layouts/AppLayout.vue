@@ -46,7 +46,7 @@
           stack
           no-caps
           color="footer"
-          icon="home"
+          icon="las la-home"
           label="Home"
           :to="{ name: $route.name === 'dashboard' ? '' : 'dashboard' }"
         />
@@ -57,9 +57,9 @@
           stack
           no-caps
           color="footer"
-          icon="las la-vial"
-          label="Exames"
-          :to="{ name: 'exames' }"
+          icon="las la-wallet"
+          label="Balanço Patrimonial"
+          :to="{ name: 'balanco' }"
         />
         <q-btn
           flat
@@ -68,8 +68,8 @@
           stack
           no-caps
           color="footer"
-          icon="vaccines"
-          label="Vacinas"
+          icon="las la-dove"
+          label="Projeção Liberdade"
           :to="{ name: '' }"
         />
         <q-fab flat vertical-actions-align="right" direction="up">
@@ -81,7 +81,7 @@
               stack
               no-caps
               color="footer"
-              icon="menu"
+              icon="las la-bars"
               label="Mais"
               class="adjust-fab-footer"
             />
@@ -99,13 +99,6 @@
             icon="published_with_changes"
             label="Mudar Cor"
             @click="changeColors"
-          />
-          <q-fab-action
-            color="footer"
-            text-color="footer"
-            icon="o_badge"
-            label="Carteirinha"
-            :to="{ name: '' }"
           />
         </q-fab>
       </q-toolbar>
