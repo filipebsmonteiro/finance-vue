@@ -58,8 +58,8 @@
           no-caps
           color="footer"
           icon="las la-wallet"
-          label="Balanço Patrimonial"
-          :to="{ name: 'balanco' }"
+          label="Balanço"
+          :to="{ name: 'balance' }"
         />
         <q-btn
           flat
@@ -69,8 +69,8 @@
           no-caps
           color="footer"
           icon="las la-dove"
-          label="Projeção Liberdade"
-          :to="{ name: 'projection' }"
+          label="Liberdade"
+          :to="{ name: 'freedom' }"
         />
         <q-fab flat vertical-actions-align="right" direction="up">
           <template v-slot:icon>

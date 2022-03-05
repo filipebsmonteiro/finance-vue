@@ -7,22 +7,22 @@ const routes = [
     children: [
       { path: "", component: () => import("pages/Index.vue"), meta: { title: 'Dashboard' } },
       {
-        path: "balanco",
-        name: "balanco",
+        path: "balance",
+        name: "balance",
         component: () => import("pages/Balance/Index.vue"),
         meta: { title: 'Balanço Patrimonial' }
       }
     ],
   },
   {
-    path: "/projection",
+    path: "/freedom",
     component: () => import("layouts/AppLayout.vue"),
     children: [
       {
         path: "",
-        name: 'projection',
-        component: () => import("pages/Projection/Basic.vue"),
-        meta: { title: 'Projeção Básica' }
+        name: 'freedom',
+        component: () => import("pages/Freedom/Index.vue"),
+        meta: { title: 'Projeção Liberdade Financeira' }
       },
     ],
   },

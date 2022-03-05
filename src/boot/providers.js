@@ -1,4 +1,4 @@
-import { scroll } from 'quasar'
+import { scroll, date, Notify } from 'quasar'
 const { getScrollTarget, setVerticalScrollPosition } = scroll
 import { boot } from "quasar/wrappers";
 import constants from "./providers/constants";
@@ -29,5 +29,23 @@ export default boot(({ app }) => {
     }, {});
   }
 
+  app.config.globalProperties.$getDateArrayByMonths = (from, to) => {
+    if (!date.isValid(from) && !date.isValid(to)) {
+      Notify.create({ type: 'negative', message: 'Informe data de início e fim válidas!' })
+      return
+    }
+
+    let months = [];
+
+    for (
+      let d = from;
+      date.getDateDiff(to, d, "months") > 0;
+      d = date.addToDate(d, { months: 1 })
+    ) {
+      months.push(new Date(d));
+    }
+
+    return months;
+  }
 
 });

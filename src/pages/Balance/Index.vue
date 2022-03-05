@@ -30,8 +30,8 @@
             <span
               v-else
               :class="{
-                'text-negative': item.type === 'expense',
-                'text-positive': item.type === 'income',
+                'text-negative': item.type === $CONST.FINANCE.BALANCE.COST,
+                'text-positive': item.type === $CONST.FINANCE.BALANCE.INCOME,
               }"
             >
               {{ $formaters.money(item.value) }}
@@ -63,7 +63,7 @@
 
     <q-tabs v-model="tab.type" inline-label dense class="q-mt-md">
       <q-tab
-        name="expense"
+        :name="$CONST.FINANCE.BALANCE.COST"
         class="text-negative rounded"
         icon="add"
         label="Adicionar Passivo"
@@ -71,7 +71,7 @@
         <q-tooltip>Adicionar Gasto</q-tooltip>
       </q-tab>
       <q-tab
-        name="income"
+        :name="$CONST.FINANCE.BALANCE.INCOME"
         class="text-positive rounded"
         icon="add"
         label="Adicionar Ativo"
@@ -84,7 +84,7 @@
       v-model="tab.type"
       animated
     >
-      <q-tab-panel name="expense">
+      <q-tab-panel :name="$CONST.FINANCE.BALANCE.COST">
         <q-icon
           name="close"
           size="sm"
@@ -105,7 +105,7 @@
           @keyup.enter="addBalanceFromTab"
         />
       </q-tab-panel>
-      <q-tab-panel name="income">
+      <q-tab-panel :name="$CONST.FINANCE.BALANCE.INCOME">
         <q-icon
           name="close"
           size="sm"

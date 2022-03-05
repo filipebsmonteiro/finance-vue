@@ -1,21 +1,5 @@
 import { api } from "src/boot/axios";
 
-export function paramsSerializer(obj, prefix) {
-  let array = [], property = null
-  for (property in obj) {
-    if (obj.hasOwnProperty(property)) {
-      let key = prefix ? prefix + "[" + property + "]" : property,
-        value = obj[property];
-      array.push(
-        (value !== null && typeof value === "object") ?
-          paramsSerializer(value, key) :
-          encodeURIComponent(key) + "=" + encodeURIComponent(value)
-      );
-    }
-  }
-  return array.join("&");
-}
-
 export class Repository {
   endpoint = null
   $axios = api

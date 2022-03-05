@@ -92,6 +92,7 @@ export default boot(({ app }) => {
 })
 
 export {
+  axios,
   api
 }
 

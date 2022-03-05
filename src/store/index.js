@@ -14,10 +14,14 @@ import { createStore } from "vuex";
 
 
 import auth from './auth'
+import balance from './balance'
+import projection from './projection'
 
 const Store = createStore({
   modules: {
-    auth
+    auth,
+    balance,
+    projection
   },
 
   // enable strict mode (adds overhead!)
