@@ -6,6 +6,18 @@
     <p v-if="user && user.sexo" class="q-ml-sm">
       Seja bem-vind{{ this.user.sexo === "F" ? "a" : "o" }}!
     </p> -->
+    <FileUploader
+      multiple
+      label="Teste Arquivo"
+      hint="A foto deve estar nítida, mostrando todas as informações. Fotografe e anexe."
+      bg-color="white"
+      :rules="[required]"
+      @input="
+        (event) => {
+          fotos = event;
+        }
+      "
+    />
 
     <h2 class="page-subtitle">investimentos</h2>
     <q-carousel
@@ -35,12 +47,15 @@
 
 <script>
 import { defineComponent } from "vue";
+import FileUploader from "src/components/FileUploader.vue";
 
 export default defineComponent({
   name: "PageIndex",
+  components: { FileUploader },
   data() {
     return {
       investimentos: 1,
+      fotos: null
     };
   },
 });
