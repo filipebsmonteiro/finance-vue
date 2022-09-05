@@ -4,12 +4,12 @@
       {{ emptyText }}
     </p>
   </div>
-  <q-list v-else-if="expansible" class="q-mt-lg flex column">
+  <q-list v-else-if="expansible">
     <q-expansion-item
       v-for="(item, index) in items"
       :key="index"
       :class="{
-        'q-mb-xs rounded shadow-clickable': true,
+        'bg-white shadow-clickable rounded q-mb-xs': true,
         [item.classes]: true,
       }"
     >
@@ -19,7 +19,7 @@
       <slot v-bind="{ item, index }" />
     </q-expansion-item>
   </q-list>
-  <q-list v-else class="q-mt-lg flex column">
+  <q-list v-else>
     <q-item
       v-for="(item, index) in items"
       :key="index"

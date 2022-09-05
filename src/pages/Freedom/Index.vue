@@ -1,14 +1,19 @@
 <template>
   <q-page>
-    <FreedomHeader class="w-50 q-mt-md q-mx-auto" />
+    <FreedomHeader
+      class="q-mt-md q-mx-auto"
+      v-model:model-chart="modelChart"
+      v-model:model-card="modelCard"
+    />
 
     <LineChart
+      v-if="modelChart"
       class="q-ma-md"
       :chart-data="{ labels, datasets }"
       :chart-options="{ responsive: true, maintainAspectRatio: false }"
     />
 
-    <!--ListSimple :items="years" expansible>
+    <ListSimple v-if="modelCard" :items="years" expansible class="flex wrap">
       <template v-slot:header="{ item: { year, capital } }">
         <q-item-section>
           <q-item-label>{{ year }}</q-item-label>
@@ -20,6 +25,7 @@
 
       <template v-slot:default="{ item: { months } }">
         <q-table
+          flat
           class="q-ma-md"
           :columns="monthColumns"
           :rows="months"
@@ -27,22 +33,21 @@
           :rows-per-page-options="[0]"
         />
       </template>
-    </ListSimple-->
+    </ListSimple>
   </q-page>
 </template>
 
 <script>
-import { mapActions, mapState, mapWritableState } from "pinia";
+import { mapActions, mapState } from "pinia";
 import { useProjectionStore } from "src/stores/projection";
 import { useBalanceStore } from "src/stores/balance";
 import LineChart from "src/components/Charts/Line.vue";
-// import ListSimple from "src/components/List/ListSimple.vue";
+import ListSimple from "src/components/List/ListSimple.vue";
 import FreedomHeader from "./Header.vue";
 
 export default {
   name: "PageIndex",
-  // components: { ListSimple, FreedomHeader, LineChart },
-  components: { FreedomHeader, LineChart },
+  components: { ListSimple, FreedomHeader, LineChart },
   computed: {
     ...mapState(useProjectionStore, ["list", "inflation", "investment"]),
     ...mapState(useBalanceStore, ["getTotal", "getTotalCosts"]),
@@ -57,6 +62,7 @@ export default {
             year,
             capital: element[element.length - 1].capital,
             months: element,
+            classes: "card-projection",
           });
         }
       }
@@ -83,6 +89,8 @@ export default {
   },
   data() {
     return {
+      modelChart: true,
+      modelCard: false,
       monthColumns: [
         {
           name: "month",
@@ -96,7 +104,6 @@ export default {
           label: "Acumulado",
           format: this.$formaters.money,
         },
-        ,
         {
           name: "investimentIncome",
           field: "investimentIncome",

@@ -1,12 +1,11 @@
 <template>
-  <q-btn-group spread rounded>
+  <q-btn-group class="header" spread rounded>
     <q-btn-dropdown
       color="dark"
       no-caps
       outline
       dropdown-icon="query_stats"
-      :label="`Crescimento:
-        ${(investment - inflation).toFixed(2).replace('.', ',')}% a.m.`"
+      :label="`${(investment - inflation).toFixed(2).replace('.', ',')}% a.m.`"
     >
       <div class="q-pa-md">
         <q-input
@@ -78,6 +77,32 @@
         </q-item>
       </q-list>
     </q-btn-dropdown>
+
+    <q-btn-dropdown
+      color="dark"
+      no-caps
+      outline
+      dropdown-icon="visibility"
+      :label="`Mostrar`"
+    >
+      <q-list>
+        <q-item class="flex column items-center">
+          <q-toggle
+            :model-value="modelChart"
+            @update:model-value="$emit('update:model-chart', $event)"
+            label="Mostrar Gráfico"
+          />
+        </q-item>
+        <q-separator />
+        <q-item class="flex column items-center">
+          <q-toggle
+            :model-value="modelCard"
+            @update:model-value="$emit('update:model-card', $event)"
+            label="Mostrar Cards"
+          />
+        </q-item>
+      </q-list>
+    </q-btn-dropdown>
   </q-btn-group>
 </template>
 
@@ -88,6 +113,16 @@ import { useProjectionStore } from "src/stores/projection";
 
 export default {
   name: "FreedomHeader",
+  props: {
+    modelChart: {
+      type: Boolean,
+      default: true,
+    },
+    modelCard: {
+      type: Boolean,
+      default: false,
+    },
+  },
   computed: {
     ...mapState(useBalanceStore, [
       "getTotalCosts",
@@ -112,3 +147,13 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.header {
+  width: 50%;
+
+  @media screen and (max-width: 600px) {
+    width: 90%;
+  }
+}
+</style>
