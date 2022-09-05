@@ -1,13 +1,3 @@
-<template>
-  <Line
-    :chart-options="chartOptions"
-    :chart-data="chartData"
-    :plugins="plugins"
-    :css-classes="cssClasses"
-    :styles="styles"
-  />
-</template>
-
 <script>
 import { Line } from "vue-chartjs";
 import {
@@ -19,8 +9,8 @@ import {
   LinearScale,
   PointElement,
   CategoryScale,
-  //Plugin,
 } from "chart.js";
+import { h } from "vue";
 
 ChartJS.register(
   Title,
@@ -34,45 +24,6 @@ ChartJS.register(
 
 export default {
   name: "ChartLine",
-  // eslint-disable-next-line vue/no-reserved-component-names
-  components: { Line },
-  props: {
-    cssClasses: {
-      default: "",
-      type: String,
-    },
-    styles: {
-      type: Object,
-      default: () => {},
-    },
-    plugins: {
-      type: Object,
-      default: () => {},
-    },
-    labels: {
-      type: Array,
-      default: () => [],
-    },
-    datasets: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  computed: {
-    chartData() {
-      return {
-        labels: this.labels,
-        datasets: this.datasets,
-      };
-    },
-  },
-  data() {
-    return {
-      chartOptions: {
-        responsive: true,
-        maintainAspectRatio: false,
-      },
-    };
-  },
+  render: () => h(Line),
 };
 </script>

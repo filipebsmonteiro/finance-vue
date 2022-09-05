@@ -2,7 +2,11 @@
   <q-page>
     <FreedomHeader class="w-50 q-mt-md q-mx-auto" />
 
-    <LineChart class="q-ma-md" :labels="labels" :datasets="datasets" />
+    <LineChart
+      class="q-ma-md"
+      :chart-data="{ labels, datasets }"
+      :chart-options="{ responsive: true, maintainAspectRatio: false }"
+    />
 
     <!--ListSimple :items="years" expansible>
       <template v-slot:header="{ item: { year, capital } }">
