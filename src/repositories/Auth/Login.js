@@ -3,7 +3,7 @@ import { Repository } from "src/repositories/Base/Repository";
 // import { saudeCheckin } from "src/boot/axios";
 
 class Login extends Repository {
-  endpoint = null
+  //endpoint = null
 
   login(username, password) {
     // return saudeCheckin.post(`oauth/token`, {

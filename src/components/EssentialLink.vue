@@ -1,5 +1,11 @@
 <template>
-  <q-item clickable tag="a" target="_blank" :href="link">
+  <q-item
+    clickable
+    :tag="external ? `a` : `router-link`"
+    :target="external ? `_blank` : null"
+    :href="external ? link : undefined"
+    :to="external ? undefined : link"
+  >
     <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />
     </q-item-section>
@@ -29,8 +35,13 @@ export default defineComponent({
       default: "",
     },
 
+    external: {
+      type: Boolean,
+      default: false,
+    },
+
     link: {
-      type: String,
+      type: [String, Object],
       default: "#",
     },
 

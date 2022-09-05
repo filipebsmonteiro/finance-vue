@@ -20,14 +20,14 @@
     0 2px 1px -1px rgb(0 0 0 / 12%);
   overflow: hidden;
 
-  &:hover {
-    box-shadow: rgba(0, 0, 0, 0.17) 0px -3px 5px 0px inset;
-    transform: translateY(3px);
-  }
   &:active {
     box-shadow: rgba(0, 0, 0, 0.17) 0px -3px 5px 0px inset;
     transform: translateY(3px);
   }
+}
+
+.w-50 {
+  width: 50% !important;
 }
 
 .rounded {

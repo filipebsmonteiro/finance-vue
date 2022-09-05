@@ -1,40 +1,32 @@
 <template>
-  <q-page>
-    <Simple :items="balances" emptyText="Nenhum Balanço localizado!">
+  <q-page class="flex column items-center">
+    <ListSimple
+      :items="balances"
+      emptyText="Nenhum Balanço localizado!"
+      class="w-50"
+    >
       <template v-slot:default="{ item, index }">
         <q-item-section>
-          <q-item-label>
-            <q-input
-              v-if="item.isEditing"
+          <q-item-label v-if="item.isEditing">
+            <BalanceForm
               dense
-              borderless
               filled
-              class="editable"
-              v-model="edit.name"
-              @keyup.enter="update(index)"
+              borderless
+              placeholder="Nome da Renda"
+              v-model:name="item.name"
+              v-model:value="item.value"
+              @add="update"
             />
-            <span v-else>{{ item.name }}</span>
           </q-item-label>
-          <q-item-label caption>
-            <q-input
-              v-if="item.isEditing"
-              dense
-              filled
-              borderless
-              type="number"
-              step="0.01"
-              class="editable"
-              v-model="edit.value"
-              @keyup.enter="update(index)"
-            />
+          <q-item-label v-else class="column">
+            <span>{{ item.name }}</span>
             <span
-              v-else
               :class="{
+                'text-caption': true,
                 'text-negative': item.type === $CONST.FINANCE.BALANCE.COST,
                 'text-positive': item.type === $CONST.FINANCE.BALANCE.INCOME,
               }"
-            >
-              {{ $formaters.money(item.value) }}
+              >{{ $formaters.money(item.value) }}
             </span>
           </q-item-label>
         </q-item-section>
@@ -49,7 +41,7 @@
             <q-fab-action
               icon="las la-trash"
               text-color="negative"
-              @click="removeBalance(index)"
+              @click="remove(index)"
             />
             <q-fab-action
               text-color="info"
@@ -59,136 +51,36 @@
           </q-fab>
         </q-item-section>
       </template>
-    </Simple>
+    </ListSimple>
 
-    <q-tabs v-model="tab.type" inline-label dense class="q-mt-md">
-      <q-tab
-        :name="$CONST.FINANCE.BALANCE.COST"
-        class="text-negative rounded"
-        icon="add"
-        label="Adicionar Passivo"
-      >
-        <q-tooltip>Adicionar Gasto</q-tooltip>
-      </q-tab>
-      <q-tab
-        :name="$CONST.FINANCE.BALANCE.INCOME"
-        class="text-positive rounded"
-        icon="add"
-        label="Adicionar Ativo"
-      />
-    </q-tabs>
-
-    <q-tab-panels
-      id="tab-panels"
-      class="q-my-md rounded"
-      v-model="tab.type"
-      animated
-    >
-      <q-tab-panel :name="$CONST.FINANCE.BALANCE.COST">
-        <q-icon
-          name="close"
-          size="sm"
-          class="absolute"
-          style="right: 5px; top: 5px; z-index: 5"
-          @click="tab.type = null"
-        />
-        <q-input
-          v-model="tab.name"
-          placeholder="Nome do Custo"
-          @keyup.enter="addBalanceFromTab"
-        />
-        <q-input
-          v-model="tab.value"
-          placeholder="Valor"
-          type="number"
-          step="0.01"
-          @keyup.enter="addBalanceFromTab"
-        />
-      </q-tab-panel>
-      <q-tab-panel :name="$CONST.FINANCE.BALANCE.INCOME">
-        <q-icon
-          name="close"
-          size="sm"
-          class="absolute"
-          style="right: 5px; top: 5px; z-index: 5"
-          @click="tab.type = null"
-        />
-        <q-input
-          v-model="tab.name"
-          placeholder="Nome da Renda"
-          @keyup.enter="addBalanceFromTab"
-        />
-        <q-input
-          v-model="tab.value"
-          placeholder="Valor"
-          type="number"
-          step="0.01"
-          @keyup.enter="addBalanceFromTab"
-        />
-      </q-tab-panel>
-    </q-tab-panels>
+    <Tabs />
   </q-page>
 </template>
 
 <script>
-import Simple from "src/components/List/Simple.vue";
+import { mapActions, mapWritableState } from "pinia";
+import { useBalanceStore } from "src/stores/balance/index";
+import ListSimple from "src/components/List/ListSimple.vue";
+import Tabs from "src/pages/Balance/Tabs.vue";
+import BalanceForm from "src/pages/Balance/Form.vue";
 
 export default {
-  components: { Simple },
+  name: "PageIndex",
+  components: { ListSimple, Tabs, BalanceForm },
+  computed: {
+    ...mapWritableState(useBalanceStore, { balances: "list" }),
+  },
   data() {
     return {
-      balances: [],
       tab: {
         type: null,
-        name: null,
-        value: 0,
-      },
-      edit: {
         name: null,
         value: 0,
       },
     };
   },
   methods: {
-    persistBalances() {
-      this.$q.localStorage.set(
-        this.$CONST.localStorage.FINANCE.BALANCES,
-        this.balances.reduce((acc, cur) => {
-          const { name, type, value } = cur;
-          return [...acc, { name, type, value }];
-        }, [])
-      );
-    },
-    addBalanceFromTab() {
-      if (!this.tab.name || !this.tab.value) {
-        this.$q.notify({ type: "negative", message: "Insira nome e valor!" });
-        return;
-      }
-
-      this.addBalance(this.tab);
-      this.persistBalances();
-
-      this.balance = null;
-      this.valor = 0;
-      this.$scrollTo("tab-panels");
-    },
-    addBalance(object) {
-      const copy = { ...object };
-
-      this.balances = [
-        ...this.balances,
-        {
-          ...copy,
-          isEditing: false,
-          classes:
-            "bg-white shadow-shine rounded q-mb-sm flex justify-between items-center",
-        },
-      ];
-    },
-    removeBalance(index) {
-      this.balances = this.balances.filter((b, idx) => index !== idx);
-      this.persistBalances();
-    },
+    ...mapActions(useBalanceStore, ["load", "remove", "persistBalances"]),
     setEditing(index) {
       this.balances = this.balances.map((b, idx) => {
         return {
@@ -196,29 +88,18 @@ export default {
           isEditing: index === idx,
         };
       });
-
-      this.edit.name = this.balances.find((b, idx) => index === idx).name;
-      this.edit.value = this.balances.find((b, idx) => index === idx).value;
     },
-    update(index) {
-      this.balances = this.balances.map((b, idx) => {
-        return index === idx
-          ? { ...b, isEditing: false, ...this.edit }
-          : { ...b };
+    update() {
+      this.balances = this.balances.map((b) => {
+        delete b.isEditing;
+        return { ...b };
       });
 
       this.persistBalances();
-      this.edit.name = null;
-      this.edit.value = 0;
     },
   },
   mounted() {
-    const balances = this.$q.localStorage.getItem(
-      this.$CONST.localStorage.FINANCE.BALANCES
-    );
-    if (balances) {
-      balances.map((b) => this.addBalance(b));
-    }
+    this.load();
   },
 };
 </script>

@@ -1,5 +1,5 @@
 import { date, LocalStorage } from 'quasar'
-import { Store } from 'src/store'
+import { Store } from 'src/stores'
 import CONSTANTS from "src/boot/providers/constants";
 
 export function isLoading(state) {

@@ -1,6 +1,6 @@
 import { boot } from "quasar/wrappers";
 import { Notify } from 'quasar'
-import { Store } from 'src/store'
+//import { Store } from 'src/stores'
 import environment from "./providers/environment";
 import axios from 'axios'
 
@@ -74,7 +74,7 @@ api.interceptors.response.use((response) => response, onReject);
 api.useBearerToken = () => {
   api.interceptors.request.use(
     (config) => {
-      config.headers['Authorization'] = `Bearer ${Store.getters['auth/token']}`
+      //config.headers['Authorization'] = `Bearer ${Store.getters['auth/token']}`
       return config
     },
     error => Promise.reject(error)

@@ -4,12 +4,12 @@
       {{ emptyText }}
     </p>
   </div>
-  <q-list v-else-if="expansible" class="q-mt-lg flex column fit">
+  <q-list v-else-if="expansible" class="q-mt-lg flex column">
     <q-expansion-item
       v-for="(item, index) in items"
       :key="index"
       :class="{
-        'fit shadow-clickable bg-white rounded-borders q-my-sm': true,
+        'q-mb-xs rounded shadow-clickable': true,
         [item.classes]: true,
       }"
     >
@@ -19,11 +19,14 @@
       <slot v-bind="{ item, index }" />
     </q-expansion-item>
   </q-list>
-  <q-list v-else class="q-mt-lg flex column fit">
+  <q-list v-else class="q-mt-lg flex column">
     <q-item
       v-for="(item, index) in items"
       :key="index"
-      :class="{ [item.classes]: true }"
+      :class="{
+        'bg-white q-py-xs q-px-md q-mb-xs shadow-shine rounded flex items-center': true,
+        [item.classes]: true,
+      }"
     >
       <slot v-bind="{ item, index }" />
     </q-item>
@@ -32,7 +35,7 @@
 
 <script>
 export default {
-  name: "Simple",
+  name: "ListSimple",
   props: {
     items: {
       type: Array,

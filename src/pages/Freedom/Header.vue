@@ -3,7 +3,7 @@
     <q-btn-dropdown
       color="dark"
       no-caps
-      glossy
+      outline
       dropdown-icon="query_stats"
       :label="`Crescimento:
         ${(investment - inflation).toFixed(2).replace('.', ',')}% a.m.`"
@@ -34,119 +34,81 @@
     <q-btn-dropdown
       color="dark"
       no-caps
-      glossy
+      outline
       dropdown-icon="calendar_month"
-      :label="`${monthQuantity} meses`"
+      :label="`${list.length} meses`"
     >
-      <div class="q-pa-md flex column items-center">
-        <p class="q-my-sm text-positive">
-          <b>Ganhos: </b>{{ $formaters.money(income) }}
-        </p>
-        <p class="q-my-sm text-negative">
-          <b>Custo de Vida: </b>{{ $formaters.money(cost) }}
-        </p>
-
-        <q-separator class="q-mx-lg" />
-
-        <q-toggle v-model="untilFreedom" label="Projetar até a Independência" />
-        <q-input
-          v-show="!untilFreedom"
-          v-model="monthQuantity"
-          type="number"
-          label="Meses"
-          min="0"
-          max="1440"
-        >
-          <template v-slot:prepend>
-            <q-btn flat rounded icon="remove" @click="monthQuantity--" />
-          </template>
-          <template v-slot:append>
-            <q-btn flat rounded icon="add" @click="monthQuantity++" />
-          </template>
-        </q-input>
-      </div>
+      <q-list>
+        <q-item class="flex column items-center">
+          <q-toggle
+            v-model="untilFreedom"
+            label="Projetar até a Independência"
+          />
+          <q-input
+            v-show="!untilFreedom"
+            v-model="currentMonths"
+            type="number"
+            label="Meses"
+            min="0"
+            max="1440"
+            readonly
+          >
+            <template v-slot:prepend>
+              <q-btn flat rounded icon="remove" @click="currentMonths--" />
+            </template>
+            <template v-slot:append>
+              <q-btn flat rounded icon="add" @click="currentMonths++" />
+            </template>
+          </q-input>
+        </q-item>
+        <q-separator />
+        <q-item class="flex justify-between">
+          <q-item-label class="text-positive flex column">
+            <b>Ganhos: </b>
+            <span class="text-caption">
+              {{ $formaters.money(getTotalIncomes) }}
+            </span>
+          </q-item-label>
+          <q-item-label class="text-negative flex column">
+            <b>Custos: </b>
+            <span class="text-caption">
+              {{ $formaters.money(getTotalCosts) }}
+            </span>
+          </q-item-label>
+        </q-item>
+      </q-list>
     </q-btn-dropdown>
   </q-btn-group>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState, mapWritableState } from "pinia";
+import { useBalanceStore } from "src/stores/balance";
+import { useProjectionStore } from "src/stores/projection";
+
 export default {
+  name: "FreedomHeader",
   computed: {
-    untilFreedom: {
-      get() {
-        return this.$store.getters["projection/untilFreedom"];
-      },
-      set(value) {
-        this.$store.commit("projection/setUntilFreedom", value);
-      },
-    },
-    monthQuantity: {
-      get() {
-        return this.$store.getters["projection/monthQuantity"];
-      },
-      set(value) {
-        this.$store.commit("projection/setMonthsQuantity", value);
-      },
-    },
-    investment: {
-      get() {
-        return this.$store.getters["projection/investment"];
-      },
-      set(value) {
-        this.$store.commit("projection/setInvestment", value);
-      },
-    },
-    inflation: {
-      get() {
-        return this.$store.getters["projection/inflation"];
-      },
-      set(value) {
-        this.$store.commit("projection/setInflation", value);
-      },
-    },
-    ...mapGetters({
-      balance: "balance/monthlyBalance",
-      income: "balance/monthlyIncome",
-      cost: "balance/monthlyCost",
-    }),
+    ...mapState(useBalanceStore, [
+      "getTotalCosts",
+      "getTotalIncomes",
+      "getTotal",
+    ]),
+    ...mapState(useProjectionStore, ["list"]),
+    ...mapWritableState(useProjectionStore, [
+      "investment",
+      "inflation",
+      "untilFreedom",
+      "currentMonths",
+    ]),
   },
   methods: {
-    ...mapActions({
-      loadBalance: "balance/loadMonthlyBalance",
+    ...mapActions(useBalanceStore, {
+      loadBalances: "load",
     }),
-    calcMonthsToFreedom() {
-      let month = 1;
-      let balanceProjection = this.balance;
-      let investmentProjection =
-        balanceProjection * ((this.investment - this.inflation) / 100);
-
-      for (month = 1; investmentProjection < this.cost; month++) {
-        if (month === 1440) {
-          this.$q.notify({
-            type: "negative",
-            message: "Sua independência ultrapassa 120 anos!",
-          });
-          break;
-        }
-        balanceProjection =
-          // balanceProjection + this.balance + investmentProjection; // Usando o mês passado
-          balanceProjection + this.balance;
-        investmentProjection =
-          balanceProjection * ((this.investment - this.inflation) / 100);
-      }
-
-      return month;
-    },
   },
   mounted() {
-    this.loadBalance();
-    if (this.untilFreedom) {
-      this.$store.commit(
-        "projection/setMonthsQuantity",
-        this.calcMonthsToFreedom()
-      );
-    }
+    this.loadBalances();
   },
 };
 </script>

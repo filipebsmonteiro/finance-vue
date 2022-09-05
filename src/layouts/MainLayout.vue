@@ -1,7 +1,7 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
+      <q-toolbar class="bg-black">
         <q-btn
           flat
           dense
@@ -11,9 +11,9 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
+        <q-toolbar-title> Finance App </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>By Filipe Monteiro</div>
       </q-toolbar>
     </q-header>
 
@@ -44,42 +44,25 @@ const linksList = [
     caption: "quasar.dev",
     icon: "school",
     link: "https://quasar.dev",
+    external: true,
   },
   {
-    title: "Github",
-    caption: "github.com/quasarframework",
-    icon: "code",
-    link: "https://github.com/quasarframework",
+    title: "Home",
+    caption: "Inicio do site",
+    icon: "home",
+    link: { name: `home` },
   },
   {
-    title: "Discord Chat Channel",
-    caption: "chat.quasar.dev",
-    icon: "chat",
-    link: "https://chat.quasar.dev",
+    title: "Balanço",
+    caption: "Gastos e Ganhos",
+    icon: "currency_exchange",
+    link: { name: `balance` },
   },
   {
-    title: "Forum",
-    caption: "forum.quasar.dev",
-    icon: "record_voice_over",
-    link: "https://forum.quasar.dev",
-  },
-  {
-    title: "Twitter",
-    caption: "@quasarframework",
-    icon: "rss_feed",
-    link: "https://twitter.quasar.dev",
-  },
-  {
-    title: "Facebook",
-    caption: "@QuasarFramework",
-    icon: "public",
-    link: "https://facebook.quasar.dev",
-  },
-  {
-    title: "Quasar Awesome",
-    caption: "Community Quasar projects",
-    icon: "favorite",
-    link: "https://awesome.quasar.dev",
+    title: "Independência",
+    caption: "Liberdade Financeira",
+    icon: "insights",
+    link: { name: `freedom` },
   },
 ];
 
@@ -105,3 +88,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.q-page-container {
+  background-color: #f8f9fa;
+}
+</style>

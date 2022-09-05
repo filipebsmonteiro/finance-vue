@@ -1,8 +1,8 @@
 import { api } from "src/boot/axios";
 
 export class Repository {
-  endpoint = null
-  $axios = api
+  //endpoint = null
+  //$axios = api
 
   constructor($axios = null) {
     if ($axios) {

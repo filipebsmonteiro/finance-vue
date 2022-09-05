@@ -1,7 +1,10 @@
-export default function () {
+export default () => {
   return {
     loading: false,
-    user: null,
+    user: {
+      name: `Visitante`,
+      gender: `M`
+    },
     avatar: null,
     jwt_token: null,
     expiration_date: null,

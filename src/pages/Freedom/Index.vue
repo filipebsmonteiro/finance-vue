@@ -1,81 +1,80 @@
 <template>
   <q-page>
-    <Header />
+    <FreedomHeader class="w-50 q-mt-md q-mx-auto" />
 
-    <Simple :items="years" expansible>
-      <template v-slot:header="{ item }">
+    <LineChart class="q-ma-md" :labels="labels" :datasets="datasets" />
+
+    <!--ListSimple :items="years" expansible>
+      <template v-slot:header="{ item: { year, capital } }">
         <q-item-section>
-          <q-item-label>
-            {{ item.label }}
-          </q-item-label>
+          <q-item-label>{{ year }}</q-item-label>
           <q-item-label caption>
-            Acumulado: {{ $formaters.money(item.balance) }}
+            Acumulado: {{ $formaters.money(capital) }}
           </q-item-label>
         </q-item-section>
       </template>
 
-      <template v-slot:default="{ item }">
+      <template v-slot:default="{ item: { months } }">
         <q-table
           class="q-ma-md"
           :columns="monthColumns"
-          :rows="item.months"
+          :rows="months"
           hide-pagination
           :rows-per-page-options="[0]"
         />
       </template>
-    </Simple>
+    </ListSimple-->
   </q-page>
 </template>
 
 <script>
-import Simple from "src/components/List/Simple.vue";
-import { date } from "quasar";
-import { mapGetters } from "vuex";
-import Header from "./Header.vue";
+import { mapActions, mapState, mapWritableState } from "pinia";
+import { useProjectionStore } from "src/stores/projection";
+import { useBalanceStore } from "src/stores/balance";
+import LineChart from "src/components/Charts/Line.vue";
+// import ListSimple from "src/components/List/ListSimple.vue";
+import FreedomHeader from "./Header.vue";
 
 export default {
-  components: { Simple, Header },
+  name: "PageIndex",
+  // components: { ListSimple, FreedomHeader, LineChart },
+  components: { FreedomHeader, LineChart },
   computed: {
-    ...mapGetters({
-      monthQuantity: "projection/monthQuantity",
-      inflation: "projection/inflation",
-      investment: "projection/investment",
-      balance: "balance/monthlyBalance",
-    }),
-    months() {
-      const start = date.buildDate(Date.now());
-      const final = date.addToDate(Date.now(), { months: this.monthQuantity });
-      let balanceAccumulator = 0;
-
-      let dates = this.$getDateArrayByMonths(start, final);
-      dates = dates.map((m) => {
-        balanceAccumulator += this.balance;
-        return {
-          month: date.formatDate(m, "MMMM"),
-          year: date.formatDate(m, "YYYY"),
-          balance: balanceAccumulator,
-          investment:
-            balanceAccumulator * ((this.investment - this.inflation) / 100),
-        };
-      });
-      return dates;
-    },
+    ...mapState(useProjectionStore, ["list", "inflation", "investment"]),
+    ...mapState(useBalanceStore, ["getTotal", "getTotalCosts"]),
     years() {
-      const yearsGrouped = this.$groupBy(this.months, "year");
+      const yearsGrouped = this.$groupBy(this.list, "year");
       let years = [];
 
       for (const year in yearsGrouped) {
         if (Object.hasOwnProperty.call(yearsGrouped, year)) {
           let element = yearsGrouped[year];
           years.push({
-            label: year,
-            balance: element[element.length - 1].balance,
+            year,
+            capital: element[element.length - 1].capital,
             months: element,
           });
         }
       }
 
       return years;
+    },
+    labels() {
+      return this.list.map((l) => `${l.month}/${l.year}`);
+    },
+    datasets() {
+      return [
+        {
+          label: "Custos com Inflação",
+          backgroundColor: "#f87979",
+          data: this.list.map((l) => l.costWithInflation),
+        },
+        {
+          label: "Renda Investimentos",
+          backgroundColor: "#7acbf9",
+          data: this.list.map((l) => l.investimentIncome),
+        },
+      ];
     },
   },
   data() {
@@ -88,21 +87,27 @@ export default {
           align: "left",
         },
         {
-          name: "balance",
-          field: "balance",
+          name: "capital",
+          field: "capital",
           label: "Acumulado",
           format: this.$formaters.money,
         },
         ,
         {
-          name: "investment",
-          field: "investment",
+          name: "investimentIncome",
+          field: "investimentIncome",
           label: "Renda Passiva",
           // align: "right",
           format: this.$formaters.money,
         },
       ],
     };
+  },
+  methods: {
+    ...mapActions(useBalanceStore, ["load"]),
+  },
+  mounted() {
+    this.load();
   },
 };
 </script>
