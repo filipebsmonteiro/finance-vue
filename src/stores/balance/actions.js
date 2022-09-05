@@ -7,7 +7,7 @@ export default {
     this.persistBalances();
   },
   load() {
-    this.list = LocalStorage.getItem(constants.localStorage.FINANCE.BALANCES);
+    this.list = LocalStorage.getItem(constants.localStorage.FINANCE.BALANCES) || [];
   },
   persistBalances() {
     LocalStorage.set(
