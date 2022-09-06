@@ -34,6 +34,14 @@
         />
       </template>
     </ListSimple>
+
+    <q-table
+      class="q-ma-md"
+      :columns="ipcaColumns"
+      :rows="ipcaList"
+      hide-pagination
+      :rows-per-page-options="[0]"
+    />
   </q-page>
 </template>
 
@@ -41,6 +49,7 @@
 import { mapActions, mapState } from "pinia";
 import { useProjectionStore } from "src/stores/projection";
 import { useBalanceStore } from "src/stores/balance";
+import { useIPCAStore } from "src/stores/ipca";
 import LineChart from "src/components/Charts/Line.vue";
 import ListSimple from "src/components/List/ListSimple.vue";
 import FreedomHeader from "./Header.vue";
@@ -51,6 +60,10 @@ export default {
   computed: {
     ...mapState(useProjectionStore, ["list", "inflation", "investment"]),
     ...mapState(useBalanceStore, ["getTotal", "getTotalCosts"]),
+    ...mapState(useIPCAStore, {
+      ipcaColumns: "getColumns",
+      ipcaList: "list",
+    }),
     years() {
       const yearsGrouped = this.$groupBy(this.list, "year");
       let years = [];
@@ -116,6 +129,7 @@ export default {
   },
   methods: {
     ...mapActions(useBalanceStore, ["load"]),
+    ...mapActions(useIPCAStore, ["load"]),
   },
   mounted() {
     this.load();

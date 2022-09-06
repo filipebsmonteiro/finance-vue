@@ -3,7 +3,6 @@ import state from "./state";
 import getters from "./getters";
 
 export const useProjectionStore = defineStore('projection', {
-  //actions,
   state,
   getters,
 });
