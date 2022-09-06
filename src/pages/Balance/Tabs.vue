@@ -1,5 +1,5 @@
 <template>
-  <q-tabs v-model="tab" inline-label dense class="q-mt-md">
+  <q-tabs v-model="tab" inline-label no-caps>
     <q-tab
       :name="$CONST.FINANCE.BALANCE.COST"
       class="text-negative rounded"
@@ -20,17 +20,18 @@
 
   <q-tab-panels
     id="tab-panels"
-    class="q-my-md rounded shadow-1 w-50"
     style="overflow: visible"
+    class="bg-transparent"
     v-model="tab"
     animated
   >
-    <q-tab-panel :name="$CONST.FINANCE.BALANCE.COST">
+    <q-tab-panel
+      :name="$CONST.FINANCE.BALANCE.COST"
+      class="bg-white rounded shadow-1"
+    >
       <q-icon
         name="close"
-        size="sm"
-        class="absolute cursor-pointer q-pa-xs bg-red text-white rounded"
-        style="right: -5px; top: -5px"
+        class="q-pa-xs bg-red text-white rounded"
         @click="tab = null"
       />
       <BalanceForm
@@ -40,12 +41,13 @@
         @add="addOnStore"
       />
     </q-tab-panel>
-    <q-tab-panel :name="$CONST.FINANCE.BALANCE.INCOME">
+    <q-tab-panel
+      :name="$CONST.FINANCE.BALANCE.INCOME"
+      class="bg-white rounded shadow-1"
+    >
       <q-icon
         name="close"
-        size="sm"
-        class="absolute cursor-pointer q-pa-xs bg-red text-white rounded"
-        style="right: -5px; top: -5px"
+        class="q-pa-xs bg-red text-white rounded"
         @click="tab = null"
       />
       <BalanceForm
@@ -88,3 +90,26 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+::v-deep(.q-tab-panel) {
+  // Show shadow
+  margin: 5px;
+  height: calc(100% - 10px);
+  width: calc(100% - 10px);
+
+  .q-icon {
+    cursor: pointer;
+    position: absolute;
+    right: -5px;
+    top: 0px;
+    font-size: 24px;
+
+    @media screen and (max-width: 1024px) {
+      right: 0px;
+      top: 2px;
+      font-size: 20px;
+    }
+  }
+}
+</style>

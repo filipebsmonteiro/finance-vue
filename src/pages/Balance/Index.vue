@@ -1,9 +1,9 @@
 <template>
-  <q-page class="flex column items-center">
+  <q-page class="row">
     <ListSimple
       :items="balances"
       emptyText="Nenhum Balanço localizado!"
-      class="w-50"
+      class="col-12 col-md-6 offset-md-3 q-mt-md"
     >
       <template v-slot:default="{ item, index }">
         <q-item-section>
@@ -53,7 +53,9 @@
       </template>
     </ListSimple>
 
-    <Tabs />
+    <div class="col-12 col-md-6 offset-md-3 q-mt-md">
+      <Tabs />
+    </div>
   </q-page>
 </template>
 

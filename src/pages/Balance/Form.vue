@@ -1,5 +1,4 @@
 <template>
-  <slot name="before" />
   <q-input
     :placeholder="placeholder"
     :dense="dense"
@@ -20,7 +19,17 @@
     @update:model-value="$emit('update:value', parseFloat($event))"
     @keyup.enter="add"
   />
-  <slot name="after" />
+  <div class="row">
+    <q-btn
+      dense
+      no-caps
+      rounded
+      color="positive"
+      class="col-12 col-md-6 offset-md-3 q-mt-md q-px-md"
+      label="Salvar"
+      @click="add"
+    />
+  </div>
 </template>
 
 <script>
