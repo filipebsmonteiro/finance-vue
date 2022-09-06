@@ -22,12 +22,14 @@ export const useIPCAStore = defineStore('ipca', {
   },
   actions: {
     load() {
+      //IBGERepository.loadConjunturais()
       //IBGERepository.loadIPCA1419().then(console.log) // Detalhado
       IBGERepository.loadIPCA1705()
         .then((response) => {
           const data = JSON.parse(response);
-          this.columns = data.shift();
-          this.list = data;
+          console.log(data);
+          //this.columns = data.shift();
+          // this.list = data;
         })
     },
   },

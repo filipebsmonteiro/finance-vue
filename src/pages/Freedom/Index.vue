@@ -35,13 +35,13 @@
       </template>
     </ListSimple>
 
-    <q-table
+    <!--q-table
       class="q-ma-md"
       :columns="ipcaColumns"
       :rows="ipcaList"
       hide-pagination
       :rows-per-page-options="[0]"
-    />
+    /-->
   </q-page>
 </template>
 
