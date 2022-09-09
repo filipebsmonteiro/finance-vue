@@ -1,3 +1,4 @@
+import { Notify } from "quasar";
 import constants from "src/boot/providers/constants"
 
 export default {
@@ -21,16 +22,5 @@ export default {
 
     return 0;
   },
-  getTotal() {
-    return this.getTotalIncomes - this.getTotalCosts;
-
-    if (balance <= 0) {
-      Notify.create({
-        type: "negative",
-        message:
-          "Seus ganhos são menores que suas dívidas! Você não terá independência financeira!",
-      });
-    }
-
-  }
+  getBalance: () => this.getTotalIncomes - this.getTotalCosts
 }

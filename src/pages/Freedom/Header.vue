@@ -44,22 +44,6 @@
             v-model="untilFreedom"
             label="Projetar até a Independência"
           />
-          <q-input
-            v-show="!untilFreedom"
-            v-model="currentMonths"
-            type="number"
-            label="Meses"
-            min="0"
-            max="1440"
-            readonly
-          >
-            <template v-slot:prepend>
-              <q-btn flat rounded icon="remove" @click="currentMonths--" />
-            </template>
-            <template v-slot:append>
-              <q-btn flat rounded icon="add" @click="currentMonths++" />
-            </template>
-          </q-input>
         </q-item>
         <q-separator />
         <q-item class="flex justify-between">
@@ -89,16 +73,23 @@
       <q-list>
         <q-item class="flex column items-center">
           <q-toggle
-            :model-value="modelChart"
-            @update:model-value="$emit('update:model-chart', $event)"
+            :model-value="showSimulator"
+            @update:model-value="$emit('update:show-simulator', $event)"
+            label="Mostrar Simulador"
+          />
+        </q-item>
+        <q-item class="flex column items-center">
+          <q-toggle
+            :model-value="showChart"
+            @update:model-value="$emit('update:show-chart', $event)"
             label="Mostrar Gráfico"
           />
         </q-item>
         <q-separator />
         <q-item class="flex column items-center">
           <q-toggle
-            :model-value="modelCard"
-            @update:model-value="$emit('update:model-card', $event)"
+            :model-value="showCard"
+            @update:model-value="$emit('update:show-card', $event)"
             label="Mostrar Cards"
           />
         </q-item>
@@ -117,27 +108,26 @@ import { ref } from "vue";
 export default {
   name: "FreedomHeader",
   props: {
-    modelChart: {
+    showChart: {
       type: Boolean,
       default: true,
     },
-    modelCard: {
+    showCard: {
+      type: Boolean,
+      default: false,
+    },
+    showSimulator: {
       type: Boolean,
       default: false,
     },
   },
   computed: {
-    ...mapState(useBalanceStore, [
-      "getTotalCosts",
-      "getTotalIncomes",
-      "getTotal",
-    ]),
+    ...mapState(useBalanceStore, ["getTotalCosts", "getTotalIncomes"]),
     ...mapState(useProjectionStore, ["list"]),
     ...mapWritableState(useProjectionStore, [
       "investment",
       "inflation",
       "untilFreedom",
-      "currentMonths",
     ]),
     ...mapState(useIPCAStore, [
       "loadLastMonths",

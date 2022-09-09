@@ -2,23 +2,30 @@
   <q-page>
     <FreedomHeader
       class="q-mt-md q-mx-auto"
-      v-model:model-chart="modelChart"
-      v-model:model-card="modelCard"
+      v-model:show-chart="showChart"
+      v-model:show-card="showCard"
+      v-model:show-simulator="showSimulator"
     />
 
+    <div v-if="showSimulator" class="row">
+      <div class="col-12 col-md-6 offset-md-3 q-mt-md">
+        <Simulator />
+      </div>
+    </div>
+
     <LineChart
-      v-if="modelChart"
+      v-if="showChart"
       class="q-ma-md"
       :chart-data="{ labels, datasets }"
       :chart-options="{ responsive: true, maintainAspectRatio: false }"
     />
 
-    <ListSimple v-if="modelCard" :items="years" expansible class="flex wrap">
-      <template v-slot:header="{ item: { year, capital } }">
+    <ListSimple v-if="showCard" :items="years" expansible class="flex wrap">
+      <template v-slot:header="{ item: { year, patrimony } }">
         <q-item-section>
           <q-item-label>{{ year }}</q-item-label>
           <q-item-label caption>
-            Acumulado: {{ $formaters.money(capital) }}
+            Acumulado: {{ $formaters.money(patrimony) }}
           </q-item-label>
         </q-item-section>
       </template>
@@ -41,14 +48,14 @@
 import { mapActions, mapState } from "pinia";
 import { useProjectionStore } from "src/stores/projection";
 import { useBalanceStore } from "src/stores/balance";
-import { useIPCAStore } from "src/stores/ipca";
 import LineChart from "src/components/Charts/Line.vue";
 import ListSimple from "src/components/List/ListSimple.vue";
-import FreedomHeader from "./Header.vue";
+import FreedomHeader from "src/pages/Freedom/Header.vue";
+import Simulator from "src/pages/Freedom/Simulator.vue";
 
 export default {
   name: "PageIndex",
-  components: { ListSimple, FreedomHeader, LineChart },
+  components: { ListSimple, FreedomHeader, LineChart, Simulator },
   computed: {
     ...mapState(useProjectionStore, ["list", "inflation", "investment"]),
     ...mapState(useBalanceStore, ["getTotal", "getTotalCosts"]),
@@ -61,7 +68,7 @@ export default {
           let element = yearsGrouped[year];
           years.push({
             year,
-            capital: element[element.length - 1].capital,
+            patrimony: element[element.length - 1].patrimony,
             months: element,
             classes: "card-projection",
           });
@@ -90,8 +97,9 @@ export default {
   },
   data() {
     return {
-      modelChart: true,
-      modelCard: false,
+      showChart: true,
+      showCard: false,
+      showSimulator: false,
       monthColumns: [
         {
           name: "month",
@@ -100,8 +108,8 @@ export default {
           align: "left",
         },
         {
-          name: "capital",
-          field: "capital",
+          name: "patrimony",
+          field: "patrimony",
           label: "Acumulado",
           format: this.$formaters.money,
         },
