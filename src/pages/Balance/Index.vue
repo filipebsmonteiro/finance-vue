@@ -85,7 +85,12 @@ export default {
     };
   },
   methods: {
-    ...mapActions(useBalanceStore, ["load", "remove", "persistBalances"]),
+    ...mapActions(useBalanceStore, [
+      "load",
+      "loading",
+      "remove",
+      "persistBalances",
+    ]),
     setEditing(index) {
       this.balances = this.balances.map((b, idx) => {
         return {

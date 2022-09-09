@@ -1,4 +1,3 @@
-import { Notify } from "quasar";
 import constants from "src/boot/providers/constants"
 
 export default {

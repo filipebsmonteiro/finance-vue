@@ -7,9 +7,11 @@ export default {
     this.persistBalances();
   },
   load() {
+    this.loading = true;
     this.list = LocalStorage.getItem(constants.localStorage.FINANCE.BALANCES) || [];
     this.patrimony = LocalStorage.getItem(constants.localStorage.FINANCE.PATRIMONY) || 0;
     this.patrimony = parseFloat(this.patrimony);
+    this.loading = false;
   },
   persistBalances() {
     LocalStorage.set(
