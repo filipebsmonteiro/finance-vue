@@ -22,6 +22,12 @@ const routes = [
         component: () => import("pages/Freedom/Index.vue"),
         meta: { title: 'Projeção Liberdade Financeira' }
       },
+      {
+        path: "ipca",
+        name: 'ipca',
+        component: () => import("pages/IPCA/Index.vue"),
+        meta: { title: 'Dados IPCA' }
+      },
     ],
   },
 

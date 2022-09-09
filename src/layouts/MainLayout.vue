@@ -64,6 +64,12 @@ const linksList = [
     icon: "insights",
     link: { name: `freedom` },
   },
+  {
+    title: "Dados IPCA",
+    caption: "Consulte os dados do IPCA",
+    icon: "la la-digital-tachograph",
+    link: { name: `ipca` },
+  },
 ];
 
 import { defineComponent, ref } from "vue";
