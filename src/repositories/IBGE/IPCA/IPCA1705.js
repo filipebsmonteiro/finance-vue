@@ -56,7 +56,7 @@ class IPCA1705 extends IPCA {
    * @param {group} 7169
    * @returns
    */
-  load({ variable = [`355`], period = [`all`], group = [`7169`] }) {
+  fetch({ variable = [`355`], period = [`all`], group = [`7169`] }) {
     const url = super.mountURL({ variable, period, group });
 
     return this.cleanRequest('GET', `${url}?formato=json`);

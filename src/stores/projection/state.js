@@ -3,7 +3,7 @@ export default () => {
     untilFreedom: true,
     currentMonths: 0, // 120 Anos
     maxMonths: 1440, // 120 Anos
-    investment: 0.8, // Retorno mensal sobre o invetimento
+    investment: 0.92, // Retorno mensal sobre o invetimento
     inflation: 0.5, // Inflação mensal
   };
 }

@@ -6,6 +6,7 @@
       outline
       dropdown-icon="query_stats"
       :label="`${(investment - inflation).toFixed(2).replace('.', ',')}% a.m.`"
+      :loading="loading"
     >
       <div class="q-pa-md">
         <q-input
@@ -109,7 +110,9 @@
 <script>
 import { mapActions, mapState, mapWritableState } from "pinia";
 import { useBalanceStore } from "src/stores/balance";
+import { useIPCAStore } from "src/stores/ipca";
 import { useProjectionStore } from "src/stores/projection";
+import { ref } from "vue";
 
 export default {
   name: "FreedomHeader",
@@ -136,14 +139,24 @@ export default {
       "untilFreedom",
       "currentMonths",
     ]),
+    ...mapState(useIPCAStore, [
+      "loadLastMonths",
+      "getLastMonthsAverage",
+      "loading",
+    ]),
   },
   methods: {
     ...mapActions(useBalanceStore, {
       loadBalances: "load",
     }),
   },
-  mounted() {
+  async mounted() {
     this.loadBalances();
+    await this.loadLastMonths({});
+    this.inflation =
+      this.getLastMonthsAverage > 0
+        ? ref(this.getLastMonthsAverage)
+        : this.inflation;
   },
 };
 </script>

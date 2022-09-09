@@ -94,10 +94,11 @@ export class IPCA {
     },
   ];
 
-  getLastTwelveMonths(asString = true) {
+  getLastMonths(quantity = 12, asString = true) {
+    const now = new Date();
     let months = [];
 
-    for (let i = 12; i > 0; i--) {
+    for (let i = quantity; i > 0; i--) {
       const past = new Date(now.getFullYear(), now.getMonth() - i, 1);
       months.push(`${past.getFullYear()}${String(past.getMonth() + 1).padStart(2, "0")}`);
     }
@@ -134,17 +135,15 @@ export class IPCA {
   }
 
   // OLD URL
+  // https://www.ibge.gov.br/explica/inflacao.php
   loadConjunturais() {
-    const now = new Date();
-
-
     // ipca: { abbrev: "IPCA", table: 1737, var: 2266,
     // ipca15: abbrev: "IPCA-15", table: 3065, var: 1117,
     const index = 3065;
     const variation = 1117;
     return this.cleanRequest(
       'GET',
-      `https://servicodados.ibge.gov.br/api/v1/conjunturais?&d=s&user=ibge&t=${index}&v=${variation}&p=${this.getLastTwelveMonths()}&ng=1(1)&c=`
+      `https://servicodados.ibge.gov.br/api/v1/conjunturais?&d=s&user=ibge&t=${index}&v=${variation}&p=${this.getLastMonths()}&ng=1(1)&c=`
     );
   }
 
