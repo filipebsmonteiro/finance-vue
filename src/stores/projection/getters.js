@@ -23,7 +23,7 @@ export default {
 
     let records = [];
     let monthCounter = 0;
-    let capital = 0;
+    let capital = balance.patrimony;
     let costWithInflation = balance.getTotalCosts;
     let investimentIncome = 0;
     let month = date.buildDate(Date.now());

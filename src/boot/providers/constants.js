@@ -23,7 +23,8 @@ export default {
     AUTH_EXPIRATION: `${LOCAL_STORAGE_PREFIX}auth_expiration`,
 
     FINANCE: {
-      BALANCES: `${LOCAL_STORAGE_PREFIX}finance_balances`
+      BALANCES: `${LOCAL_STORAGE_PREFIX}finance_balances`,
+      PATRIMONY: `${LOCAL_STORAGE_PREFIX}finance_patrimony`,
     }
   }
 }

@@ -1,5 +1,7 @@
 <template>
   <q-page class="row">
+    <PatrimonyForm class="col-12 col-md-6 offset-md-3 q-mt-md" />
+
     <ListSimple
       :items="balances"
       emptyText="Nenhum Balanço localizado!"
@@ -65,10 +67,11 @@ import { useBalanceStore } from "src/stores/balance/index";
 import ListSimple from "src/components/List/ListSimple.vue";
 import Tabs from "src/pages/Balance/Tabs.vue";
 import BalanceForm from "src/pages/Balance/Form.vue";
+import PatrimonyForm from "src/pages/Balance/PatrimonyForm.vue";
 
 export default {
   name: "PageIndex",
-  components: { ListSimple, Tabs, BalanceForm },
+  components: { ListSimple, Tabs, BalanceForm, PatrimonyForm },
   computed: {
     ...mapWritableState(useBalanceStore, { balances: "list" }),
   },
