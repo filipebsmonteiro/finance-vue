@@ -1,4 +1,4 @@
-import { date, Notify } from "quasar";
+import { date } from "quasar";
 import { useBalanceStore } from "src/stores/balance";
 
 const monthsInPTBR = [
@@ -24,18 +24,7 @@ const projectFreedom = ({ patrimony = 0, incomes = 0, costs = 0, costGrowth = 0,
   let records = [];
 
   const balance = incomes - costs;
-  if (balance <= 0) {
-    Notify.create({
-      type: "negative",
-      message: "Você não terá independência financeira! Seu saldo é zero ou negativo.",
-    });
-    return records;
-  }
-  if (investmentGrowth <= 0) {
-    Notify.create({
-      type: "negative",
-      message: "Seu rendimento é zero ou negativo. Você não terá independência financeira!",
-    });
+  if (balance <= 0 || investmentGrowth <= 0) {
     return records;
   }
 
@@ -81,8 +70,6 @@ export default {
       investmentGrowth: investmentGrowth,
       maxMonths: state.maxMonths
     });
-
-
 
   },
 }
