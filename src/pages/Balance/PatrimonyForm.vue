@@ -1,7 +1,7 @@
 <template>
   <q-input
     filled
-    label="Capital Atual"
+    label="Patrimônio Atual"
     type="number"
     step="0.01"
     v-model="patrimony"

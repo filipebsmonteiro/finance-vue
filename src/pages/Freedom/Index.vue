@@ -125,9 +125,11 @@ export default {
   },
   methods: {
     ...mapActions(useBalanceStore, ["load"]),
+    ...mapActions(useProjectionStore, ["reset"]),
   },
-  mounted() {
+  async mounted() {
     this.load();
+    this.reset();
   },
 };
 </script>

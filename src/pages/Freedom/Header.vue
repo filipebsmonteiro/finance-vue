@@ -36,14 +36,11 @@
       no-caps
       outline
       dropdown-icon="calendar_month"
-      :label="`${list.length} meses`"
+      :label="`${monthsToIndependence} meses`"
     >
       <q-list>
         <q-item class="flex column items-center">
-          <q-toggle
-            v-model="untilFreedom"
-            label="Projetar até a Independência"
-          />
+          {{ `${monthsToIndependence} Meses para Independência` }}
         </q-item>
         <q-separator />
         <q-item class="flex justify-between">
@@ -124,16 +121,20 @@ export default {
   computed: {
     ...mapState(useBalanceStore, ["getTotalCosts", "getTotalIncomes"]),
     ...mapState(useProjectionStore, ["list"]),
-    ...mapWritableState(useProjectionStore, [
-      "investment",
-      "inflation",
-      "untilFreedom",
-    ]),
+    ...mapWritableState(useProjectionStore, ["investment", "inflation"]),
     ...mapState(useIPCAStore, [
       "loadLastMonths",
       "getLastMonthsAverage",
       "loading",
     ]),
+    monthsToIndependence() {
+      if (this.list && Array.isArray(this.list)) {
+        return this.list.filter(
+          (l) => l.investimentIncome < l.costWithInflation
+        ).length;
+      }
+      return null;
+    },
   },
   methods: {
     ...mapActions(useBalanceStore, {
