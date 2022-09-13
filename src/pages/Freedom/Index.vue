@@ -99,7 +99,7 @@ export default {
     return {
       showChart: true,
       showCard: false,
-      showSimulator: false,
+      showSimulator: true,
       monthColumns: [
         {
           name: "month",

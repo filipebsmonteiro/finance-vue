@@ -84,11 +84,33 @@
       <h5 class="q-ma-none">Ajuste</h5>
     </template>
     <div class="q-pa-md">
-      Seu saldo Ao fim do mês é: <b>{{ $formaters.money(incomes - costs) }}</b>
-      Com seu patrimonio atual Para independência em
+      <p>
+        Seu saldo Ao fim do mês é:
+        <b>{{ $formaters.money(incomes - costs) }}</b>
+      </p>
+      Com seu patrimonio atual. Para alcançar a independência em
       <q-input type="number" v-model="months" class="flex-inline" />
-      meses você precisaria de um saldo de:
-      <b>{{ $formaters.money(balance) }}</b>
+      Meses:
+      <ul>
+        <li>
+          <b>
+            <u>Seu patrimônio acumulado deve ser:</u>
+            {{ $formaters.money(independency.patrimony) }}
+          </b>
+        </li>
+        <li>
+          <b>
+            <u>Seus Investimentos para cobrir os custos:</u>
+            {{ $formaters.money(independency.investmentIncome) }}
+          </b>
+        </li>
+        <li>
+          <b>
+            <u>Seus custos corrigidos pela inflação:</u>
+            {{ $formaters.money(independency.costsOnFuture) }}
+          </b>
+        </li>
+      </ul>
     </div>
   </q-expansion-item>
 
@@ -110,21 +132,41 @@ export default {
       "incomes",
       "costs",
       "month",
-      "investiment",
+      "investment",
       "inflation",
     ]),
-    balance() {
-      /**
-       * Pega os meses
-       * Pega o valor de Custos
-       * Calcula quanto de patrimonio deve ter
-       * Calcula a Diferença do Atual pro Que precisa
-       *
-       * Simples => Divide diferença na quantidade de meses
-       * Composto => Divide diferença na quantidade de meses acrescentando juro composto
-       */
+    independency() {
+      // TODO: Validar melhor com negativos oque pode impedir a independencia
 
-      return 0;
+      let months = 0;
+      const costGrowthPercentage = this.inflation / 100;
+      const costsOnFuture = [...Array(parseInt(this.months))].reduce(
+        (acc) => parseFloat((acc + acc * costGrowthPercentage).toFixed(2)),
+        this.costs
+      );
+
+      const investmentGrowthPercentage = this.investment / 100;
+      const initialPatrimony = this.patrimony > 0 ? this.patrimony : 1;
+      const initialInvestmentIncome = parseFloat(
+        (initialPatrimony * investmentGrowthPercentage).toFixed(2)
+      );
+      let investmentIncome = initialInvestmentIncome;
+      let patrimony = initialPatrimony;
+      while (investmentIncome < costsOnFuture) {
+        investmentIncome = parseFloat(
+          (patrimony * investmentGrowthPercentage).toFixed(2)
+        );
+        patrimony += parseFloat(
+          (this.incomes - this.costs + investmentIncome).toFixed(2)
+        ); // Adicionar investimentIncome é juros compostos
+        months++;
+      }
+
+      return {
+        costsOnFuture,
+        investmentIncome,
+        patrimony,
+      };
     },
   },
   data() {
