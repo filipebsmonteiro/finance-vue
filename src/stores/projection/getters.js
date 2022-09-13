@@ -30,7 +30,8 @@ export default {
     const costGrowth = state.costGrowth;
     const investmentGrowth = state.investmentGrowth;
 
-    if (patrimony === 0 && incomes === 0 && costs === 0 && costGrowth === 0 && investmentGrowth === 0) {
+    // TODO: Validar melhor com negativos oque pode impedir a independencia
+    if (incomes === 0 && costGrowth === 0 && investmentGrowth === 0) {
       return [];
     }
 
