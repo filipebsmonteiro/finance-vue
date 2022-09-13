@@ -100,7 +100,6 @@ import { mapActions, mapState, mapWritableState } from "pinia";
 import { useBalanceStore } from "src/stores/balance";
 import { useIPCAStore } from "src/stores/ipca";
 import { useProjectionStore } from "src/stores/projection";
-import { ref } from "vue";
 
 export default {
   name: "FreedomHeader",
@@ -120,13 +119,9 @@ export default {
   },
   computed: {
     ...mapState(useBalanceStore, ["getTotalCosts", "getTotalIncomes"]),
-    ...mapState(useProjectionStore, ["list"]),
+    ...mapState(useProjectionStore, ["list", "loadIPCAIntoInflation"]),
     ...mapWritableState(useProjectionStore, ["investment", "inflation"]),
-    ...mapState(useIPCAStore, [
-      "loadLastMonths",
-      "getLastMonthsAverage",
-      "loading",
-    ]),
+    ...mapState(useIPCAStore, ["loading"]),
     monthsToIndependence() {
       if (this.list && Array.isArray(this.list)) {
         return this.list.filter(
@@ -143,11 +138,7 @@ export default {
   },
   async mounted() {
     this.loadBalances();
-    await this.loadLastMonths({});
-    this.inflation =
-      this.getLastMonthsAverage > 0
-        ? ref(this.getLastMonthsAverage)
-        : this.inflation;
+    this.loadIPCAIntoInflation();
   },
 };
 </script>

@@ -1,17 +1,32 @@
 <template>
-  <p class="q-mb-none flex justify-between">
+  <h5 class="q-mb-none flex justify-center">Tempo</h5>
+  <p class="q-mb-none flex justify-start">
+    Projetar
+    <q-badge class="q-mx-sm" rounded> {{ month.simulator }} </q-badge>
     Meses
-    <q-badge> {{ currentMonths }} </q-badge>
   </p>
   <q-slider
-    v-model="currentMonths"
-    :min="12"
+    v-model="month.simulator"
+    :min="0"
     :max="1440"
-    :step="12"
+    :step="1"
+    snap
+    label
+  />
+  <p class="q-mb-none flex justify-between">
+    Meses para Independência:
+    <q-badge> {{ month.independency }} </q-badge>
+  </p>
+  <q-slider
+    v-model="month.independency"
+    :min="1"
+    :max="1440"
+    :step="1"
     snap
     label
   />
 
+  <h5 class="q-mb-none flex justify-center">Financeiro</h5>
   <p class="q-mb-none flex justify-between">
     Patrimônio
     <q-badge color="secondary"> {{ $formaters.money(patrimony) }} </q-badge>
@@ -54,7 +69,9 @@
     color="positive"
   />
 
-  <q-btn label="Resetar" @click="reset"></q-btn>
+  <div class="flex justify-center">
+    <q-btn label="Resetar" @click="reset" />
+  </div>
 </template>
 
 <script>
@@ -67,7 +84,7 @@ export default {
   computed: {
     ...mapWritableState(useBalanceStore, ["patrimony"]),
     ...mapWritableState(useProjectionStore, [
-      "currentMonths",
+      "month",
       "patrimony",
       "incomes",
       "costs",

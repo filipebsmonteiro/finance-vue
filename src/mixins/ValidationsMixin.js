@@ -3,9 +3,6 @@ export const required = (val) => {
 }
 
 export const requiredIfEqual = (val, conditional, value) => {
-  console.log(val)
-  console.log(conditional)
-  console.log(value)
   if (conditional === value) {
     return !!val || 'Campo obrigatório'
   }
@@ -61,9 +58,9 @@ export const validBrazillianDate = (val) => {
 
   const parts = val.split('/')
   if (
-      parseInt(parts[0]) < 1 || parseInt(parts[0]) > 31 || // Dia
-      parseInt(parts[1]) < 1 || parseInt(parts[1]) > 12 ||// Mês
-      parseInt(parts[2]) <= 1910 // Ano
+    parseInt(parts[0]) < 1 || parseInt(parts[0]) > 31 || // Dia
+    parseInt(parts[1]) < 1 || parseInt(parts[1]) > 12 ||// Mês
+    parseInt(parts[2]) <= 1910 // Ano
   ) {
     return 'Data Inválida! Padrão: Dia/Mês/Ano'
   }

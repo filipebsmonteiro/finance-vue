@@ -24,36 +24,34 @@ const balance = useBalanceStore();
 
 export default {
   list: (state) => {
-    console.log(state);
     let patrimony = state.patrimony;
     const incomes = state.incomes;
     const costs = state.costs;
     const costGrowth = state.costGrowth;
     const investmentGrowth = state.investmentGrowth;
-    const maxMonths = state.maxMonths;
 
-    if (patrimony === 0 && incomes === 0 && costs === 0 && costGrowth === 0 && investmentGrowth === 0 && maxMonths === 0) {
+    if (patrimony === 0 && incomes === 0 && costs === 0 && costGrowth === 0 && investmentGrowth === 0) {
       return [];
     }
 
-    let records = [];
-
     const balance = incomes - costs;
-    if (balance <= 0 || investmentGrowth <= 0) {
-      return records;
-    }
-
+    let records = [];
     let month = date.buildDate(Date.now());
     let monthCounter = 0;
     let costWithInflation = costs;
     let investimentIncome = 0;
+    state.month.independency = 0;
 
-    while (monthCounter < maxMonths && investimentIncome < costWithInflation) {
+    while (monthCounter < state.month.simulator && monthCounter < state.month.max) {
       costWithInflation = parseFloat(
         (costWithInflation + (costWithInflation * costGrowth)).toFixed(2)
       );
       investimentIncome = parseFloat((patrimony * investmentGrowth).toFixed(2));
       patrimony += parseFloat((balance + investimentIncome).toFixed(2)) // Adicionar investimentIncome é juros compostos
+
+      if (state.month.independency === 0 && investimentIncome >= costWithInflation) {
+        state.month.independency = monthCounter;
+      }
 
       records.push({
         patrimony,
@@ -66,6 +64,8 @@ export default {
       monthCounter++;
       month = date.addToDate(month, { months: 1 })
     }
+
+    state.current = monthCounter;
 
     return records;
   },

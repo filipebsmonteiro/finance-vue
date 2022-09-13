@@ -22,9 +22,8 @@ export default {
     return columns;
   },
   getLastMonthsAverage: (state) => {
-    return (
-      state.list.reduce((acc, cur) => acc + parseFloat(cur.V), 0)
-      / state.list.length
-    ).toFixed(2)
+    return parseFloat(
+      (state.list.reduce((acc, cur) => acc + parseFloat(cur.V), 0) / state.list.length).toFixed(2)
+    )
   }
 }

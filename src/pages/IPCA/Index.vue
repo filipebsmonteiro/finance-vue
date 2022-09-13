@@ -93,10 +93,7 @@ export default {
     model: {
       handler(model) {
         if (model.table) {
-          console.log(model.table);
-          this.load({
-            table: model.table.table,
-          });
+          this.load({ table: model.table.table });
         }
       },
       deep: true,
