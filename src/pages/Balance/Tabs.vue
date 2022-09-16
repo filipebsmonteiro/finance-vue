@@ -51,7 +51,7 @@
         @click="tab = null"
       />
       <BalanceForm
-        placeholder="Nome da Renda"
+        placeholder="Nome do Custo"
         v-model:name="name"
         v-model:value="value"
         @add="addOnStore"

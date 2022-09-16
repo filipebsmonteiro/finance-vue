@@ -1,8 +1,12 @@
 <template>
-  <q-expansion-item class="q-card q-mb-md" header-class="flex justify-center">
-    <template #header>
-      <h5 class="q-ma-none">Tempo</h5>
-    </template>
+  <q-tabs dense v-model="tab" class="bg-grey-3">
+    <q-tab name="Tempo" icon="alarm" label="Tempo" />
+    <q-tab name="Financeiro" icon="money" label="Financeiro" />
+    <q-tab name="Patrimonio" icon="slow_motion_video" label="Patrimônio" />
+  </q-tabs>
+
+  <q-tab-panels class="bg-transparent" v-model="tab" animated>
+    <q-tab-panel name="Tempo" class="bg-white shadow-1">
     <div class="q-pa-md">
       <p class="q-mb-none flex justify-start">
         Projetar
@@ -29,94 +33,133 @@
         Meses
       </p>
     </div>
-  </q-expansion-item>
+    </q-tab-panel>
 
-  <q-expansion-item class="q-card q-mb-md" header-class="flex justify-center">
-    <template #header>
-      <h5 class="q-ma-none">Financeiro</h5>
-    </template>
-    <div class="q-pa-md">
-      <p class="q-mb-none flex justify-between">
-        Patrimônio
-        <q-badge color="secondary"> {{ $formaters.money(patrimony) }} </q-badge>
-      </p>
+    <q-tab-panel name="Financeiro" class="bg-white shadow-1">
+      <div class="q-pa-md">
+      <div class="row">
+        <div class="col">
+          <q-badge color="secondary"> {{ $formaters.money(patrimony) }} </q-badge>
+        </div>
+        <b class="q-ma-none col text-center">
+          Patrimônio
+        </b>
+        <div class="col flex justify-end">
+          <q-badge outline rounded color="secondary" class="cursor-pointer" @click="double(`patrimony`)">
+            x2
+            <q-tooltip>Dobrar Limite patrimônio</q-tooltip>
+          </q-badge>
+        </div>
+      </div>
       <q-slider
         v-model="patrimony"
         :min="0"
-        :max="1000000"
+        :max="max.patrimony"
         :step="100"
         snap
         label
+        :label-value="$formaters.money(patrimony)"
         color="secondary"
       />
-      <p class="q-mb-none flex justify-between">
-        Gastos
-        <q-badge color="red"> {{ $formaters.money(costs) }} </q-badge>
-      </p>
+
+      <div class="row">
+        <div class="col">
+          <q-badge color="red"> {{ $formaters.money(costs) }} </q-badge>
+        </div>
+        <b class="q-ma-none col text-center">
+          Gastos
+        </b>
+        <div class="col flex justify-end">
+          <q-badge outline rounded color="red" class="cursor-pointer" @click="double(`costs`)">
+            x2
+            <q-tooltip>Dobrar Limite gastos</q-tooltip>
+          </q-badge>
+        </div>
+      </div>
       <q-slider
         v-model="costs"
         :min="0"
-        :max="100000"
+        :max="max.costs"
         :step="100"
         snap
         label
+        :label-value="$formaters.money(costs)"
         color="red"
       />
 
-      <p class="q-mb-none flex justify-between">
-        Ganhos
-        <q-badge color="positive"> {{ $formaters.money(incomes) }} </q-badge>
-      </p>
+      <div class="row">
+        <div class="col">
+          <q-badge color="positive"> {{ $formaters.money(incomes) }} </q-badge>
+        </div>
+        <b class="q-ma-none col text-center">
+          Ganhos
+        </b>
+        <div class="col flex justify-end">
+          <q-badge outline rounded color="positive" class="cursor-pointer" @click="double(`incomes`)">
+            x2
+            <q-tooltip>Dobrar Limite ganhos</q-tooltip>
+          </q-badge>
+        </div>
+      </div>
       <q-slider
         v-model="incomes"
         :min="0"
-        :max="100000"
+        :max="max.incomes"
         :step="100"
         snap
         label
+        :label-value="$formaters.money(incomes)"
         color="positive"
       />
-    </div>
-  </q-expansion-item>
+      </div>
+      <q-btn label="Resetar" @click="reset" />
+    </q-tab-panel>
 
-  <q-expansion-item class="q-card q-mb-md" header-class="flex justify-center">
-    <template #header>
-      <h5 class="q-ma-none">Ajuste</h5>
-    </template>
-    <div class="q-pa-md">
+    <q-tab-panel name="Patrimonio" class="bg-white shadow-1">
+      <div class="q-pa-md">
       <p>
         Seu saldo Ao fim do mês é:
         <b>{{ $formaters.money(incomes - costs) }}</b>
       </p>
       Com seu patrimonio atual. Para alcançar a independência em
-      <q-input type="number" v-model="months" class="flex-inline" />
+      <q-input type="number" v-model="months" class="inline">
+        <template v-slot:prepend>
+            <q-btn flat rounded icon="remove" @click="months--" />
+          </template>
+          <template v-slot:append>
+            <q-btn flat rounded icon="add" @click="months++" />
+          </template>
+      </q-input>
       Meses:
       <ul>
         <li>
           <b>
-            <u>Seu patrimônio acumulado deve ser:</u>
-            {{ $formaters.money(independency.patrimony) }}
+            Seu <u>patrimônio</u> acumulado deve ser:
+            <span class="text-secondary">
+              {{ $formaters.money(independency.patrimony) }}
+            </span>
           </b>
         </li>
         <li>
           <b>
-            <u>Seus Investimentos para cobrir os custos:</u>
-            {{ $formaters.money(independency.investmentIncome) }}
+            Seus <u>Rendimentos</u> serão:
+            <span class="text-positive">
+              {{ $formaters.money(independency.investmentIncome) }}
+            </span>
           </b>
         </li>
         <li>
           <b>
-            <u>Seus custos corrigidos pela inflação:</u>
-            {{ $formaters.money(independency.costsOnFuture) }}
+            Seus <u>custos</u> corrigidos pela inflação:
+            <span class="text-red">
+              {{ $formaters.money(independency.costsOnFuture) }}
+            </span>
           </b>
         </li>
       </ul>
     </div>
-  </q-expansion-item>
-
-  <div class="flex justify-center">
-    <q-btn label="Resetar" @click="reset" />
-  </div>
+    </q-tab-panel>
+  </q-tab-panels>
 </template>
 
 <script>
@@ -138,7 +181,6 @@ export default {
     independency() {
       // TODO: Validar melhor com negativos oque pode impedir a independencia
 
-      let months = 0;
       const costGrowthPercentage = this.inflation / 100;
       const costsOnFuture = [...Array(parseInt(this.months))].reduce(
         (acc) => parseFloat((acc + acc * costGrowthPercentage).toFixed(2)),
@@ -159,7 +201,6 @@ export default {
         patrimony += parseFloat(
           (this.incomes - this.costs + investmentIncome).toFixed(2)
         ); // Adicionar investimentIncome é juros compostos
-        months++;
       }
 
       return {
@@ -171,8 +212,19 @@ export default {
   },
   data() {
     return {
-      months: 0,
+      tab: 'Tempo',
+      months: 24,
+      max: {
+        patrimony: 100000,
+        incomes: 100000,
+        costs: 100000,
+      }
     };
   },
+  methods: {
+    double(value) {
+      this.max[value] *= 2;
+    }
+  }
 };
 </script>

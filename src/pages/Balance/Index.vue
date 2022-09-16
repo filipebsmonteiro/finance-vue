@@ -14,7 +14,7 @@
               dense
               filled
               borderless
-              placeholder="Nome da Renda"
+              placeholder="Nome"
               v-model:name="item.name"
               v-model:value="item.value"
               @add="update"

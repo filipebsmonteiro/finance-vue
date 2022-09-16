@@ -12,6 +12,7 @@ export default {
         : parseFloat(this.inflation);
 
     this.costGrowth = this.inflation / 100; // In percentage
+    this.month.simulator = 360; // 30 Anos
   },
   reset() {
     const balance = useBalanceStore();

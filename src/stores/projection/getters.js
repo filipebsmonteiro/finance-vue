@@ -16,19 +16,12 @@ const monthsInPTBR = [
   "Dezembro",
 ];
 
-const projectFreedom = ({ patrimony = 0, incomes = 0, costs = 0, costGrowth = 0, investmentGrowth = 0, maxMonths = 0 }) => {
-
-}
-
 const balance = useBalanceStore();
 
 export default {
   list: (state) => {
     let patrimony = state.patrimony;
-    const incomes = state.incomes;
-    const costs = state.costs;
-    const costGrowth = state.costGrowth;
-    const investmentGrowth = state.investmentGrowth;
+    const { incomes, costs, costGrowth, investmentGrowth } = state;
 
     // TODO: Validar melhor com negativos oque pode impedir a independencia
     if (incomes === 0 && costGrowth === 0 && investmentGrowth === 0) {
@@ -52,6 +45,9 @@ export default {
 
       if (state.month.independency === 0 && investimentIncome >= costWithInflation) {
         state.month.independency = monthCounter;
+        // 90% quando atinge e carrega mais 10%
+        const hundred = parseInt((monthCounter * 100) / 90);
+        //state.month.simulator = hundred;
       }
 
       records.push({
