@@ -92,6 +92,11 @@ export default {
           backgroundColor: "#7acbf9",
           data: this.list.map((l) => l.investimentIncome),
         },
+        {
+          label: "Patrimônio",
+          backgroundColor: "#50b86b",
+          data: this.list.map((l) => l.patrimony),
+        },
       ];
     },
   },
