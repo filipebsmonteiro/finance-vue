@@ -1,9 +1,9 @@
-import Login from "src/repositories/Auth/Login";
+import Auth from "src/repositories/Auth/Login";
 
-export async function login(context, {email, senha}) {
-  context.commit('setLoading', false)
+export async function login(context, { email, senha }) {
+  context.commit('setLoading', true)
   try {
-    await Login.login(email, senha)
+    await Auth.login(email, senha)
       .then(response => {
         context.commit('setAccessToken', response.data.access_token)
         context.commit('setRefreshToken', response.data.refresh_token)
@@ -20,7 +20,7 @@ export async function loadUserInfo(context) {
   try {
     await Login.loadUserInfo()
       .then(response => {
-        let obj = {...response.data.data, ...response.data.data.attributes}
+        let obj = { ...response.data.data, ...response.data.data.attributes }
         delete obj.attributes
         context.commit('setUser', obj)
       })
