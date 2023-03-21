@@ -13,86 +13,85 @@ import { axios } from "src/boot/axios";
  * https://apisidra.ibge.gov.br/home/ajuda
  */
 export class IPCA {
-  endpoint = 'https://apisidra.ibge.gov.br';
-  $axios = axios;
-
   constructor($axios = null) {
+    this.endpoint = 'https://apisidra.ibge.gov.br';
+    this.$axios = axios;
     if ($axios) {
       this.$axios = $axios
     }
+
+    /**
+     * /C315/  Geral, grupo, subgrupo, item e subitem(464)
+     */
+    $groups = [
+      {
+        label: `Todos`,
+        value: `all`,
+      },
+      {
+        label: `Índice geral`,
+        value: 7169,
+      },
+      {
+        label: `1.Alimentação e bebidas`,
+        value: 7170,
+      },
+      {
+        label: `2.Habitação`,
+        value: 7445,
+      },
+      {
+        label: `3.Artigos de residência`,
+        value: 7486,
+      },
+      {
+        label: `4.Vestuário`,
+        value: 7558,
+      },
+      {
+        label: `5.Transportes`,
+        value: 7625,
+      },
+      {
+        label: `6.Saúde e cuidados pessoais`,
+        value: 7660,
+      },
+      {
+        label: `7.Despesas pessoais`,
+        value: 7712,
+      },
+      {
+        label: `8.Educação`,
+        value: 7766,
+      },
+      {
+        label: `9.Comunicação`,
+        value: 7786,
+      },
+    ];
+
+    /**
+     * Níveis Territoriais
+     *
+     * /N1/ Brasil(1)   Listar unidades territoriais
+     * /N7/ Região Metropolitana(10)   Listar unidades territoriais
+     * /N6/ Município(6)   Listar unidades territoriais
+     */
+    $territorial_levels = [
+      {
+        label: `Brasil`,
+        value: 1,
+      },
+      {
+        label: `Brasil`,
+        value: 10,
+      },
+      {
+        label: `Municipio`,
+        value: 6,
+      },
+    ];
   }
-
-  /**
-   * /C315/  Geral, grupo, subgrupo, item e subitem(464)
-   */
-  $groups = [
-    {
-      label: `Todos`,
-      value: `all`,
-    },
-    {
-      label: `Índice geral`,
-      value: 7169,
-    },
-    {
-      label: `1.Alimentação e bebidas`,
-      value: 7170,
-    },
-    {
-      label: `2.Habitação`,
-      value: 7445,
-    },
-    {
-      label: `3.Artigos de residência`,
-      value: 7486,
-    },
-    {
-      label: `4.Vestuário`,
-      value: 7558,
-    },
-    {
-      label: `5.Transportes`,
-      value: 7625,
-    },
-    {
-      label: `6.Saúde e cuidados pessoais`,
-      value: 7660,
-    },
-    {
-      label: `7.Despesas pessoais`,
-      value: 7712,
-    },
-    {
-      label: `8.Educação`,
-      value: 7766,
-    },
-    {
-      label: `9.Comunicação`,
-      value: 7786,
-    },
-  ];
-
-  /**
-   * Níveis Territoriais
-   *
-   * /N1/ Brasil(1)   Listar unidades territoriais
-   * /N7/ Região Metropolitana(10)   Listar unidades territoriais
-   * /N6/ Município(6)   Listar unidades territoriais
-   */
-  $territorial_levels = [
-    {
-      label: `Brasil`,
-      value: 1,
-    },
-    {
-      label: `Brasil`,
-      value: 10,
-    },
-    {
-      label: `Municipio`,
-      value: 6,
-    },
-  ];
 
   getLastMonths(quantity = 12, asString = true) {
     const now = new Date();
