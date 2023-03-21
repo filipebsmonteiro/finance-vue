@@ -7,6 +7,8 @@ import { IPCA } from "src/repositories/IBGE/IPCA/IPCA";
  */
 class IPCA1705 extends IPCA {
   constructor() {
+    super();
+
     this.$table = 1705;
     this.$description = `IPCA15 - Variação mensal, acumulada no ano, acumulada em 12 meses e peso mensal, para o índice geral, grupos, subgrupos, itens e subitens de produtos e serviços (de fevereiro/2012 até janeiro/2020)`;
 

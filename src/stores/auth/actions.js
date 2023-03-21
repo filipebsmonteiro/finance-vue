@@ -40,16 +40,12 @@ export async function login(provider) {
     // Handle Errors here.
     const errorCode = error.code;
     const errorMessage = error.message;
-    console.log("errorCode :>> ", errorCode);
-    console.log("errorMessage :>> ", errorMessage);
 
     // The email of the user's account used.
     const email = error.customData.email;
-    console.log("email :>> ", email);
 
     // The AuthCredential type that was used.
     const credential = provider.credentialFromError(error);
-    console.log("credential :>> ", credential);
   }
   this.loading = false
 }

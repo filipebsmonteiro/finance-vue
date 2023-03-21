@@ -1,7 +1,7 @@
 import constants from "src/boot/providers/constants"
 
 export default {
-  getTotalCosts: (state) => {
+  getTotalCosts(state) {
     const balances = state.list;
     if (balances && balances.length > 0) {
       return balances
@@ -11,7 +11,7 @@ export default {
 
     return 0;
   },
-  getTotalIncomes: (state) => {
+  getTotalIncomes(state) {
     const balances = state.list;
     if (balances && balances.length > 0) {
       return balances
@@ -21,5 +21,5 @@ export default {
 
     return 0;
   },
-  getBalance: () => this.getTotalIncomes - this.getTotalCosts
+  getBalance: () => this.getTotalIncomes - this.getTotalCosts,
 }

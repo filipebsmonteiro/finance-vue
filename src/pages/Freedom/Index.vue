@@ -16,7 +16,7 @@
     <LineChart
       v-if="showChart"
       class="q-ma-md"
-      :chart-data="{ labels, datasets }"
+      :data="{ labels, datasets }"
       :chart-options="{ responsive: true, maintainAspectRatio: false }"
     />
 
@@ -133,7 +133,7 @@ export default {
     ...mapActions(useProjectionStore, ["reset"]),
   },
   async mounted() {
-    this.load();
+    await this.load();
     this.reset();
   },
 };

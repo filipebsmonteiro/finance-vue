@@ -23,7 +23,7 @@ export class IPCA {
     /**
      * /C315/  Geral, grupo, subgrupo, item e subitem(464)
      */
-    $groups = [
+    this.$groups = [
       {
         label: `Todos`,
         value: `all`,
@@ -77,7 +77,7 @@ export class IPCA {
      * /N7/ Região Metropolitana(10)   Listar unidades territoriais
      * /N6/ Município(6)   Listar unidades territoriais
      */
-    $territorial_levels = [
+    this.$territorial_levels = [
       {
         label: `Brasil`,
         value: 1,
