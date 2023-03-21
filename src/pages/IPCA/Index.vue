@@ -39,6 +39,7 @@ import { mapActions, mapState } from "pinia";
 import { useIPCAStore } from "src/stores/ipca";
 import IPCA1705 from "src/repositories/IBGE/IPCA/IPCA1705";
 import IPCA7060 from "src/repositories/IBGE/IPCA/IPCA7060";
+import { date } from "quasar";
 //import LineChart from "src/components/Charts/Line.vue";
 
 export default {
@@ -50,7 +51,12 @@ export default {
       if (this.model.table) {
         return [
           { value: `all`, label: `Todos` },
-          ...this.tables.find((t) => t.table === this.model.table.table).months,
+          ...this.tables
+            .find((t) => t.table === this.model.table.table)
+            .months.map((month) => ({
+              value: month,
+              label: this.$formaters.invertYearMonth(month),
+            })),
         ];
       }
       return [{ label: "Selecione a tabela", value: null, cannotSelect: true }];
