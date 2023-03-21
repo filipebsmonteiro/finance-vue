@@ -2,13 +2,10 @@
   <q-layout view="hHh lpR fFf">
     <q-page-container>
       <q-page
-        :class="{
-          'flex column flex-center bg-theme': true,
-          'bg-parceiro': parceiro,
-        }"
+        :class="{ 'flex column flex-center bg-theme': true }"
         :style="`background-image: url('${background}');`"
       >
-        <h4 v-if="$route.meta && $route.meta.title" class="">
+        <h4 v-if="$route.meta && $route.meta.title" class="card-blur q-pa-lg">
           {{ $route.meta.title }}
         </h4>
         <router-view />
@@ -25,32 +22,24 @@ export default {
       // if (this.parceiro)
       //   return require("src/assets/parceiros/" + this.parceiro + ".png");
 
-      return require("src/assets/bkg.jpg");
+      return import.meta.resolve("../assets/bkg.jpg");
     },
-  },
-  data() {
-    return {
-      parceiro: null,
-    };
-  },
-  mounted() {
-    if (this.$route.query && this.$route.query.parceiro) {
-      this.parceiro = this.$route.query.parceiro;
-    }
   },
 };
 </script>
 
 <style scoped>
 .bg-theme {
+  color: #fff;
   background-color: #c4c4c4 !important;
   background-repeat: no-repeat;
   background-position-y: center;
-  background-position-x: right;
-  background-size: 25% auto;
+  background-position-x: center;
+  background-size: cover;
+  /* background-size: 25% auto;
   -o-background-size: 25% auto;
   -webkit-background-size: 25% auto;
-  -moz-background-size: 25% auto;
+  -moz-background-size: 25% auto; */
 }
 
 @media screen and (max-width: 680px) {

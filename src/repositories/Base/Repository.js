@@ -1,10 +1,10 @@
 import { api } from "src/boot/axios";
 
 export class Repository {
-  endpoint = null
-  $axios = api
-
   constructor($axios = null) {
+    this.endpoint = null;
+    this.$axios = api;
+
     if ($axios) {
       this.$axios = $axios
     }

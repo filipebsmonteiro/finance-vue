@@ -1,11 +1,9 @@
 <template>
   <q-page class="flex column q-ma-sm">
-    <h2 v-if="user && user.name" class="text-bold q-my-sm">
-      Olá, {{ $formaters.firstName(this.user.name) }}!
+    <h2 v-if="user?.displayName" class="text-bold q-my-sm">
+      Olá, {{ this.user.displayName }}!
     </h2>
-    <p v-if="user && user.gender" class="q-ml-sm">
-      Seja bem-vind{{ this.user.gender === "F" ? "a" : "o" }}!
-    </p>
+    <pre>{{ this.user }}</pre>
   </q-page>
 </template>
 

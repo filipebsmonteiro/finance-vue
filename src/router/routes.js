@@ -1,5 +1,19 @@
 const routes = [
   {
+    path: "/auth",
+    component: () => import("layouts/LoginLayout.vue"),
+    redirect: { name: 'login' },
+    children: [
+      {
+        path: "login",
+        name: "auth.login",
+        component: () => import("pages/Auth/LoginPage.vue"),
+        meta: { title: 'Login' }
+      },
+    ]
+  },
+
+  {
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     redirect: { name: 'home' },
@@ -8,7 +22,10 @@ const routes = [
         path: "home",
         name: "home",
         component: () => import("pages/Index.vue"),
-        meta: { title: 'Dashboard' }
+        meta: {
+          title: 'Home',
+          middleware: [`auth`]
+        }
       },
       {
         path: "balance",

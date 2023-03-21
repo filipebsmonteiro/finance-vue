@@ -13,7 +13,9 @@
 
         <q-toolbar-title> Finance App </q-toolbar-title>
 
-        <div>By Filipe Monteiro</div>
+        <div class="user-img">
+          <img :src="this.avatar" alt="User Logged" />
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -37,6 +39,7 @@
 
 <script>
 import EssentialLink from "components/EssentialLink.vue";
+import { useAuthStore } from "src/stores/auth";
 
 const linksList = [
   {
@@ -83,8 +86,10 @@ export default defineComponent({
 
   setup() {
     const leftDrawerOpen = ref(false);
+    const { avatar } = useAuthStore();
 
     return {
+      avatar,
       essentialLinks: linksList,
       leftDrawerOpen,
       toggleLeftDrawer() {
@@ -98,5 +103,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 .q-page-container {
   background-color: #f8f9fa;
+}
+.user-img img {
+  display: flex;
+  max-height: 45px;
+  border-radius: 2rem;
 }
 </style>
