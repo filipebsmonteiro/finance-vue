@@ -1,10 +1,7 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-page-container>
-      <q-page
-        :class="{ 'flex column flex-center bg-theme': true }"
-        :style="`background-image: url('${background}');`"
-      >
+      <q-page :class="{ 'flex column flex-center bg-theme': true }">
         <h4 v-if="$route.meta && $route.meta.title" class="card-blur q-pa-lg">
           {{ $route.meta.title }}
         </h4>
@@ -14,32 +11,15 @@
   </q-layout>
 </template>
 
-<script>
-export default {
-  name: "LoginLayout",
-  computed: {
-    background() {
-      // if (this.parceiro)
-      //   return require("src/assets/parceiros/" + this.parceiro + ".png");
-
-      return import.meta.resolve("../assets/bkg.jpg");
-    },
-  },
-};
-</script>
-
 <style scoped>
 .bg-theme {
   color: #fff;
   background-color: #c4c4c4 !important;
+  background-image: url("assets/bkg.jpg");
   background-repeat: no-repeat;
   background-position-y: center;
   background-position-x: center;
   background-size: cover;
-  /* background-size: 25% auto;
-  -o-background-size: 25% auto;
-  -webkit-background-size: 25% auto;
-  -moz-background-size: 25% auto; */
 }
 
 @media screen and (max-width: 680px) {
