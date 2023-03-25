@@ -43,7 +43,7 @@
             <q-fab-action
               icon="las la-trash"
               text-color="negative"
-              @click="remove(index)"
+              @click="remove(item.id)"
             />
             <q-fab-action
               text-color="info"

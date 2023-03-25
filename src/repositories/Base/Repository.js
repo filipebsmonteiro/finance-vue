@@ -40,11 +40,11 @@ export class Repository {
     return this.$axios.useBearerToken().delete(`${this.endpoint}/${id}`)
   }
 
-  async cleanRequest(method, url, headers = [], body = null) {
+  async cleanRequest(method, url, headers = {}, body = null) {
     return await new Promise(function (resolve, reject) {
       let xhr = new XMLHttpRequest();
       xhr.open(method, url);
-      headers.map(h => xhr.setRequestHeader(h.key, h.value))
+      Object.entries(headers).map(([key, value]) => xhr.setRequestHeader(key, value))
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           resolve(xhr.response);

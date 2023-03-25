@@ -1,4 +1,4 @@
-import { axios } from "src/boot/axios";
+import { Repository } from "src/repositories/Base/Repository";
 
 // O IPCA-E tem periodicidade mensal, mas sua divulgação é trimestral, ocorrendo
 // sempre ao fim de cada trimestre civil (março, junho, setembro e dezembro). O
@@ -12,13 +12,10 @@ import { axios } from "src/boot/axios";
  * https://apisidra.ibge.gov.br/
  * https://apisidra.ibge.gov.br/home/ajuda
  */
-export class IPCA {
-  constructor($axios = null) {
+export class IPCA extends Repository {
+  constructor() {
+    super();
     this.endpoint = 'https://apisidra.ibge.gov.br';
-    this.$axios = axios;
-    if ($axios) {
-      this.$axios = $axios
-    }
 
     /**
      * /C315/  Geral, grupo, subgrupo, item e subitem(464)
@@ -144,31 +141,6 @@ export class IPCA {
       'GET',
       `https://servicodados.ibge.gov.br/api/v1/conjunturais?&d=s&user=ibge&t=${index}&v=${variation}&p=${this.getLastMonths()}&ng=1(1)&c=`
     );
-  }
-
-  async cleanRequest(method, url, headers = [], body = null) {
-    return await new Promise(function (resolve, reject) {
-      let xhr = new XMLHttpRequest();
-      xhr.open(method, url);
-      headers.map(h => xhr.setRequestHeader(h.key, h.value))
-      xhr.onload = function () {
-        if (this.status >= 200 && this.status < 300) {
-          resolve(xhr.response);
-        } else {
-          reject({
-            status: this.status,
-            statusText: xhr.statusText
-          });
-        }
-      };
-      xhr.onerror = function () {
-        reject({
-          status: this.status,
-          statusText: xhr.statusText
-        });
-      };
-      xhr.send(body);
-    });
   }
 }
 

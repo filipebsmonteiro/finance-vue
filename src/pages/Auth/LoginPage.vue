@@ -1,41 +1,3 @@
-<template>
-  <div class="card-blur">
-    <q-tabs v-model="tab" class="">
-      <q-tab
-        name="google"
-        icon="lab la-google"
-        label="Google"
-        @click="login(`google`)"
-      />
-      <q-tab
-        name="facebook"
-        icon="facebook"
-        label="Facebook"
-        @click="login(`facebook`)"
-      />
-      <q-tab name="apple" icon="apple" label="Apple" @click="login(`apple`)" />
-      <q-tab
-        name="github"
-        icon="lab la-github"
-        label="GitHub"
-        @click="login(`github`)"
-      />
-      <q-tab
-        name="microsoft"
-        icon="lab la-microsoft"
-        label="Microsoft"
-        @click="login(`microsoft`)"
-      />
-      <q-tab
-        name="twitter"
-        icon="lab la-twitter"
-        label="Twitter"
-        @click="login(`twitter`)"
-      />
-    </q-tabs>
-  </div>
-</template>
-
 <script>
 import { mapActions } from "pinia";
 import { useAuthStore } from "stores/auth";
@@ -56,3 +18,62 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div class="flex column bg-blur q-pa-lg rounded">
+    <q-btn
+      name="google"
+      icon="lab la-google"
+      label="Google"
+      class="bg-white text-black"
+      @click="login(`google`)"
+    />
+    <q-btn
+      name="facebook"
+      icon="facebook"
+      label="Facebook"
+      color="primary"
+      @click="login(`facebook`)"
+      disable
+    />
+    <q-btn
+      name="apple"
+      icon="apple"
+      label="Apple"
+      color="grey-5"
+      class="text-black"
+      @click="login(`apple`)"
+      disable
+    />
+    <q-btn
+      name="github"
+      icon="lab la-github"
+      label="GitHub"
+      color="black"
+      @click="login(`github`)"
+      disable
+    />
+    <q-btn
+      name="microsoft"
+      icon="lab la-microsoft"
+      label="Microsoft"
+      color="green-6"
+      @click="login(`microsoft`)"
+      disable
+    />
+    <q-btn
+      name="twitter"
+      icon="lab la-twitter"
+      label="Twitter"
+      color="info"
+      @click="login(`twitter`)"
+      disable
+    />
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.q-btn {
+  margin-bottom: 1rem;
+}
+</style>

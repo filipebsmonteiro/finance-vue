@@ -1,3 +1,5 @@
+@import "./placeholder.scss";
+
 // app global css in SCSS form
 .container-mobile {
   max-width: 425px;
@@ -32,6 +34,10 @@
 
 .rounded {
   border-radius: 1.25rem;
+}
+
+.rounded-pill {
+  border-radius: 5rem;
 }
 
 #page-title {
@@ -83,4 +89,8 @@
   @media screen and (min-width: 604px) {
     width: calc(50% - 16px) !important;
   }
+}
+
+.bg-blur {
+  @extend %bg-blur;
 }
