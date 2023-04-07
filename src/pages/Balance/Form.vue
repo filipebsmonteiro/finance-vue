@@ -19,13 +19,23 @@
     @update:model-value="$emit('update:value', parseFloat($event))"
     @keyup.enter="add"
   />
-  <div class="row">
+  <div class="row q-mt-md">
+    <q-btn
+      dense
+      no-caps
+      rounded
+      outline
+      color="negative"
+      class="col-4 q-px-md"
+      label="Cancelar"
+      @click="$emit(`cancel`)"
+    />
     <q-btn
       dense
       no-caps
       rounded
       color="positive"
-      class="col-12 col-md-6 offset-md-3 q-mt-md q-px-md"
+      class="col-7 offset-1 q-px-md"
       label="Salvar"
       @click="add"
     />
@@ -35,7 +45,7 @@
 <script>
 export default {
   name: "BalanceForm",
-  emits: ["add", "update:name", "update:value"],
+  emits: ["add", "cancel", "update:name", "update:value"],
   props: {
     placeholder: {
       type: String,

@@ -1,7 +1,7 @@
 <template>
-  <q-layout view="hHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar class="bg-black">
+  <q-layout view="lHr lpR lFr">
+    <q-header reveal :height-hint="10" class="bg-light text-accent">
+      <q-toolbar>
         <q-btn
           flat
           dense
@@ -14,12 +14,16 @@
         <q-toolbar-title> Finance App </q-toolbar-title>
 
         <div class="user-img">
-          <img :src="this.avatar" alt="User Logged" />
+          <img
+            :src="this.avatar"
+            alt="User Logged"
+            @click="toggleRightDrawer"
+          />
         </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+    <q-drawer v-model="leftDrawerOpen" show-if-above side="left">
       <q-list>
         <q-item-label header> Essential Links </q-item-label>
 
@@ -31,14 +35,30 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container>
+    <q-drawer v-model="rightDrawerOpen" side="right" overlay elevated>
+      <q-btn @click="toggleRightDrawer">Fechar</q-btn>
+      <pre>{{ this.user }}</pre>
+    </q-drawer>
+
+    <q-page-container class="bg-light">
       <router-view />
     </q-page-container>
+
+    <!-- <q-footer class="bg-grey-8 text-white">
+      <q-toolbar>
+        <q-toolbar-title>
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
+          </q-avatar>
+          <div>Title</div>
+        </q-toolbar-title>
+      </q-toolbar>
+    </q-footer> -->
   </q-layout>
 </template>
 
 <script>
-import EssentialLink from "components/EssentialLink.vue";
+import EssentialLink from "src/components/Navigation/EssentialLink.vue";
 import { useAuthStore } from "src/stores/auth";
 
 const linksList = [
@@ -85,15 +105,21 @@ export default defineComponent({
   },
 
   setup() {
-    const leftDrawerOpen = ref(false);
-    const { avatar } = useAuthStore();
+    const leftDrawerOpen = ref(false),
+      rightDrawerOpen = ref(false),
+      { avatar, user } = useAuthStore();
 
     return {
       avatar,
+      user,
       essentialLinks: linksList,
       leftDrawerOpen,
+      rightDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
+      },
+      toggleRightDrawer() {
+        rightDrawerOpen.value = !rightDrawerOpen.value;
       },
     };
   },
@@ -101,8 +127,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.q-page-container {
-  background-color: #f8f9fa;
+:deep(.q-drawer.q-drawer--left) {
+  width: 280px !important;
+  margin: 0.5rem;
+  border-radius: 1rem;
 }
 .user-img img {
   display: flex;

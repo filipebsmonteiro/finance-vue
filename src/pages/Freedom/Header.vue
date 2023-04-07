@@ -119,7 +119,7 @@ export default {
   },
   computed: {
     ...mapState(useBalanceStore, ["getTotalCosts", "getTotalIncomes"]),
-    ...mapState(useProjectionStore, ["list", "loadIPCAIntoInflation"]),
+    ...mapState(useProjectionStore, ["list", "loadInflation"]),
     ...mapWritableState(useProjectionStore, ["investment", "inflation"]),
     ...mapState(useIPCAStore, ["loading"]),
     monthsToIndependence() {
@@ -138,7 +138,7 @@ export default {
   },
   async mounted() {
     this.loadBalances();
-    this.loadIPCAIntoInflation();
+    this.loadInflation();
   },
 };
 </script>

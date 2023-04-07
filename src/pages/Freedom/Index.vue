@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "pinia";
+import { mapWritableState } from "pinia";
 import { useProjectionStore } from "src/stores/projection";
 import { useBalanceStore } from "src/stores/balance";
 import LineChart from "src/components/Charts/Line.vue";
@@ -57,8 +57,7 @@ export default {
   name: "PageIndex",
   components: { ListSimple, FreedomHeader, LineChart, Simulator },
   computed: {
-    ...mapState(useProjectionStore, ["list", "inflation", "investment"]),
-    ...mapState(useBalanceStore, ["getTotal", "getTotalCosts"]),
+    ...mapWritableState(useProjectionStore, ["list", "month"]),
     years() {
       const yearsGrouped = this.$groupBy(this.list, "year");
       let years = [];
@@ -96,6 +95,7 @@ export default {
           label: "Patrimônio",
           backgroundColor: "#50b86b",
           data: this.list.map((l) => l.patrimony),
+          hidden: true,
         },
       ];
     },
@@ -104,7 +104,7 @@ export default {
     return {
       showChart: true,
       showCard: false,
-      showSimulator: true,
+      showSimulator: false,
       monthColumns: [
         {
           name: "month",
@@ -128,13 +128,19 @@ export default {
       ],
     };
   },
-  methods: {
-    ...mapActions(useBalanceStore, ["load"]),
-    ...mapActions(useProjectionStore, ["reset"]),
+  watch: {
+    list(value) {
+      if (!this.showSimulator && this.month.independency > 0) {
+        this.month.simulator = this.month.independency;
+      }
+    },
   },
   async mounted() {
-    await this.load();
-    this.reset();
+    const { load } = useBalanceStore();
+    await load();
+
+    const { reset, $reset } = useProjectionStore();
+    reset();
   },
 };
 </script>

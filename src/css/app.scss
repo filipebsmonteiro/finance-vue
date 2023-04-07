@@ -36,6 +36,16 @@
   border-radius: 1.25rem;
 }
 
+.rounded-top {
+  border-top-left-radius: 1.25rem;
+  border-top-right-radius: 1.25rem;
+}
+
+.rounded-bottom {
+  border-bottom-left-radius: 1.25rem;
+  border-bottom-right-radius: 1.25rem;
+}
+
 .rounded-pill {
   border-radius: 5rem;
 }

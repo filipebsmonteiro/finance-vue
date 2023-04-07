@@ -17,6 +17,7 @@
               placeholder="Nome"
               v-model:name="item.name"
               v-model:value="item.value"
+              @cancel="setEditing(null)"
               @add="update"
             />
           </q-item-label>

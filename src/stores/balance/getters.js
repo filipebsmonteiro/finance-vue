@@ -21,5 +21,4 @@ export default {
 
     return 0;
   },
-  getBalance: () => this.getTotalIncomes - this.getTotalCosts,
 }

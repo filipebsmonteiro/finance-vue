@@ -1,6 +1,5 @@
 import { route } from 'quasar/wrappers'
 import constants from 'src/boot/providers/constants'
-import Store from 'src/stores'
 import { useAuthStore } from 'src/stores/auth'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
@@ -34,8 +33,13 @@ export default route(function (/* { store, ssrContext } */) {
     //   $next({ name: constants.routes.carteirinha.name });
     //   return;
     // }
-    const auth = useAuthStore();
-    if ($to.meta.middleware && $to.meta.middleware.includes('auth') && !auth.isLogged) {
+    const { isLogged } = useAuthStore();
+    if (
+      $to.meta &&
+      $to.meta.middleware &&
+      $to.meta.middleware.includes('auth') &&
+      !isLogged
+    ) {
       $next({ name: constants.routes.login.name });
       return;
     }

@@ -1,0 +1,14 @@
+/* Light Mode */
+$background-colors: (
+  "body": rgba(249, 250, 251, 1),
+  "leftbar": rgba(255, 255, 255, 1),
+  "card": rgba(255, 255, 255, 1),
+  "link": rgba(255, 255, 255, 0),
+);
+$text-colors: (
+  "body": rgba(0, 0, 0, 1),
+  "leftbar": rgba(255, 255, 255, 1),
+  "card": rgba(255, 255, 255, 1),
+  /* .text-blue-600 */ "link": rgb(37, 99, 235, 1),
+  /* .text-emerald-500 */ "success": rgb(16, 185, 129, 1),
+);

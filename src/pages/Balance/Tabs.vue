@@ -2,7 +2,7 @@
   <q-tabs v-model="tab" inline-label no-caps>
     <q-tab
       :name="$CONST.FINANCE.BALANCE.COST"
-      class="text-negative rounded"
+      class="text-negative rounded-top"
       icon="add"
       label="Adicionar Passivo"
     >
@@ -10,7 +10,7 @@
     </q-tab>
     <q-tab
       :name="$CONST.FINANCE.BALANCE.INCOME"
-      class="text-positive rounded"
+      class="text-positive rounded-top"
       icon="add"
       label="Adicionar Ativo"
     >
@@ -25,35 +25,21 @@
     v-model="tab"
     animated
   >
-    <q-tab-panel
-      :name="$CONST.FINANCE.BALANCE.COST"
-      class="bg-white rounded shadow-1"
-    >
-      <q-icon
-        name="close"
-        class="q-pa-xs bg-red text-white rounded"
-        @click="tab = null"
-      />
+    <q-tab-panel :name="$CONST.FINANCE.BALANCE.COST" class="bg-white">
       <BalanceForm
         placeholder="Nome do Custo"
         v-model:name="name"
         v-model:value="value"
+        @cancel="tab = null"
         @add="addOnStore"
       />
     </q-tab-panel>
-    <q-tab-panel
-      :name="$CONST.FINANCE.BALANCE.INCOME"
-      class="bg-white rounded shadow-1"
-    >
-      <q-icon
-        name="close"
-        class="q-pa-xs bg-red text-white rounded"
-        @click="tab = null"
-      />
+    <q-tab-panel :name="$CONST.FINANCE.BALANCE.INCOME" class="bg-white">
       <BalanceForm
         placeholder="Nome da Renda"
         v-model:name="name"
         v-model:value="value"
+        @cancel="tab = null"
         @add="addOnStore"
       />
     </q-tab-panel>
