@@ -40,7 +40,7 @@
       <pre>{{ this.user }}</pre>
     </q-drawer>
 
-    <q-page-container class="bg-light">
+    <q-page-container class="bg-light q-px-md">
       <router-view />
     </q-page-container>
 

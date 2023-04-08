@@ -103,7 +103,7 @@
           <q-toggle
             :model-value="showCard"
             @update:model-value="$emit('update:show-card', $event)"
-            label="Mostrar Cards"
+            label="Mostrar Anos"
           />
         </q-item>
       </q-list>
@@ -172,9 +172,13 @@ export default {
 :deep(.q-expansion-item__container) {
   width: 100%;
   .q-item {
-    // display: flex;
     justify-content: space-between;
+
+    .q-focus-helper {
+      display: contents;
+    }
     .q-item__section--side:last-of-type {
+      float: right;
       padding-right: 0;
     }
   }

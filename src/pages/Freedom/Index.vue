@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <FreedomHeader
-      class="q-mt-md q-mx-auto"
+      class="q-my-md q-mx-auto"
       v-model:show-chart="showChart"
       v-model:show-card="showCard"
       v-model:show-simulator="showSimulator"
