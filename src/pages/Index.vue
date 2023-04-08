@@ -13,7 +13,7 @@
       </q-badge>
     </section>
 
-    <div class="card-list-2">
+    <div class="card-list card-list-2">
       <q-card class="rounded" flat>
         <div class="flex items-center">
           <span class="rounded q-pa-xs bg-grey-3 q-mr-md">
@@ -68,29 +68,9 @@ export default defineComponent({
 
 <style lang="scss">
 .card-list-2 {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-
   .q-card {
-    display: flex;
-    flex-grow: 1;
-    // flex-basis: 45%;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem;
-
-    p {
-      // font-xl
-      font-size: 1.25rem;
-      line-height: 1.75rem;
-    }
-
-    .q-badge {
-      // font-xs
-      font-size: 0.75rem;
-      font-weight: bold;
-    }
   }
 }
 </style>

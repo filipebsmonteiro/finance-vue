@@ -7,9 +7,18 @@
       v-model:show-simulator="showSimulator"
     />
 
-    <div v-if="showSimulator" class="row">
-      <div class="col-12 col-md-6 offset-md-3 q-mt-md">
-        <Simulator />
+    <div v-if="showSimulator" class="q-my-md">
+      <div style="margin-bottom: -4rem">
+        <h4 class="q-my-none">Simulador</h4>
+        <h6 class="text-grey q-my-none">Tempo e Financeiro</h6>
+      </div>
+      <div class="card-list card-list-2">
+        <q-card class="full-height self-end">
+          <TimeSimulator />
+        </q-card>
+        <q-card>
+          <FinancingSimulator />
+        </q-card>
       </div>
     </div>
 
@@ -45,17 +54,24 @@
 </template>
 
 <script>
-import { mapWritableState } from "pinia";
+import { mapActions, mapWritableState } from "pinia";
 import { useProjectionStore } from "src/stores/projection";
 import { useBalanceStore } from "src/stores/balance";
 import LineChart from "src/components/Charts/Line.vue";
 import ListSimple from "src/components/List/ListSimple.vue";
 import FreedomHeader from "src/pages/Freedom/Header.vue";
-import Simulator from "src/pages/Freedom/Simulator.vue";
+import TimeSimulator from "src/components/Simulator/Time.vue";
+import FinancingSimulator from "src/components/Simulator/Financing.vue";
 
 export default {
   name: "PageIndex",
-  components: { ListSimple, FreedomHeader, LineChart, Simulator },
+  components: {
+    ListSimple,
+    FinancingSimulator,
+    FreedomHeader,
+    LineChart,
+    TimeSimulator,
+  },
   computed: {
     ...mapWritableState(useProjectionStore, ["list", "month"]),
     years() {
@@ -134,13 +150,20 @@ export default {
         this.month.simulator = this.month.independency;
       }
     },
+    showSimulator(value) {
+      if (!value) {
+        this.reset();
+      }
+    },
+  },
+  methods: {
+    ...mapActions(useProjectionStore, ["reset"]),
   },
   async mounted() {
     const { load } = useBalanceStore();
     await load();
 
-    const { reset, $reset } = useProjectionStore();
-    reset();
+    this.reset();
   },
 };
 </script>

@@ -1,5 +1,9 @@
 export default () => {
   return {
+    patrimony: 0,
+    incomes: 0,
+    costs: 0,
+
     investment: 0.92, // Retorno mensal sobre o invetimento
     inflation: 0, // Inflação mensal
     investmentGrowth: 0,

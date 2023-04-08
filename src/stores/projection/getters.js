@@ -1,5 +1,4 @@
 import { date } from "quasar";
-import { useBalanceStore } from "src/stores/balance";
 
 const monthsInPTBR = [
   "Janeiro",
@@ -19,11 +18,13 @@ const monthsInPTBR = [
 export default {
   list: (state) => {
     const {
-      getTotalIncomes: incomes,
-      getTotalCosts: costs,
+      costs,
+      costGrowth,
+      incomes,
+      investmentGrowth,
+      month: { simulator, max: maxMonths },
       patrimony: initialPatrimony
-    } = useBalanceStore();
-    const { costGrowth, investmentGrowth, month: { simulator, max: maxMonths } } = state;
+    } = state;
     let patrimony = initialPatrimony;
 
     // TODO: Validar melhor com negativos oque pode impedir a independencia

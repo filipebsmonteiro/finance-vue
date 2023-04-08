@@ -101,6 +101,40 @@
   }
 }
 
+.card-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  .q-card {
+    display: flex;
+    flex-grow: 1;
+    padding: 1rem;
+    /* height: 100%; */
+
+    // font-xl
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+
+    .q-badge {
+      // font-xs
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+  }
+
+  &-2 {
+    .q-card {
+      flex-basis: 45%;
+    }
+  }
+  &-3 {
+    .q-card {
+      flex-basis: 30%;
+    }
+  }
+}
+
 .bg-blur {
   @extend %bg-blur;
 }

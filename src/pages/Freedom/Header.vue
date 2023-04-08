@@ -1,13 +1,19 @@
 <template>
-  <q-btn-group class="header" spread rounded>
-    <q-btn-dropdown
-      color="dark"
-      no-caps
-      outline
-      dropdown-icon="query_stats"
-      :label="`${(investment - inflation).toFixed(2).replace('.', ',')}% a.m.`"
-      :loading="loading"
-    >
+  <q-list class="card-list card-list-3">
+    <q-expansion-item class="q-card shadow-0">
+      <template v-slot:header>
+        <div class="flex items-center">
+          <span class="rounded q-pa-xs bg-grey-3 q-mr-md">
+            <q-icon name="percent" size="md" color="positive" />
+          </span>
+          <div class="text-weight-medium">
+            <p class="q-mb-none">
+              {{ (investment - inflation).toFixed(2).replace(".", ",") }}%
+            </p>
+            <p class="text-grey-6 q-mb-none">Ganho real mensal</p>
+          </div>
+        </div>
+      </template>
       <div class="q-pa-md">
         <q-input
           v-model="inflation"
@@ -29,19 +35,21 @@
           <template v-slot:append>%</template>
         </q-input>
       </div>
-    </q-btn-dropdown>
+    </q-expansion-item>
 
-    <q-btn-dropdown
-      color="dark"
-      no-caps
-      outline
-      dropdown-icon="calendar_month"
-      :label="`${monthsToIndependence} meses`"
-    >
+    <q-expansion-item class="q-card shadow-0">
+      <template v-slot:header>
+        <div class="flex items-center">
+          <span class="rounded q-pa-xs bg-grey-3 q-mr-md">
+            <q-icon name="calendar_month" size="md" color="warning" />
+          </span>
+          <div class="text-weight-medium">
+            <p class="q-mb-none">{{ monthsToIndependence }}</p>
+            <p class="text-grey-6 q-mb-none">Meses</p>
+          </div>
+        </div>
+      </template>
       <q-list>
-        <q-item class="flex column items-center">
-          {{ `${monthsToIndependence} Meses para Independência` }}
-        </q-item>
         <q-separator />
         <q-item class="flex justify-between">
           <q-item-label class="text-positive flex column">
@@ -57,16 +65,24 @@
             </span>
           </q-item-label>
         </q-item>
+        <q-item>
+          <PatrimonySimulator />
+        </q-item>
       </q-list>
-    </q-btn-dropdown>
+    </q-expansion-item>
 
-    <q-btn-dropdown
-      color="dark"
-      no-caps
-      outline
-      dropdown-icon="visibility"
-      :label="`Mostrar`"
-    >
+    <q-expansion-item class="q-card shadow-0">
+      <template v-slot:header>
+        <div class="flex items-center">
+          <span class="rounded q-pa-xs bg-grey-3 q-mr-md">
+            <q-icon name="las la-cog" size="md" color="info" />
+          </span>
+          <div class="text-weight-medium">
+            <p class="q-mb-none">Controle</p>
+            <p class="text-grey-6 q-mb-none">Opções e simulador</p>
+          </div>
+        </div>
+      </template>
       <q-list>
         <q-item class="flex column items-center">
           <q-toggle
@@ -91,8 +107,8 @@
           />
         </q-item>
       </q-list>
-    </q-btn-dropdown>
-  </q-btn-group>
+    </q-expansion-item>
+  </q-list>
 </template>
 
 <script>
@@ -100,9 +116,11 @@ import { mapActions, mapState, mapWritableState } from "pinia";
 import { useBalanceStore } from "src/stores/balance";
 import { useIPCAStore } from "src/stores/ipca";
 import { useProjectionStore } from "src/stores/projection";
+import PatrimonySimulator from "src/components/Simulator/Patrimony.vue";
 
 export default {
   name: "FreedomHeader",
+  components: { PatrimonySimulator },
   props: {
     showChart: {
       type: Boolean,
@@ -144,11 +162,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.header {
-  width: 50%;
+.card-list {
+  align-items: flex-start;
 
-  @media screen and (max-width: 600px) {
-    width: 90%;
+  .q-card {
+    padding: 8px;
+  }
+}
+:deep(.q-expansion-item__container) {
+  width: 100%;
+  .q-item {
+    // display: flex;
+    justify-content: space-between;
+    .q-item__section--side:last-of-type {
+      padding-right: 0;
+    }
   }
 }
 </style>
