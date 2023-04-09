@@ -19,8 +19,9 @@
           <span class="rounded q-pa-xs bg-grey-3 q-mr-md">
             <q-icon name="las la-money-bill-wave" size="md" color="positive" />
           </span>
-          <div class="text-weight-medium">
-            <p class="q-mb-none">R$ 100,00</p>
+          <q-spinner v-if="loading" color="positive" size="3em" />
+          <div v-else class="text-weight-medium">
+            <p class="q-mb-none">{{ $formaters.money(getTotalIncomes) }}</p>
             <p class="text-grey-6 q-mb-none">
               <span class="text-grey-7">Ganhos</span>
               Totais
@@ -37,8 +38,9 @@
           <span class="rounded q-pa-xs bg-grey-3 q-mr-md">
             <q-icon name="las la-money-bill-wave" size="md" color="negative" />
           </span>
-          <div class="text-weight-medium">
-            <p class="q-mb-none">R$ 100,00</p>
+          <q-spinner v-if="loading" color="negative" size="3em" />
+          <div v-else class="text-weight-medium">
+            <p class="q-mb-none">{{ $formaters.money(getTotalCosts) }}</p>
             <p class="text-grey-6 q-mb-none">
               <span class="text-grey-7">Gastos</span>
               Totais
@@ -56,12 +58,24 @@
 <script>
 import { defineComponent } from "vue";
 import { useAuthStore } from "src/stores/auth";
-import { mapState } from "pinia";
+import { mapActions, mapState } from "pinia";
+import { useBalanceStore } from "src/stores/balance";
 
 export default defineComponent({
   name: "PageIndex",
   computed: {
     ...mapState(useAuthStore, ["user"]),
+    ...mapState(useBalanceStore, [
+      "getTotalCosts",
+      "getTotalIncomes",
+      "loading",
+    ]),
+  },
+  methods: {
+    ...mapActions(useBalanceStore, ["load"]),
+  },
+  mounted() {
+    this.load();
   },
 });
 </script>

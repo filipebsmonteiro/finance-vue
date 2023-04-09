@@ -12,7 +12,6 @@ import routes from './routes'
  * async/await or return a Promise which resolves
  * with the Router instance.
  */
-
 export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
@@ -26,25 +25,6 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE)
-  })
-
-  Router.beforeEach(async ($to, $from, $next) => {
-    // if ($to.name === constants.routes.login.name && Store.getters['auth/isLogged']) {
-    //   $next({ name: constants.routes.carteirinha.name });
-    //   return;
-    // }
-    const { isLogged } = useAuthStore();
-    if (
-      $to.meta &&
-      $to.meta.middleware &&
-      $to.meta.middleware.includes('auth') &&
-      !isLogged
-    ) {
-      $next({ name: constants.routes.login.name });
-      return;
-    }
-
-    $next()
   })
 
   return Router

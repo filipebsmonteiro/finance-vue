@@ -1,7 +1,5 @@
-export default () => {
-  return {
-    loading: false,
-    token: null,
-    user: null,
-  }
-}
+export default () => ({
+  loading: false,
+  token: null,
+  user: null,
+})

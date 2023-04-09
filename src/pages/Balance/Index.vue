@@ -1,11 +1,18 @@
 <template>
-  <q-page class="row">
-    <PatrimonyForm class="col-12 col-md-6 offset-md-3 q-mt-md" />
+  <q-page class="flex column content-center">
+    <PatrimonyForm class="q-mt-md" />
 
+    <q-spinner
+      v-if="loading"
+      color="primary"
+      size="3em"
+      class="q-mt-md self-center"
+    />
     <ListSimple
+      v-else
       :items="balances"
       emptyText="Nenhum Balanço localizado!"
-      class="col-12 col-md-6 offset-md-3 q-mt-md"
+      class="q-mt-md"
     >
       <template v-slot:default="{ item, index }">
         <q-item-section>
@@ -56,9 +63,7 @@
       </template>
     </ListSimple>
 
-    <div class="col-12 col-md-6 offset-md-3 q-mt-md">
-      <Tabs />
-    </div>
+    <Tabs class="q-mt-md" />
   </q-page>
 </template>
 
@@ -74,7 +79,10 @@ export default {
   name: "PageIndex",
   components: { ListSimple, Tabs, BalanceForm, PatrimonyForm },
   computed: {
-    ...mapWritableState(useBalanceStore, { balances: "list" }),
+    ...mapWritableState(useBalanceStore, {
+      balances: "list",
+      loading: "loading",
+    }),
   },
   data() {
     return {
@@ -86,12 +94,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(useBalanceStore, [
-      "load",
-      "loading",
-      "remove",
-      "persistBalances",
-    ]),
+    ...mapActions(useBalanceStore, ["load", "remove", "persistBalances"]),
     setEditing(index) {
       this.balances = this.balances.map((b, idx) => {
         return {
