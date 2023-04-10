@@ -23,9 +23,13 @@ export default {
       incomes,
       investmentGrowth,
       month: { simulator, max: maxMonths },
-      patrimony: initialPatrimony
     } = state;
-    let patrimony = initialPatrimony;
+    let {
+      patrimony,
+      month: { independency },
+    } = state;
+    independency = 0;
+
 
     // TODO: Validar melhor com negativos oque pode impedir a independencia
     if (incomes === 0 && costGrowth === 0 && investmentGrowth === 0) {
@@ -38,7 +42,7 @@ export default {
       monthCounter = 0,
       costWithInflation = costs,
       investimentIncome = 0;
-
+    console.log('month :>> ', month);
     // // Cenário inicial => Tenta alcançar a independência, Sendo menor que o máximo
     // state.month.simulator === 0 && monthCounter < state.month.max
     // // Cenario simulador => Faz até o valor do simulador
@@ -50,7 +54,7 @@ export default {
       investimentIncome = parseFloat((patrimony * investmentGrowth).toFixed(2));
       patrimony += parseFloat((balance + investimentIncome).toFixed(2));
 
-      if (state.month.independency === 0 && investimentIncome >= costWithInflation) state.month.independency = monthCounter;
+      if (independency === 0 && investimentIncome >= costWithInflation) independency = monthCounter;
 
       records.push({
         patrimony,
@@ -63,6 +67,7 @@ export default {
       monthCounter++;
       month = date.addToDate(month, { months: 1 })
     }
+    console.log('independency :>> ', independency);
 
     return records;
   },

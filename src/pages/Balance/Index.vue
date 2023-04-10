@@ -63,7 +63,9 @@
       </template>
     </ListSimple>
 
-    <Tabs class="q-mt-md" />
+    <div class="mt-md">
+      <Tabs />
+    </div>
   </q-page>
 </template>
 
