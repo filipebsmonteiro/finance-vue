@@ -149,11 +149,13 @@ export default {
       if (!this.showSimulator && this.month.independency > 0) {
         this.month.simulator = this.month.independency;
       }
+      //  else {
+      //   console.log(`NAO  ENTREI`);
+      //   this.month.simulator = this.month.max;
+      // }
     },
     showSimulator(value) {
-      if (!value) {
-        this.reset();
-      }
+      if (!value) this.reset();
     },
   },
   methods: {
