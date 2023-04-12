@@ -45,6 +45,12 @@ const routes = [
         component: () => import("pages/IPCA/Index.vue"),
         meta: { title: 'Dados IPCA' }
       },
+      {
+        path: "portfolio",
+        name: 'portfolio',
+        component: () => import("pages/Stock/Portfolio/PortfolioList.vue"),
+        meta: { title: 'Portfolio de Investimentos' }
+      },
     ],
   },
 

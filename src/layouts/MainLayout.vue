@@ -23,8 +23,7 @@
 
     <q-drawer v-model="leftDrawerOpen" show-if-above side="left">
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
-
+        <!-- <q-item-label header> Essential Links </q-item-label> -->
         <EssentialLink
           v-for="link in linksList"
           :key="link.title"
@@ -115,6 +114,12 @@ const linksList = [
     caption: "Consulte os dados do IPCA",
     icon: "la la-digital-tachograph",
     link: { name: `ipca` },
+  },
+  {
+    title: "Portfolio",
+    caption: "Lista de Investimentos",
+    icon: "la la-book-open",
+    link: { name: `portfolio` },
   },
 ];
 

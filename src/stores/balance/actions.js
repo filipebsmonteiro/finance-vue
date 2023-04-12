@@ -1,4 +1,3 @@
-import { onValue, ref } from "firebase/database";
 import Balance from "src/repositories/Finance/Balance";
 import Patrimony from "src/repositories/Finance/Patrimony";
 
@@ -40,4 +39,3 @@ export default {
     Balance.delete(id)
   },
 }
-

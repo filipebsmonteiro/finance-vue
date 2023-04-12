@@ -1,10 +1,10 @@
 import { FirebaseRepository } from "src/repositories/Firebase/FirebaseRepository";
 
-class Balance extends FirebaseRepository {
+class Portfolio extends FirebaseRepository {
   constructor() {
-    super(`balances`);
+    super(`portfolio`);
   }
 
 }
 
-export default new Balance()
+export default new Portfolio()
