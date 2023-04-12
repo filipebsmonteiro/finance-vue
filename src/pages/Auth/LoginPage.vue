@@ -3,14 +3,8 @@ import { mapActions } from "pinia";
 import { useAuthStore } from "stores/auth";
 
 export default {
-  data: () => ({
-    tab: null,
-  }),
   methods: {
-    ...mapActions(useAuthStore, {
-      storeLogin: `login`,
-      logout: `logout`,
-    }),
+    ...mapActions(useAuthStore, { storeLogin: `login` }),
     async login(provider) {
       await this.storeLogin(provider);
       this.$router.push({ name: `home` });

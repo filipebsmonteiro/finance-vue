@@ -11,15 +11,13 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> Finance App </q-toolbar-title>
+        <q-toolbar-title class="flex justify-center">
+          Finance Freedom Free
+        </q-toolbar-title>
 
-        <div class="user-img">
-          <img
-            :src="this.avatar"
-            alt="User Logged"
-            @click="toggleRightDrawer"
-          />
-        </div>
+        <q-avatar size="50px" @click="toggleRightDrawer">
+          <img :src="this.avatar" referrerpolicy="no-referrer" />
+        </q-avatar>
       </q-toolbar>
     </q-header>
 
@@ -28,7 +26,7 @@
         <q-item-label header> Essential Links </q-item-label>
 
         <EssentialLink
-          v-for="link in essentialLinks"
+          v-for="link in linksList"
           :key="link.title"
           v-bind="link"
         />
@@ -36,8 +34,33 @@
     </q-drawer>
 
     <q-drawer v-model="rightDrawerOpen" side="right" overlay elevated>
-      <q-btn @click="toggleRightDrawer">Fechar</q-btn>
-      <pre>{{ this.user }}</pre>
+      <q-img src="src/assets/bkg.jpg">
+        <div v-if="user" class="full-width">
+          <q-avatar size="56px" class="q-mb-sm">
+            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+          </q-avatar>
+          <div class="text-weight-bold">{{ user.displayName }}</div>
+          <div>{{ user.email }}</div>
+          <q-btn
+            class="absolute-top-right rounded q-px-xs"
+            color="negative"
+            @click="toggleRightDrawer"
+            size="sm"
+            icon-right="close"
+          />
+        </div>
+      </q-img>
+      <q-scroll-area class="absolute-full">
+        <q-list padding>
+          <q-item clickable v-ripple @click="logout">
+            <q-item-section avatar>
+              <q-icon name="logout" />
+            </q-item-section>
+            <q-item-section> Logout </q-item-section>
+          </q-item>
+        </q-list>
+        <pre>{{ this.user }}</pre>
+      </q-scroll-area>
     </q-drawer>
 
     <q-page-container class="bg-light q-px-md">
@@ -107,13 +130,14 @@ export default defineComponent({
   setup() {
     const leftDrawerOpen = ref(false),
       rightDrawerOpen = ref(false),
-      { avatar, user } = useAuthStore();
+      { avatar, user, logout } = useAuthStore();
 
     return {
       avatar,
       user,
-      essentialLinks: linksList,
+      linksList,
       leftDrawerOpen,
+      logout,
       rightDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
@@ -127,14 +151,20 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.user-img img {
+  display: flex;
+  max-height: 45px;
+  border-radius: 2rem;
+  cursor: pointer;
+}
 :deep(.q-drawer.q-drawer--left) {
   width: 280px !important;
   margin: 0.5rem;
   border-radius: 1rem;
 }
-.user-img img {
-  display: flex;
-  max-height: 45px;
-  border-radius: 2rem;
+:deep(.q-drawer.q-drawer--right) {
+  .q-scrollarea {
+    margin-top: 127px;
+  }
 }
 </style>

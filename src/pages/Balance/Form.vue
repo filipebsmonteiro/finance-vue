@@ -7,6 +7,7 @@
     :model-value="name"
     @update:model-value="$emit('update:name', $event)"
     @keyup.enter="add"
+    @keyup.esc="$emit(`cancel`)"
   />
   <q-input
     placeholder="Valor"
@@ -18,6 +19,7 @@
     :model-value="value"
     @update:model-value="$emit('update:value', parseFloat($event))"
     @keyup.enter="add"
+    @keyup.esc="$emit(`cancel`)"
   />
   <div class="row q-mt-md">
     <q-btn
