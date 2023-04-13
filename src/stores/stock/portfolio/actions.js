@@ -6,6 +6,7 @@ export default {
     this.loading = true;
     this.list = []
 
+    // TODO: Agrupar todos os aportes por ativo
     await Portfolio.fetch()
       .then(response => this.list = response)
       .catch((error) => console.error(`Error On Load User Portfolio`) && console.error(error));

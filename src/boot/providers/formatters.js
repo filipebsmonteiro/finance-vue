@@ -47,6 +47,7 @@ export default {
   },
 
   money: function (value) {
+    if (!value) return 0
 
     if (typeof value === 'string') {
       value = parseFloat(value)

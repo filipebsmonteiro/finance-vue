@@ -47,7 +47,11 @@ export class Repository {
       Object.entries(headers).map(([key, value]) => xhr.setRequestHeader(key, value))
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
-          resolve(xhr.response);
+          try {
+            resolve(JSON.parse(xhr.response));
+          } catch (error) {
+            resolve(xhr.response);
+          }
         } else {
           reject({
             status: this.status,
