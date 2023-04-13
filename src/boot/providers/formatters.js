@@ -34,6 +34,19 @@ export default {
     }
   },
 
+  dateExtended: function (value, printHour = true) {
+    if (value) {
+      let outputFormat = printHour ? 'DD  MMM  YYYY' : 'DD/MM/YYYY'
+      let dateObject = new Date(value)
+
+      if (typeof value === 'object' && value.date) {
+        dateObject = new Date(value.date)
+      }
+
+      return date.formatDate(dateObject, outputFormat)
+    }
+  },
+
   invertYearMonth: (yearMonth) => {
     yearMonth = String(yearMonth);
     const monthNumber = yearMonth.slice(-2);
@@ -43,7 +56,6 @@ export default {
     date.setMonth(monthNumber - 1);
 
     return `${date.toLocaleString('pt-BR', { month: 'short' })} de ${yearNumber}`;
-    // return `${date.toLocaleString('pt-BR', { month: 'short' })} de ${yearNumber}`;
   },
 
   money: function (value) {

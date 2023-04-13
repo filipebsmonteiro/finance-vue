@@ -5,6 +5,13 @@ import constants from "./providers/constants";
 import environment from "./providers/environment";
 import formatters from "./providers/formatters";
 
+export const groupBy = (list, key) => {
+  return list.reduce((acc, cur) => {
+    (acc[cur[key]] = acc[cur[key]] || []).push(cur);
+    return acc;
+  }, {});
+}
+
 export default boot(({ app }) => {
 
   app.config.globalProperties.$formaters = formatters
@@ -22,11 +29,6 @@ export default boot(({ app }) => {
   }
   // app.provide('scrollTo', app.config.globalProperties.$scrollTo)
 
-  app.config.globalProperties.$groupBy = (list, key) => {
-    return list.reduce((acc, cur) => {
-      (acc[cur[key]] = acc[cur[key]] || []).push(cur);
-      return acc;
-    }, {});
-  }
+  app.config.globalProperties.$groupBy = groupBy;
 
 });

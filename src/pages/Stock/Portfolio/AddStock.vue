@@ -26,6 +26,7 @@ const filterStocksFn = async (val, update) => {
 };
 
 const submit = async () => {
+  if (!form.code) return;
   loading.value = true;
   // TODO: Fazer isso nao ser um Ref
   await Portfolio.post(form);
@@ -46,14 +47,14 @@ const submit = async () => {
     class="flex justify-between items-center q-my-sm full-width"
     @submit.prevent="submit()"
   >
+    {{ form.code }}
     <q-select
       v-model="form.code"
-      use-input
       input-debounce="1500"
       label="Código"
       :options="autocompleteOptions"
       @filter="filterStocksFn"
-      required
+      use-input
       filled
     >
       <template v-slot:no-option>

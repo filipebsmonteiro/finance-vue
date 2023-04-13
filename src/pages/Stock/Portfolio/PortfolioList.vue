@@ -1,6 +1,8 @@
 <script>
 import AddStock from "src/pages/Stock/Portfolio/AddStock.vue";
 import ListSimple from "src/components/List/ListSimple.vue";
+import StockHeader from "src/pages/Stock/Portfolio/StockHeader.vue";
+import StockContributions from "src/pages/Stock/Portfolio/StockContributions.vue";
 import { mapActions, mapState } from "pinia";
 import { usePortfolioStore } from "src/stores/stock/portfolio";
 import { useNationalQuotationStore } from "src/stores/stock/quotation/national";
@@ -9,12 +11,11 @@ export default {
   components: {
     AddStock,
     ListSimple,
+    StockHeader,
+    StockContributions,
   },
   computed: {
-    ...mapState(usePortfolioStore, {
-      portfolio: "list",
-      portfolioLoading: "loading",
-    }),
+    ...mapState(usePortfolioStore, { portfolioLoading: "loading" }),
     ...mapState(useNationalQuotationStore, {
       quotations: "list",
       quotationLoading: "loading",
@@ -46,44 +47,13 @@ export default {
       :items="quotations"
       emptyText="Nenhum Investimento localizado!"
       class="q-mt-md"
+      expansible
     >
-      <template v-slot:default="{ item }">
-        <q-item-section side>
-          <q-avatar size="40px">
-            <img :src="item.logo" />
-          </q-avatar>
-        </q-item-section>
-        <q-item-section side>{{ item.stock }}</q-item-section>
-        <q-item-section>{{ item.name }}</q-item-section>
-        <q-item-section>
-          <q-item-label>
-            <span
-              :class="{
-                'text-caption': true,
-                'text-positive': item.change > 0,
-                'text-negative': item.change < 0,
-              }"
-              >{{ $formaters.money(item.close) }}
-            </span>
-          </q-item-label>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>
-            <q-badge
-              rounded
-              :color="item.change > 0 ? 'positive' : 'negative'"
-              @click="double(`patrimony`)"
-            >
-              <q-icon
-                :name="item.change > 0 ? 'la la-arrow-up' : 'la la-arrow-down'"
-              />
-              {{ parseFloat(item.change).toFixed(2) }}%
-            </q-badge>
-          </q-item-label>
-        </q-item-section>
-        <q-item-section side>
-          <q-fab padding="xs" />
-        </q-item-section>
+      <template v-slot:header="{ item }">
+        <StockHeader :item="item" />
+      </template>
+      <template v-slot:default="{ item: { close, contributions } }">
+        <StockContributions :contributions="contributions" :quote="close" />
       </template>
     </ListSimple>
   </q-page>
