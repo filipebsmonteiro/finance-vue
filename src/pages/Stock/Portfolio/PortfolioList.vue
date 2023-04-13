@@ -2,8 +2,9 @@
 import AddStock from "src/pages/Stock/Portfolio/AddStock.vue";
 import AddStockSheet from "src/pages/Stock/Portfolio/AddStockSheet.vue";
 import ListSimple from "src/components/List/ListSimple.vue";
-import StockHeader from "src/pages/Stock/Portfolio/StockHeader.vue";
-import StockContributions from "src/pages/Stock/Portfolio/StockContributions.vue";
+import StockHeader from "src/pages/Stock/Portfolio/List/StockHeader.vue";
+import StockContributions from "src/pages/Stock/Portfolio/List/StockContributions.vue";
+import StockResume from "src/pages/Stock/Portfolio/List/StockResume.vue";
 import { mapActions, mapState } from "pinia";
 import { usePortfolioStore } from "src/stores/stock/portfolio";
 import { useNationalQuotationStore } from "src/stores/stock/quotation/national";
@@ -11,10 +12,11 @@ import { useNationalQuotationStore } from "src/stores/stock/quotation/national";
 export default {
   components: {
     AddStock,
+    AddStockSheet,
     ListSimple,
     StockHeader,
     StockContributions,
-    AddStockSheet,
+    StockResume,
   },
   computed: {
     ...mapState(usePortfolioStore, {
@@ -75,7 +77,7 @@ export default {
       </q-tab-panels>
     </q-expansion-item>
 
-    <div>
+    <div class="full-width overflow-x-scroll">
       <q-inner-loading :showing="portfolioLoading || quotationLoading">
         <q-spinner-gears size="50px" color="primary" />
       </q-inner-loading>
@@ -85,10 +87,12 @@ export default {
       >
         <q-item-section side class="text-transparent">Image</q-item-section>
         <q-item-section side>Código</q-item-section>
-        <q-item-section>Nome</q-item-section>
-        <q-item-section> Preço Médio</q-item-section>
-        <q-item-section>Quantidade</q-item-section>
-        <q-item-section>Variação Dia</q-item-section>
+        <q-item-section v-if="$q.screen.gt.sm">Nome</q-item-section>
+        <q-item-section>Resultado</q-item-section>
+        <q-item-section v-if="$q.screen.gt.sm">Quantidade</q-item-section>
+        <q-item-section>
+          Variação <span v-if="$q.screen.gt.sm">Dia</span>
+        </q-item-section>
         <q-item-section side class="text-transparent">Opt</q-item-section>
       </q-item>
       <ListSimple
@@ -99,15 +103,16 @@ export default {
         <template v-slot:header="{ item }">
           <StockHeader :item="item" />
         </template>
-        <template v-slot:default="{ item: { stock, close, contributions } }">
-          <StockContributions :contributions="contributions" :quote="close" />
+        <template v-slot:default="{ item }">
+          <StockResume v-if="$q.screen.lt.md" :stock="item" />
+          <StockContributions :stock="item" />
           <q-expansion-item
             expand-separator
             icon="add"
             label="Registrar outra compra"
             class="overflow-hidden rounded text-primary"
           >
-            <AddStock :code="stock" />
+            <AddStock :code="item.code" />
           </q-expansion-item>
         </template>
       </ListSimple>

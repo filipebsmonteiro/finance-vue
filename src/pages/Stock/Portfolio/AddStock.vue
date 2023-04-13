@@ -50,7 +50,6 @@ const submit = async () => {
     value: null,
     quantity: null,
   };
-  console.log(`passei aqui`);
   sending.value = false;
 };
 </script>

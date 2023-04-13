@@ -6,53 +6,55 @@ defineProps({ item: Object });
   <q-item-section side>
     <q-avatar size="40px">
       <q-img v-if="item.logo" :src="item.logo" />
-      <div
+      <span
         v-else
         class="absolute-full flex flex-center bg-grey rounded text-white"
       >
-        {{ item.stock[0].toUpperCase() }}
-      </div>
+        {{ item.code[0].toUpperCase() }}
+      </span>
     </q-avatar>
   </q-item-section>
-  <q-item-section side>{{ item.stock }}</q-item-section>
-  <q-item-section>{{ item.name }}</q-item-section>
+  <q-item-section side>{{ item.code }}</q-item-section>
+  <q-item-section v-if="$q.screen.gt.sm">{{ item.name }}</q-item-section>
   <q-item-section>
     <q-item-label>
       <span
         :class="{
           'text-caption': true,
-          'text-positive': item.averagePrice < item.close,
-          'text-negative': item.averagePrice > item.close,
-          'text-grey': item.averagePrice === item.close,
+          'text-positive': item.result > 0,
+          'text-negative': item.result < 0,
+          'text-grey': item.result === 0,
         }"
       >
-        {{ $formaters.money(item.averagePrice) }}
+        {{ $formaters.money(item.result) }}
       </span>
     </q-item-label>
   </q-item-section>
-  <q-item-section>
-    <q-item-label>
-      {{ item.quantity }}
-    </q-item-label>
+  <q-item-section v-if="$q.screen.gt.sm">
+    <q-item-label>{{ item.quantity }}</q-item-label>
   </q-item-section>
   <q-item-section>
     <q-item-label>
       <q-badge
         rounded
         :color="
-          item.change > 0 ? 'positive' : item.change < 0 ? 'negative' : 'grey'
+          item.quotation.change > 0
+            ? 'positive'
+            : item.quotation.change < 0
+            ? 'negative'
+            : 'grey'
         "
       >
         <q-icon
           :name="
-            item.change > 0
+            item.quotation.change > 0
               ? 'la la-arrow-up'
-              : item.change < 0
+              : item.quotation.change < 0
               ? 'la la-arrow-down'
               : 'la la-minus'
           "
         />
-        {{ (parseFloat(item.change) || 0).toFixed(2) }}%
+        {{ (parseFloat(item.quotation.change) || 0).toFixed(2) }}%
       </q-badge>
     </q-item-label>
   </q-item-section>

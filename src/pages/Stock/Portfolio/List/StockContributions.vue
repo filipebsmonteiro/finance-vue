@@ -3,15 +3,14 @@ import Portfolio from "src/repositories/Stock/Portfolio";
 
 export default {
   props: {
-    quote: Number,
-    contributions: Array,
+    stock: Object,
   },
   data() {
     return {
       columns: [
         {
           name: "date",
-          label: "Data da Compra",
+          label: this.$q.screen.gt.sm ? "Data da Compra" : "Data",
           field: "date",
           align: "left",
           format: this.$formaters.dateExtended,
@@ -19,14 +18,14 @@ export default {
         },
         {
           name: "value",
-          label: "Valor da Compra",
+          label: this.$q.screen.gt.sm ? "Valor da Compra" : "Valor",
           field: "value",
           format: this.$formaters.money,
           sortable: true,
         },
         {
           name: "quantity",
-          label: "Quantidade",
+          label: this.$q.screen.gt.sm ? "Quantidade" : "Qtd",
           field: "quantity",
           sortable: true,
         },
@@ -34,7 +33,7 @@ export default {
           name: "gain",
           label: "Ganho",
           field: "gain",
-          field: (row) => row.value - this.quote,
+          // field: (row) => row.value - this.quote,
           format: this.$formaters.money,
           sortable: true,
         },
@@ -57,12 +56,27 @@ export default {
 
 <template>
   <q-table
-    flat
-    :rows="contributions"
+    :rows="stock.contributions"
     :columns="columns"
     :rows-per-page-options="[0]"
     hide-pagination
+    flat
+    :dense="$q.screen.lt.md"
   >
+    <template v-slot:body-cell-gain="props">
+      <q-td :props="props">
+        <span
+          :class="{
+            'text-caption': true,
+            'text-positive': props.row.value < stock.quotation.quote,
+            'text-negative': props.row.value > stock.quotation.quote,
+            'text-grey': props.row.value === stock.quotation.quote,
+          }"
+        >
+          {{ $formaters.money(stock.quotation.quote - props.row.value) }}
+        </span>
+      </q-td>
+    </template>
     <template v-slot:body-cell-delete="props">
       <q-td :props="props">
         <q-icon
