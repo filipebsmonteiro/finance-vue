@@ -2,7 +2,7 @@
 import { storeToRefs } from "pinia";
 import Portfolio from "src/repositories/Stock/Portfolio.js";
 import { usePortfolioStore } from "src/stores/stock/portfolio";
-import { useNationalQuotationStore } from "src/stores/stock/quotation/national.js";
+import { useNationalQuotationStore } from "src/stores/stock/quotation/national";
 import { reactive } from "vue";
 
 let { loading } = storeToRefs(usePortfolioStore()),
