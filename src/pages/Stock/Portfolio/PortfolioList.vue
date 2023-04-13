@@ -5,7 +5,7 @@ import StockHeader from "src/pages/Stock/Portfolio/StockHeader.vue";
 import StockContributions from "src/pages/Stock/Portfolio/StockContributions.vue";
 import { mapActions, mapState } from "pinia";
 import { usePortfolioStore } from "src/stores/stock/portfolio";
-import { useNationalQuotationStore } from "src/stores/stock/quotation/national";
+import { useNationalQuotationStore } from "src/stores/stock/quotation/national.js";
 
 export default {
   components: {
