@@ -13,17 +13,20 @@ export async function loadPortfolioQuotations() {
   const { list: portfolioList } = usePortfolioStore(),
     stocks = Object.keys(portfolioList);
 
-  await National.fetchQuote(stocks)
-    .then(response => {
-      this.list = stocks.map(code => {
-        return {
-          contributions: portfolioList[code],
-          id: portfolioList[code][0].id,
-          stock: code,
-          ...response.stocks.find(s => s.stock === code)
-        }
-      })
-    });
+  if (stocks.length === 0) this.list = []
+
+  if (stocks.length > 0)
+    await National.fetchQuote(stocks)
+      .then(response => {
+        this.list = stocks.map(code => {
+          return {
+            contributions: portfolioList[code],
+            id: portfolioList[code][0].id,
+            stock: code,
+            ...response.stocks.find(s => s.stock === code)
+          }
+        })
+      });
   this.loading = false
 }
 

@@ -58,10 +58,10 @@ export default {
 <template>
   <q-table
     flat
-    bordered
     :rows="contributions"
     :columns="columns"
     :rows-per-page-options="[0]"
+    hide-pagination
   >
     <template v-slot:body-cell-delete="props">
       <q-td :props="props">
@@ -75,4 +75,12 @@ export default {
       </q-td>
     </template>
   </q-table>
+  <!-- <div class="row justify-center q-mt-md">
+    <q-pagination
+      v-model="pagination.page"
+      color="grey-8"
+      :max="pagesNumber"
+      size="sm"
+    />
+  </div> -->
 </template>

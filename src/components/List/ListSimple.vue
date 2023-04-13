@@ -9,7 +9,7 @@
       v-for="(item, index) in items"
       :key="index"
       :class="{
-        'bg-white rounded q-mb-xs': true,
+        'bg-white rounded overflow-hidden q-mb-xs': true,
         [item.classes]: true,
       }"
     >
@@ -24,7 +24,7 @@
       v-for="(item, index) in items"
       :key="index"
       :class="{
-        'bg-white q-py-xs q-px-md q-mb-xs rounded flex items-center': true,
+        'bg-white q-py-xs q-px-md q-mb-xs rounded overflow-hidden flex items-center': true,
         [item.classes]: true,
       }"
     >

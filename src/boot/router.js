@@ -28,10 +28,13 @@ export default async ({ router, store }) => {
     if (user) {
       SessionStorage.set(constants.storage.session.USER, user);
       const authStore = useAuthStore(store);
-      authStore.user = user;
 
-      // console.log('authStore :>> ', authStore);
-      router.push({ name: `home` })
+      if (!authStore.user) {
+        router.push({ name: `home` })
+        authStore.user = user;
+      }
+
+
       // console.log('router :>> ', router);
       // if (window.location.search.split('?').length > 1) {
       //   var params = window.location.search.split('?')[1].split('&');

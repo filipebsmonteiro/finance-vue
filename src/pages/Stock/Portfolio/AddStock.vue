@@ -27,18 +27,15 @@ const filterStocksFn = async (val, update) => {
 
 const submit = async () => {
   if (!form.code) return;
-  loading.value = true;
-  // TODO: Fazer isso nao ser um Ref
+  loading = true;
   await Portfolio.post(form);
-  setTimeout(() => {
-    form.value = {
-      code: null,
-      date: null,
-      value: 0,
-      quantity: 0,
-    };
-    loading.value = false;
-  }, 2000);
+  form.value = {
+    code: null,
+    date: null,
+    value: 0,
+    quantity: 0,
+  };
+  loading = false;
 };
 </script>
 
@@ -47,7 +44,6 @@ const submit = async () => {
     class="flex justify-between items-center q-my-sm full-width"
     @submit.prevent="submit()"
   >
-    {{ form.code }}
     <q-select
       v-model="form.code"
       input-debounce="1500"
@@ -93,3 +89,14 @@ const submit = async () => {
     />
   </q-form>
 </template>
+
+<style lang="scss" scoped>
+.q-form {
+  justify-content: center;
+  gap: 15px;
+
+  .q-field {
+    flex-basis: 48%;
+  }
+}
+</style>
