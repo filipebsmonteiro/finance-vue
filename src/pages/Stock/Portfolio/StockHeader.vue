@@ -24,12 +24,18 @@ defineProps({
       <span
         :class="{
           'text-caption': true,
-          'text-positive': item.change > 0,
-          'text-negative': item.change < 0,
-          'text-grey': item.change === 0,
+          'text-positive': item.averagePrice < item.close,
+          'text-negative': item.averagePrice > item.close,
+          'text-grey': item.averagePrice === item.close,
         }"
-        >{{ $formaters.money(item.close) }}
+      >
+        {{ $formaters.money(item.averagePrice) }}
       </span>
+    </q-item-label>
+  </q-item-section>
+  <q-item-section>
+    <q-item-label>
+      {{ item.quantity }}
     </q-item-label>
   </q-item-section>
   <q-item-section>

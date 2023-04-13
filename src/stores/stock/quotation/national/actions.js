@@ -19,13 +19,18 @@ export async function loadPortfolioQuotations() {
     await National.fetchQuote(stocks)
       .then(response => {
         this.list = stocks.map(code => {
+          const quantity = portfolioList[code].reduce((a, c) => a + c.quantity, 0);
+          const averagePrice = portfolioList[code].reduce((a, c) => a + (c.value * c.quantity), 0) / quantity; // Preço Médio
+
           return {
             contributions: portfolioList[code],
+            averagePrice,
+            quantity,
             id: portfolioList[code][0].id,
             stock: code,
             ...response.stocks.find(s => s.stock === code)
           }
-        })
+        }).filter(stock => stock.quantity > 0)
       });
   this.loading = false
 }

@@ -81,20 +81,32 @@ export default {
       size="3em"
       class="q-mt-md self-center"
     />
-    <ListSimple
-      v-else
-      :items="quotations"
-      emptyText="Nenhum Investimento localizado!"
-      class="q-mt-md"
-      expansible
-    >
-      <template v-slot:header="{ item }">
-        <StockHeader :item="item" />
-      </template>
-      <template v-slot:default="{ item: { close, contributions } }">
-        <StockContributions :contributions="contributions" :quote="close" />
-      </template>
-    </ListSimple>
+    <div v-else>
+      <q-item
+        class="q-py-none q-mt-lg text-uppercase"
+        style="min-height: unset"
+      >
+        <q-item-section side class="text-transparent">Image</q-item-section>
+        <q-item-section side>Código</q-item-section>
+        <q-item-section>Nome</q-item-section>
+        <q-item-section> Preço Médio</q-item-section>
+        <q-item-section>Quantidade</q-item-section>
+        <q-item-section>Variação Dia</q-item-section>
+        <q-item-section side class="text-transparent">Opt</q-item-section>
+      </q-item>
+      <ListSimple
+        :items="quotations"
+        emptyText="Nenhum Investimento localizado!"
+        expansible
+      >
+        <template v-slot:header="{ item }">
+          <StockHeader :item="item" />
+        </template>
+        <template v-slot:default="{ item: { close, contributions } }">
+          <StockContributions :contributions="contributions" :quote="close" />
+        </template>
+      </ListSimple>
+    </div>
   </q-page>
 </template>
 
