@@ -31,6 +31,12 @@ export class FirebaseRepository extends Repository {
   }
 
   post(params) {
+    if (Array.isArray(params)) {
+      return params.map(childToBeAdded => {
+        return set(push(this.firebaseRef), childToBeAdded);
+      })
+    }
+
     return set(push(this.firebaseRef), params)
   }
 

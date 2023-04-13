@@ -26,6 +26,7 @@ defineProps({
           'text-caption': true,
           'text-positive': item.change > 0,
           'text-negative': item.change < 0,
+          'text-grey': item.change === 0,
         }"
         >{{ $formaters.money(item.close) }}
       </span>
@@ -35,13 +36,20 @@ defineProps({
     <q-item-label>
       <q-badge
         rounded
-        :color="item.change > 0 ? 'positive' : 'negative'"
-        @click="double(`patrimony`)"
+        :color="
+          item.change > 0 ? 'positive' : item.change < 0 ? 'negative' : 'grey'
+        "
       >
         <q-icon
-          :name="item.change > 0 ? 'la la-arrow-up' : 'la la-arrow-down'"
+          :name="
+            item.change > 0
+              ? 'la la-arrow-up'
+              : item.change < 0
+              ? 'la la-arrow-down'
+              : 'la la-minus'
+          "
         />
-        {{ parseFloat(item.change).toFixed(2) }}%
+        {{ (parseFloat(item.change) || 0).toFixed(2) }}%
       </q-badge>
     </q-item-label>
   </q-item-section>

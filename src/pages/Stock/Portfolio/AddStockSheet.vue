@@ -35,22 +35,27 @@ const readFn = async () => {
 const submit = async () => {
   if (!form.rows) return;
 
+  const contributions = form.rows.map((contribution) => ({
+    code: contribution[form.codeColumn],
+    date: contribution[form.dateColumn].toJSON().slice(0, 10),
+    value: contribution[form.valueColumn],
+    quantity: contribution[form.quantityColumn],
+  }));
+
   loading.value = true;
-  await Portfolio.post(form);
-  setTimeout(() => {
-    form.value = {
-      loading: false,
-      file: null,
-      columns: [],
-      rows: [],
-      codeColumn: null,
-      dateColumn: null,
-      valueColumn: null,
-      quantityColumn: null,
-    };
-    step.value = 1;
-    loading.value = false;
-  }, 2000);
+  await Portfolio.post(contributions);
+  form.value = {
+    loading: false,
+    file: null,
+    columns: [],
+    rows: [],
+    codeColumn: null,
+    dateColumn: null,
+    valueColumn: null,
+    quantityColumn: null,
+  };
+  step.value = 1;
+  loading.value = false;
 };
 </script>
 
@@ -68,6 +73,7 @@ const submit = async () => {
         label="Selecione ou arraste o arquivo aqui..."
         @update:model-value="readFn"
         :disable="form.loading"
+        clearable
       />
     </q-step>
     <q-step
