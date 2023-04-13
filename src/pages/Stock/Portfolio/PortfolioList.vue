@@ -47,7 +47,7 @@ export default {
 </script>
 
 <template>
-  <q-page>
+  <q-page class="flex column">
     <q-expansion-item
       expand-separator
       icon="add"
@@ -75,13 +75,10 @@ export default {
       </q-tab-panels>
     </q-expansion-item>
 
-    <q-spinner
-      v-if="portfolioLoading || quotationLoading"
-      color="primary"
-      size="3em"
-      class="q-mt-md self-center"
-    />
-    <div v-else>
+    <div>
+      <q-inner-loading :showing="portfolioLoading || quotationLoading">
+        <q-spinner-gears size="50px" color="primary" />
+      </q-inner-loading>
       <q-item
         class="q-py-none q-mt-lg text-uppercase"
         style="min-height: unset"
@@ -102,8 +99,16 @@ export default {
         <template v-slot:header="{ item }">
           <StockHeader :item="item" />
         </template>
-        <template v-slot:default="{ item: { close, contributions } }">
+        <template v-slot:default="{ item: { stock, close, contributions } }">
           <StockContributions :contributions="contributions" :quote="close" />
+          <q-expansion-item
+            expand-separator
+            icon="add"
+            label="Registrar outra compra"
+            class="overflow-hidden rounded text-primary"
+          >
+            <AddStock :code="stock" />
+          </q-expansion-item>
         </template>
       </ListSimple>
     </div>

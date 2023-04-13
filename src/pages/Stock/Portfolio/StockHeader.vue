@@ -1,8 +1,5 @@
 <script setup>
-import { defineProps } from "vue";
-defineProps({
-  item: Object,
-});
+defineProps({ item: Object });
 </script>
 
 <template>

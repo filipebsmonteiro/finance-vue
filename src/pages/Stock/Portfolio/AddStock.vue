@@ -1,21 +1,36 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import Portfolio from "src/repositories/Stock/Portfolio.js";
-import { usePortfolioStore } from "src/stores/stock/portfolio";
+// import { usePortfolioStore } from "src/stores/stock/portfolio";
 import { useNationalQuotationStore } from "src/stores/stock/quotation/national";
-import { reactive } from "vue";
+import { reactive, ref, onMounted } from "vue";
 
-let { loading } = storeToRefs(usePortfolioStore()),
-  form = reactive({
+const props = defineProps({ code: String });
+
+// let { loading } = storeToRefs(usePortfolioStore()),
+let form = reactive({
     code: null,
     date: null,
-    value: 0,
-    quantity: 0,
+    value: null,
+    quantity: null,
   }),
+  sending = ref(false),
   { autocomplete, $resetAutoComplete } = useNationalQuotationStore(),
   { autocompleteOptions } = storeToRefs(useNationalQuotationStore());
+onMounted(() => {
+  if (props.code) {
+    autocompleteOptions.value = [props.code];
+    form.code = props.code;
+  }
+});
 
 const filterStocksFn = async (val, update) => {
+  if (props.code) {
+    autocompleteOptions.value = [props.code];
+    form.code = props.code;
+    return;
+  }
+
   if (val === "") {
     update($resetAutoComplete);
     return;
@@ -27,15 +42,16 @@ const filterStocksFn = async (val, update) => {
 
 const submit = async () => {
   if (!form.code) return;
-  loading = true;
+  sending.value = true;
   await Portfolio.post(form);
-  form.value = {
+  form = {
     code: null,
     date: null,
-    value: 0,
-    quantity: 0,
+    value: null,
+    quantity: null,
   };
-  loading = false;
+  console.log(`passei aqui`);
+  sending.value = false;
 };
 </script>
 
@@ -50,6 +66,7 @@ const submit = async () => {
       label="Código"
       :options="autocompleteOptions"
       @filter="filterStocksFn"
+      :disable="props.code !== ''"
       use-input
       filled
     >
@@ -70,6 +87,8 @@ const submit = async () => {
       v-model="form.value"
       label="Valor da Compra"
       type="number"
+      mask="###,##"
+      reverse-fill-mask
       required
       filled
     />
@@ -85,7 +104,7 @@ const submit = async () => {
       color="primary"
       label="Salvar"
       icon-right="save"
-      :loading="loading"
+      :loading="sending"
     />
   </q-form>
 </template>

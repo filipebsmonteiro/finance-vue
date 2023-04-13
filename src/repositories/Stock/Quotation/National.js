@@ -29,6 +29,12 @@ export class National extends Repository {
   async fetchQuote(stocks) {
     if (stocks && Array.isArray(stocks)) stocks = stocks.join("|");
 
+    // return fetch(`${this.endpoint}/quote/list?&search=${stocks}`, {
+    //   headers: {
+    //     "Access-Control-Allow-Origin": "*",
+    //     'Access-Control-Allow-Credentials': 'true'
+    //   }
+    // });
     return this.cleanRequest(`GET`, `${this.endpoint}/quote/list?&search=${stocks}`);
   }
 }

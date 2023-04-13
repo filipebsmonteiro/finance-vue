@@ -43,6 +43,7 @@ export class Repository {
   async cleanRequest(method, url, headers = {}, body = null) {
     return await new Promise(function (resolve, reject) {
       let xhr = new XMLHttpRequest();
+      // xhr.timeout = 1500; // time in milliseconds
       xhr.open(method, url);
       Object.entries(headers).map(([key, value]) => xhr.setRequestHeader(key, value))
       xhr.onload = function () {
@@ -59,6 +60,15 @@ export class Repository {
           });
         }
       };
+      // xhr.ontimeout = (e) => {
+      //   xhr.onload();
+      // };
+      // xhr.onreadystatechange = function () {
+      //   console.log('xhr.readyState :>> ', xhr.readyState);
+      //   if (xhr.readyState == 4) {
+      //     alert("ready state = 4");
+      //   }
+      // };
       xhr.onerror = function () {
         reject({
           status: this.status,

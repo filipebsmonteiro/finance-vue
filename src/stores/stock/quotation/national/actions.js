@@ -11,9 +11,10 @@ export async function autocomplete(term) {
 export async function loadPortfolioQuotations() {
   this.loading = true
   const { list: portfolioList } = usePortfolioStore(),
-    stocks = Object.keys(portfolioList);
+    stocks = Object.keys(portfolioList).filter((stock, idx, array) => array.indexOf(stock) === idx);
 
-  if (stocks.length === 0) this.list = []
+  // When Delete last on portfolio
+  if (stocks.length === 0) this.list = [];
 
   if (stocks.length > 0)
     await National.fetchQuote(stocks)
@@ -21,16 +22,28 @@ export async function loadPortfolioQuotations() {
         this.list = stocks.map(code => {
           const quantity = portfolioList[code].reduce((a, c) => a + c.quantity, 0);
           const averagePrice = portfolioList[code].reduce((a, c) => a + (c.value * c.quantity), 0) / quantity; // Preço Médio
-
-          return {
+          const obj = {
             contributions: portfolioList[code],
             averagePrice,
             quantity,
             id: portfolioList[code][0].id,
             stock: code,
             ...response.stocks.find(s => s.stock === code)
-          }
-        }).filter(stock => stock.quantity > 0)
+          };
+
+          // const index = this.list.findIndex(item => item.stock === obj.stock);
+          // if (index) {
+          //   this.list = [
+          //     ...this.list.slice(0, index),
+          //     { ...this.list[index], ...obj },
+          //     ...this.list.slice(index + 1)
+          //   ];
+          //   return undefined;
+          // }
+
+          return obj
+
+        }).filter(stock => stock && stock.quantity > 0);
       });
   this.loading = false
 }
