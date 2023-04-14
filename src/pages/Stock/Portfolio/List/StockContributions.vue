@@ -30,8 +30,8 @@ export default {
           sortable: true,
         },
         {
-          name: "gain",
-          label: "Ganho",
+          name: "result",
+          label: "Resultado",
           field: "gain",
           // field: (row) => row.value - this.quote,
           format: this.$formaters.money,
@@ -63,17 +63,17 @@ export default {
     flat
     :dense="$q.screen.lt.md"
   >
-    <template v-slot:body-cell-gain="props">
+    <template v-slot:body-cell-result="props">
       <q-td :props="props">
         <span
           :class="{
             'text-caption': true,
-            'text-positive': props.row.value < stock.quotation.quote,
-            'text-negative': props.row.value > stock.quotation.quote,
-            'text-grey': props.row.value === stock.quotation.quote,
+            'text-positive': props.row.result > 0,
+            'text-negative': props.row.result < 0,
+            'text-grey': props.row.result === 0,
           }"
         >
-          {{ $formaters.money(stock.quotation.quote - props.row.value) }}
+          {{ $formaters.money(props.row.result) }}
         </span>
       </q-td>
     </template>

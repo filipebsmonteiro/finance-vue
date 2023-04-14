@@ -5,7 +5,7 @@ import { usePortfolioStore } from "src/stores/stock/portfolio";
 import { reactive, ref } from "vue";
 import { read, utils } from "xlsx";
 
-let { loading } = storeToRefs(usePortfolioStore()),
+let { loading, list } = storeToRefs(usePortfolioStore()),
   step = ref(1),
   form = reactive({
     file: null,
@@ -16,6 +16,7 @@ let { loading } = storeToRefs(usePortfolioStore()),
     valueColumn: 0,
     quantityColumn: 0,
   });
+const { load } = usePortfolioStore();
 
 const readFn = async () => {
   form.loading = true;
@@ -35,15 +36,32 @@ const readFn = async () => {
 const submit = async () => {
   if (!form.rows) return;
 
-  const contributions = form.rows.map((contribution) => ({
-    code: contribution[form.codeColumn],
-    date: contribution[form.dateColumn].toJSON().slice(0, 10),
-    value: contribution[form.valueColumn],
-    quantity: contribution[form.quantityColumn],
-  }));
+  await load();
+
+  const contributions = form.rows
+    .map((contribution) => {
+      const object = {
+        code: contribution[form.codeColumn],
+        date: contribution[form.dateColumn].toJSON().slice(0, 10),
+        value: contribution[form.valueColumn],
+        quantity: contribution[form.quantityColumn],
+      };
+
+      const exists = list.value.find(
+        (inDB) =>
+          inDB.code === object.code &&
+          inDB.date === object.date &&
+          inDB.value === object.value &&
+          inDB.quantity === object.quantity
+      );
+      if (exists) return;
+
+      return object;
+    })
+    .filter((c) => c);
 
   loading.value = true;
-  await Portfolio.post(contributions);
+  if (contributions.length > 0) await Portfolio.post(contributions);
   form.value = {
     loading: false,
     file: null,

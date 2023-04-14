@@ -1,13 +1,11 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import Portfolio from "src/repositories/Stock/Portfolio.js";
-// import { usePortfolioStore } from "src/stores/stock/portfolio";
 import { useNationalQuotationStore } from "src/stores/stock/quotation/national";
 import { reactive, ref, onMounted } from "vue";
 
 const props = defineProps({ code: String });
 
-// let { loading } = storeToRefs(usePortfolioStore()),
 let form = reactive({
     code: null,
     date: null,

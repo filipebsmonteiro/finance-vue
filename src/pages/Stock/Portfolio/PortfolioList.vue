@@ -104,7 +104,7 @@ export default {
           <StockHeader :item="item" />
         </template>
         <template v-slot:default="{ item }">
-          <StockResume v-if="$q.screen.lt.md" :stock="item" />
+          <StockResume :stock="item" />
           <StockContributions :stock="item" />
           <q-expansion-item
             expand-separator
