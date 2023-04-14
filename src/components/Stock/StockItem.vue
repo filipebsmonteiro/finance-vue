@@ -58,4 +58,14 @@ defineProps({ item: Object });
       </q-badge>
     </q-item-label>
   </q-item-section>
+  <!-- <q-item-section>
+    <q-item-label lines="1" caption>
+      <span class="text-black">{{ item.percentInPortfolio.toFixed(2) }}%</span>
+      na carteira
+    </q-item-label>
+    <q-item-label lines="1" caption>
+      <span class="text-black">{{ item.percentInCategory.toFixed(2) }}%</span>
+      na categoria
+    </q-item-label>
+  </q-item-section> -->
 </template>

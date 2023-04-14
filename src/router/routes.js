@@ -48,8 +48,14 @@ const routes = [
       {
         path: "portfolio",
         name: 'portfolio',
-        component: () => import("pages/Stock/Portfolio/PortfolioList.vue"),
+        component: () => import("pages/Portfolio/PortfolioList.vue"),
         meta: { title: 'Portfolio de Investimentos' }
+      },
+      {
+        path: "rebalance",
+        name: 'rebalance',
+        component: () => import("pages/Portfolio/Rebalance"),
+        meta: { title: 'Rebalanceamento de Investimentos' }
       },
     ],
   },

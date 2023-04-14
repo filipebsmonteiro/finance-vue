@@ -1,10 +1,11 @@
 <script>
-import AddStock from "src/pages/Stock/Portfolio/AddStock.vue";
-import AddStockSheet from "src/pages/Stock/Portfolio/AddStockSheet.vue";
+import AddStock from "src/components/Stock/AddStock.vue";
+import AddStockSheet from "src/components/Stock/AddStockSheet.vue";
 import ListSimple from "src/components/List/ListSimple.vue";
-import StockHeader from "src/pages/Stock/Portfolio/List/StockHeader.vue";
-import StockContributions from "src/pages/Stock/Portfolio/List/StockContributions.vue";
-import StockResume from "src/pages/Stock/Portfolio/List/StockResume.vue";
+import StockHeader from "src/components/Stock/StockHeader.vue";
+import StockItem from "src/components/Stock/StockItem.vue";
+import StockContributions from "src/components/Stock/StockContributions.vue";
+import StockResume from "src/components/Stock/StockResume.vue";
 import { mapActions, mapState } from "pinia";
 import { usePortfolioStore } from "src/stores/stock/portfolio";
 import { useNationalQuotationStore } from "src/stores/stock/quotation/national";
@@ -16,6 +17,7 @@ export default {
     ListSimple,
     StockHeader,
     StockContributions,
+    StockItem,
     StockResume,
   },
   computed: {
@@ -81,27 +83,15 @@ export default {
       <q-inner-loading :showing="portfolioLoading || quotationLoading">
         <q-spinner-gears size="50px" color="primary" />
       </q-inner-loading>
-      <q-item
-        class="q-py-none q-mt-lg text-uppercase"
-        style="min-height: unset"
-      >
-        <q-item-section side class="text-transparent">Image</q-item-section>
-        <q-item-section side>Código</q-item-section>
-        <q-item-section v-if="$q.screen.gt.sm">Nome</q-item-section>
-        <q-item-section>Resultado</q-item-section>
-        <q-item-section v-if="$q.screen.gt.sm">Quantidade</q-item-section>
-        <q-item-section>
-          Variação <span v-if="$q.screen.gt.sm">Dia</span>
-        </q-item-section>
-        <q-item-section side class="text-transparent">Opt</q-item-section>
-      </q-item>
+
+      <StockHeader />
       <ListSimple
         :items="quotations"
         emptyText="Nenhum Investimento localizado!"
         expansible
       >
         <template v-slot:header="{ item }">
-          <StockHeader :item="item" />
+          <StockItem :item="item" />
         </template>
         <template v-slot:default="{ item }">
           <StockResume :stock="item" />

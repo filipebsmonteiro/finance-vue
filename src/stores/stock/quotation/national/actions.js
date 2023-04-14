@@ -19,12 +19,14 @@ export async function loadPortfolioQuotations() {
   if (stocks.length > 0)
     await National.fetchQuote(stocks)
       .then(response => {
-        this.list = stocks.map(code => {
-          let quantity = 0, averagePrice = 0, result = 0;
+        let portfolioAmount = 0, categoryAmount = {};
+
+        const list = stocks.map(code => {
+          let quantity = 0, averagePrice = 0, result = 0, amount = 0;
           const quotation = response.stocks.find(s => s.stock === code);
           const contributions = portfolioList[code].map(c => {
             quantity += c.quantity;
-            averagePrice += c.value * c.quantity;
+            amount += c.value * c.quantity;
             result += quotation ? (quotation.close - c.value) * c.quantity : 0;
 
             return {
@@ -32,10 +34,16 @@ export async function loadPortfolioQuotations() {
               date: c.date,
               quantity: c.quantity,
               value: c.value,
+              amount: c.value * c.quantity,
               result: quotation ? (quotation.close - c.value) * c.quantity : 0
             }
           });
-          averagePrice = averagePrice / quantity;
+          averagePrice = amount / quantity;
+          portfolioAmount += amount;
+
+          // const category = contributions[0] ? contributions[0].category : null;
+          const category = code.endsWith(`11`) ? `FII` : `STOCK`;
+          categoryAmount[category] = categoryAmount[category] ? categoryAmount[category] + amount : amount;
 
           return {
             code,
@@ -43,6 +51,8 @@ export async function loadPortfolioQuotations() {
             averagePrice,
             quantity,
             result,
+            amount,
+            category,
             logo: quotation?.logo,
             name: quotation?.name,
             sector: quotation?.sector,
@@ -51,8 +61,13 @@ export async function loadPortfolioQuotations() {
               close: quotation?.close,
             }
           };
-
         }).filter(stock => stock && stock.quantity > 0);
+
+        this.list = list.map(stock => ({
+          ...stock,
+          percentInPortfolio: ((stock.amount * 100) / portfolioAmount),
+          percentInCategory: ((stock.amount * 100) / categoryAmount[stock.category]),
+        }))
 
       })
   // .catch((error) => console.error(`Error On Load Stocks Quotations`) && console.error(error));;

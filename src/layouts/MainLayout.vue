@@ -121,6 +121,12 @@ const linksList = [
     icon: "la la-book-open",
     link: { name: `portfolio` },
   },
+  {
+    title: "Rebalanceamento",
+    caption: "Rebalanceamnto de Portifolio",
+    icon: "la la-balance-scale-right",
+    link: { name: `rebalance` },
+  },
 ];
 
 import { defineComponent, ref } from "vue";
