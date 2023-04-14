@@ -16,50 +16,39 @@ const monthsInPTBR = [
 ];
 
 export default {
-  list: (state) => {
+  listComplete: (state) => {
     const {
       costs,
-      costGrowth,
+      costInPercent,
       incomes,
-      investmentGrowth,
-      month: { simulator, max: maxMonths },
+      investmentInPercent,
+      max: maxMonths,
+      patrimony: patrimonyInitial,
     } = state;
-    let {
-      patrimony,
-      month: { independency },
-    } = state;
-    independency = 0;
-
 
     // TODO: Validar melhor com negativos oque pode impedir a independencia
-    if (incomes === 0 && costGrowth === 0 && investmentGrowth === 0) {
-      return [];
-    }
+    // if (incomes === 0 && costGrowth === 0 && investmentGrowth === 0) {
+    //   return [];
+    // }
 
     const balance = incomes - costs;
     let records = [],
       month = date.buildDate(Date.now()),
       monthCounter = 0,
       costWithInflation = costs,
-      investimentIncome = 0;
-    console.log('month :>> ', month);
-    // // Cenário inicial => Tenta alcançar a independência, Sendo menor que o máximo
-    // state.month.simulator === 0 && monthCounter < state.month.max
-    // // Cenario simulador => Faz até o valor do simulador
-    // state.month.simulator > 0 && monthCounter < state.month.simulator
-    while (monthCounter < simulator && monthCounter < maxMonths) {
+      investmentIncome = 0,
+      patrimony = patrimonyInitial;
+    while (monthCounter < maxMonths) {
       costWithInflation = parseFloat(
-        (costWithInflation + (costWithInflation * costGrowth)).toFixed(2)
+        (costWithInflation + (costWithInflation * costInPercent)).toFixed(2)
       );
-      investimentIncome = parseFloat((patrimony * investmentGrowth).toFixed(2));
-      patrimony += parseFloat((balance + investimentIncome).toFixed(2));
-
-      if (independency === 0 && investimentIncome >= costWithInflation) independency = monthCounter;
+      investmentIncome = parseFloat((patrimony * investmentInPercent).toFixed(2));
+      patrimony += parseFloat((balance + investmentIncome).toFixed(2));
 
       records.push({
         patrimony,
         costWithInflation,
-        investimentIncome,
+        investmentIncome,
         month: date.formatDate(month, "MMMM", { months: monthsInPTBR }),
         year: date.formatDate(month, "YYYY", { months: monthsInPTBR }),
       });
@@ -67,8 +56,10 @@ export default {
       monthCounter++;
       month = date.addToDate(month, { months: 1 })
     }
-    console.log('independency :>> ', independency);
 
     return records;
+  },
+  monthsToIndependence() {
+    return this.listComplete.filter((l) => l.investmentIncome < l.costWithInflation).length;
   },
 }

@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { mapActions, mapWritableState } from "pinia";
+import { mapActions, mapState, mapWritableState } from "pinia";
 import { useProjectionStore } from "src/stores/projection";
 import { useBalanceStore } from "src/stores/balance";
 import LineChart from "src/components/Charts/Line.vue";
@@ -74,6 +74,13 @@ export default {
   },
   computed: {
     ...mapWritableState(useProjectionStore, ["list", "month"]),
+    // ...mapState(useProjectionStore, [
+    //   "patrimony",
+    //   "incomes",
+    //   "costs",
+    //   "inflation",
+    //   "investment",
+    // ]),
     years() {
       const yearsGrouped = this.$groupBy(this.list, "year");
       let years = [];
@@ -105,7 +112,7 @@ export default {
         {
           label: "Renda Investimentos",
           backgroundColor: "#7acbf9",
-          data: this.list.map((l) => l.investimentIncome),
+          data: this.list.map((l) => l.investmentIncome),
         },
         {
           label: "Patrimônio",
@@ -145,27 +152,42 @@ export default {
     };
   },
   watch: {
-    list(value) {
-      if (!this.showSimulator && this.month.independency > 0) {
-        this.month.simulator = this.month.independency;
-      }
-      //  else {
-      //   console.log(`NAO  ENTREI`);
-      //   this.month.simulator = this.month.max;
-      // }
-    },
-    showSimulator(value) {
-      if (!value) this.reset();
-    },
+    // patrimony() {
+    //   this.reset();
+    // },
+    // incomes() {
+    //   this.reset();
+    // },
+    // costs() {
+    //   this.reset();
+    // },
+    // inflation() {
+    //   this.reset();
+    // },
+    // investment() {
+    //   this.reset();
+    // },
+    // list() {
+    //   if (!this.showSimulator && this.month.independency > 0) {
+    //     this.month.simulator = this.month.independency;
+    //   }
+    //   //  else {
+    //   //   console.log(`NAO  ENTREI`);
+    //   //   this.month.simulator = this.month.max;
+    //   // }
+    // },
+    // showSimulator(value) {
+    //   if (!value) this.reset();
+    // },
   },
   methods: {
-    ...mapActions(useProjectionStore, ["reset"]),
+    ...mapActions(useProjectionStore, ["loadList"]),
   },
   async mounted() {
     const { load } = useBalanceStore();
     await load();
 
-    this.reset();
+    this.loadList();
   },
 };
 </script>

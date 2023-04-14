@@ -8,7 +8,11 @@
           </span>
           <div class="text-weight-medium">
             <p class="q-mb-none">
-              {{ (investment - inflation).toFixed(2).replace(".", ",") }}%
+              {{
+                (simulation.investment - simulation.inflation)
+                  .toFixed(2)
+                  .replace(".", ",")
+              }}%
             </p>
             <p class="text-grey-6 q-mb-none">Ganho real mensal</p>
           </div>
@@ -16,21 +20,23 @@
       </template>
       <div class="q-pa-md">
         <q-input
-          v-model="inflation"
+          v-model="simulation.inflation"
           type="number"
           step="0.01"
           min="0"
           label="IPCA (Últimos 12 meses)"
+          @update:model-value="loadList()"
         >
           <template v-slot:append>%</template>
         </q-input>
         <q-input
-          v-model="investment"
+          v-model="simulation.investment"
           borderless
           type="number"
           step="0.01"
           min="0"
           label="Retorno investimentos (Mensal)"
+          @update:model-value="loadList()"
         >
           <template v-slot:append>%</template>
         </q-input>
@@ -44,8 +50,12 @@
             <q-icon name="calendar_month" size="md" color="warning" />
           </span>
           <div class="text-weight-medium">
-            <p class="q-mb-none">{{ monthsToIndependence }}</p>
-            <p class="text-grey-6 q-mb-none">Meses</p>
+            <p class="q-mb-none">
+              {{ parseInt(monthsToIndependence / 12) }} Anos
+            </p>
+            <p class="text-grey-6 q-mb-none">
+              {{ monthsToIndependence % 12 }} Meses
+            </p>
           </div>
         </div>
       </template>
@@ -137,26 +147,20 @@ export default {
   },
   computed: {
     ...mapState(useBalanceStore, ["getTotalCosts", "getTotalIncomes"]),
-    ...mapState(useProjectionStore, ["list", "loadInflation"]),
-    ...mapWritableState(useProjectionStore, ["investment", "inflation"]),
+    ...mapState(useProjectionStore, ["list", "monthsToIndependence"]),
+    ...mapWritableState(useProjectionStore, ["simulation"]),
     ...mapState(useIPCAStore, ["loading"]),
-    monthsToIndependence() {
-      if (this.list && Array.isArray(this.list)) {
-        return this.list.filter(
-          (l) => l.investimentIncome < l.costWithInflation
-        ).length;
-      }
-      return null;
-    },
   },
   methods: {
-    ...mapActions(useBalanceStore, {
-      loadBalances: "load",
-    }),
+    ...mapActions(useBalanceStore, { loadBalances: "load" }),
+    ...mapActions(useIPCAStore, ["loadLastMonths"]),
+    ...mapActions(useProjectionStore, ["loadInflation", "loadList", "reset"]),
   },
   async mounted() {
-    this.loadBalances();
-    this.loadInflation();
+    await this.loadLastMonths({});
+    await this.loadBalances();
+    this.reset();
+    this.loadList();
   },
 };
 </script>

@@ -28,9 +28,8 @@ export default {
     this.loading = true;
     await IPCA7060.fetch({ period: IPCA.getLastMonths(quantity) })
       .then((response) => {
-        const data = JSON.parse(response);
-        this.columns = data.shift();
-        this.list = data;
+        this.columns = response.shift();
+        this.list = response;
       })
     this.loading = false;
   },
