@@ -4,7 +4,12 @@ import Portfolio from "src/repositories/Stock/Portfolio.js";
 import { useNationalQuotationStore } from "src/stores/stock/quotation/national";
 import { reactive, ref, onMounted } from "vue";
 
-const props = defineProps({ code: String });
+const props = defineProps({
+  code: {
+    type: String,
+    default: "",
+  },
+});
 
 let form = reactive({
     code: null,

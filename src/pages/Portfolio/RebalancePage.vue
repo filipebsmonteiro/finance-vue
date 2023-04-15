@@ -1,24 +1,14 @@
 <script>
-import AddStock from "src/components/Stock/AddStock.vue";
-import AddStockSheet from "src/components/Stock/AddStockSheet.vue";
 import ListSimple from "src/components/List/ListSimple.vue";
-import StockHeader from "src/components/Stock/StockHeader.vue";
 import StockItem from "src/components/Stock/StockItem.vue";
-import StockContributions from "src/components/Stock/StockContributions.vue";
-import StockResume from "src/components/Stock/StockResume.vue";
 import { mapActions, mapState } from "pinia";
 import { usePortfolioStore } from "src/stores/stock/portfolio";
 import { useNationalQuotationStore } from "src/stores/stock/quotation/national";
 
 export default {
   components: {
-    AddStock,
-    AddStockSheet,
     ListSimple,
-    StockHeader,
-    StockContributions,
     StockItem,
-    StockResume,
   },
   computed: {
     ...mapState(usePortfolioStore, {
@@ -26,15 +16,16 @@ export default {
       portfolioLoading: "loading",
     }),
     ...mapState(useNationalQuotationStore, {
+      categories: "categories",
       quotations: "list",
       quotationLoading: "loading",
     }),
   },
-  data() {
-    return {
-      tab: null,
-    };
-  },
+  // data() {
+  //   return {
+  //     tab: null,
+  //   };
+  // },
   watch: {
     portfolioList() {
       this.loadPortfolioQuotations();
@@ -53,30 +44,20 @@ export default {
 <template>
   <q-page class="flex column">
     <q-expansion-item
-      expand-separator
-      icon="add"
-      label="Adicionar Compra(s)"
-      class="overflow-hidden rounded"
+      icon="la la-bullseye"
+      label="Definir alvos"
+      class="overflow-hidden rounded q-mb-md"
     >
-      <q-tabs v-model="tab" align="left">
-        <q-tab name="manual" label="Manual" />
-        <q-tab name="sheet" label="Tabela" />
-      </q-tabs>
-
-      <q-tab-panels
-        v-model="tab"
-        animated
-        transition-prev="slide-down"
-        transition-next="slide-up"
-      >
-        <q-tab-panel name="manual" class="q-pa-none">
-          <AddStock />
-        </q-tab-panel>
-
-        <q-tab-panel name="sheet" class="q-pa-none">
-          <AddStockSheet />
-        </q-tab-panel>
-      </q-tab-panels>
+      <div class="q-pa-md">
+        <q-input
+          v-for="category in categories"
+          :key="category"
+          :label="category"
+          type="number"
+          model-value="0"
+          filled
+        />
+      </div>
     </q-expansion-item>
 
     <div class="full-width overflow-x-scroll">
@@ -84,26 +65,17 @@ export default {
         <q-spinner-gears size="50px" color="primary" />
       </q-inner-loading>
 
-      <StockHeader />
       <ListSimple
         :items="quotations"
         emptyText="Nenhum Investimento localizado!"
-        expansible
       >
-        <template v-slot:header="{ item }">
-          <StockItem :item="item" />
-        </template>
         <template v-slot:default="{ item }">
-          <StockResume :stock="item" />
-          <StockContributions :stock="item" />
-          <q-expansion-item
-            expand-separator
-            icon="add"
-            label="Registrar outra compra"
-            class="overflow-hidden rounded text-primary"
-          >
-            <AddStock :code="item.code" />
-          </q-expansion-item>
+          <StockItem
+            :item="item"
+            hide-quantity
+            hide-result
+            hide-quotation-change
+          />
         </template>
       </ListSimple>
     </div>
