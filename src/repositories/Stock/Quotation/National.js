@@ -9,17 +9,6 @@ export class National extends Repository {
     super();
 
     this.endpoint = `https://brapi.dev/api`
-
-    this.$APIKey = `QWIMIEXNHSL3B9UK`;
-
-    this.$TIME_SERIES = {
-      Intraday: `1d`,
-      Daily: `TIME_SERIES_DAILY`,
-      Weekly: `TIME_SERIES_WEEKLY`,
-      Monthly: `TIME_SERIES_MONTHLY`,
-    };
-
-    // range 1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max
   }
 
   async autocomplete(term) {

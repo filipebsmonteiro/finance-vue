@@ -9,6 +9,7 @@ import StockResume from "src/components/Stock/StockResume.vue";
 import { mapActions, mapState } from "pinia";
 import { usePortfolioStore } from "src/stores/stock/portfolio";
 import { useNationalQuotationStore } from "src/stores/stock/quotation/national";
+import { useInternationalQuotationStore } from "src/stores/stock/quotation/international";
 
 export default {
   components: {
@@ -42,10 +43,14 @@ export default {
   },
   methods: {
     ...mapActions(usePortfolioStore, { loadPortfolio: "load" }),
+    ...mapActions(useInternationalQuotationStore, {
+      loadInternational: "loadPortfolioQuotations",
+    }),
     ...mapActions(useNationalQuotationStore, ["loadPortfolioQuotations"]),
   },
   async mounted() {
     this.loadPortfolio();
+    this.loadInternational();
   },
 };
 </script>
