@@ -2,7 +2,7 @@
 import ListSimple from "src/components/List/ListSimple.vue";
 import StockItem from "src/components/Stock/StockItem.vue";
 import { mapActions, mapState } from "pinia";
-import { usePortfolioStore } from "src/stores/stock/portfolio";
+import { usePortfolioStore } from "src/stores/portfolio";
 import { useNationalQuotationStore } from "src/stores/stock/national";
 
 export default {

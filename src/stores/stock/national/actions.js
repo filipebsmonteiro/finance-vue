@@ -1,5 +1,7 @@
 import National from "src/repositories/Stock/Quotation/National"
 import { usePortfolioStore } from "src/stores/portfolio";
+import { useREITStore } from "src/stores/reit";
+import { useETFStore } from "src/stores/etf";
 
 export async function autocomplete(term) {
   this.loading = true
@@ -16,7 +18,11 @@ export async function loadPortfolioQuotations() {
   // When Delete last on portfolio
   if (stocks.length === 0) this.list = [];
 
-  if (stocks.length > 0)
+  if (stocks.length > 0) {
+    const REITStore = useREITStore(),
+      ETFStore = useETFStore();
+    await Promise.all([REITStore.load(), ETFStore.load()]);
+
     await National.fetchQuote(stocks)
       .then(response => {
         let portfolioAmount = 0, categoryAmount = {};
@@ -41,7 +47,12 @@ export async function loadPortfolioQuotations() {
           averagePrice = amount / quantity;
           portfolioAmount += amount;
 
-          const category = code.endsWith(`11`) ? `FII` : `STOCK`;
+          const category = REITStore.onlySymbols.includes(code)
+            ? `REIT`
+            : ETFStore.onlySymbols.includes(code)
+              ? `ETF`
+              : `STOCK`;
+          console.log('category :>> ', category);
           categoryAmount[category] = categoryAmount[category] ? categoryAmount[category] + amount : amount;
 
           return {
@@ -69,6 +80,7 @@ export async function loadPortfolioQuotations() {
         }))
 
       })
+  }
   // .catch((error) => console.error(`Error On Load Stocks Quotations`) && console.error(error));;
   this.loading = false
 }
