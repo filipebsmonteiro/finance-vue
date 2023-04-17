@@ -10,11 +10,14 @@ export class FirebaseRepository extends Repository {
     this.userId = auth.getUser.uid; // Firebase.auth.currentUser.uid;
 
     if (!path) console.error(`Defina o Path para a Classe que herda FirebaseRepository`);
-    this.firebasePath = `${path}/${this.userId}`;
+    this.firebasePath = path.includes('$userId')
+      ? path.split('$userId').join(`${this.userId}`)
+      : path;
     this.firebaseRef = ref(Firebase.database, `${this.firebasePath}`);
+    this.oneToMany = true;
   }
 
-  parseBalancesObjToArray(obj) {
+  parseObjToArray(obj) {
     return Object.entries(obj).map(([id, value]) => ({ id, ...value }));
   }
 
@@ -22,9 +25,13 @@ export class FirebaseRepository extends Repository {
     return new Promise(async (resolve, reject) => {
       await get(child(ref(Firebase.database), `${this.firebasePath}`))
         .then((snapshot) => {
-          if (snapshot.exists())
-            resolve(this.parseBalancesObjToArray(snapshot.val()));
-          resolve([]);
+          if (this.oneToMany) {
+            if (snapshot.exists()) resolve(this.parseObjToArray(snapshot.val()));
+            resolve([]);
+          }
+
+          if (snapshot.exists()) resolve(snapshot.val());
+          resolve(null);
         })
         .catch(error => reject(error));
     })
@@ -37,7 +44,9 @@ export class FirebaseRepository extends Repository {
       })
     }
 
-    return set(push(this.firebaseRef), params)
+    if (this.oneToMany) return set(push(this.firebaseRef), params)
+
+    return set(this.firebaseRef, params)
   }
 
   put(id, params) {

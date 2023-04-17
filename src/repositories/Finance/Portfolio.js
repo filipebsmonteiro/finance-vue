@@ -2,7 +2,7 @@ import { FirebaseRepository } from "src/repositories/Firebase/FirebaseRepository
 
 class Portfolio extends FirebaseRepository {
   constructor() {
-    super(`portfolio`);
+    super(`portfolio/$userId`);
   }
 
 }

@@ -1,5 +1,5 @@
 <script>
-import Portfolio from "src/repositories/Stock/Portfolio";
+import Portfolio from "src/repositories/Finance/Portfolio.js";
 
 export default {
   props: {

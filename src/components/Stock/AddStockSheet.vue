@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import Portfolio from "src/repositories/Stock/Portfolio.js";
+import Portfolio from "src/repositories/Finance/Portfolio.js";
 import { usePortfolioStore } from "src/stores/stock/portfolio";
 import { reactive, ref } from "vue";
 import { read, utils } from "xlsx";
