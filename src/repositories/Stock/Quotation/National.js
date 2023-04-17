@@ -1,4 +1,5 @@
 import { Repository } from "src/repositories/Base/Repository";
+// import { ETFs } from "src/repositories/Stock/Data/National";
 
 /**
  * Link:
@@ -9,6 +10,15 @@ export class National extends Repository {
     super();
 
     this.endpoint = `https://brapi.dev/api`
+  }
+
+  getCategory(stock) {
+    let category = null;
+    // switch (stock) {
+    //   case ETFs.includes(stock):
+    //     category = `ETF`;
+    //     break;
+    // }
   }
 
   async autocomplete(term) {

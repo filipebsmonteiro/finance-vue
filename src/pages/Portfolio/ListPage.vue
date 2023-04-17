@@ -8,8 +8,8 @@ import StockContributions from "src/components/Stock/StockContributions.vue";
 import StockResume from "src/components/Stock/StockResume.vue";
 import { mapActions, mapState } from "pinia";
 import { usePortfolioStore } from "src/stores/stock/portfolio";
-import { useNationalQuotationStore } from "src/stores/stock/quotation/national";
-import { useInternationalQuotationStore } from "src/stores/stock/quotation/international";
+import { useNationalQuotationStore } from "src/stores/stock/national";
+import { useInternationalQuotationStore } from "src/stores/stock/international";
 
 export default {
   components: {

@@ -1,7 +1,7 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import Portfolio from "src/repositories/Finance/Portfolio.js";
-import { useNationalQuotationStore } from "src/stores/stock/quotation/national";
+import { useNationalQuotationStore } from "src/stores/stock/national";
 import { reactive, ref, onMounted } from "vue";
 
 const props = defineProps({

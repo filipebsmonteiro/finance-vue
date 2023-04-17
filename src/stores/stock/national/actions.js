@@ -1,10 +1,10 @@
-import Internacional from "src/repositories/Stock/Quotation/Internacional"
-import { usePortfolioStore } from "src/stores/stock/portfolio";
+import National from "src/repositories/Stock/Quotation/National"
+import { usePortfolioStore } from "src/stores/portfolio";
 
 export async function autocomplete(term) {
   this.loading = true
-  await Internacional.autocomplete(term)
-    .then(response => this.autocompleteOptions = response.bestMatches);
+  await National.autocomplete(term)
+    .then(response => this.autocompleteOptions = response.stocks);
   this.loading = false
 }
 
@@ -17,28 +17,13 @@ export async function loadPortfolioQuotations() {
   if (stocks.length === 0) this.list = [];
 
   if (stocks.length > 0)
-    await Internacional.fetchQuote(stocks)
-      .then(response => ({
-        stocks: response.filter(r => r.bestMatches && parseInt(r.bestMatches[0]['9. matchScore']) === 1).map(r => r.bestMatches[0]),
-        quotes: response.filter(r => r['Global Quote']).map(r => r['Global Quote'])
-      }))
-      .then(response => response.stocks.map(stock => {
-        const quote = response.quotes.find(q => q['01. symbol'] === stock['01. symbol']);
-        return {
-          logo: stock?.logo,
-          name: stock?.name,
-          category: stock?.type,
-          sector: stock?.sector,
-          change: quote?.change,
-          close: quote?.close,
-        }
-      }))
+    await National.fetchQuote(stocks)
       .then(response => {
         let portfolioAmount = 0, categoryAmount = {};
 
         const list = stocks.map(code => {
           let quantity = 0, averagePrice = 0, result = 0, amount = 0;
-          const quotation = response.find(s => s.stock === `${code}.SAO`);
+          const quotation = response.stocks.find(s => s.stock === code);
           const contributions = portfolioList[code].map(c => {
             quantity += c.quantity;
             amount += c.value * c.quantity;
@@ -56,7 +41,7 @@ export async function loadPortfolioQuotations() {
           averagePrice = amount / quantity;
           portfolioAmount += amount;
 
-          const category = quotation?.category;
+          const category = code.endsWith(`11`) ? `FII` : `STOCK`;
           categoryAmount[category] = categoryAmount[category] ? categoryAmount[category] + amount : amount;
 
           return {

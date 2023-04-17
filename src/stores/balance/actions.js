@@ -17,7 +17,7 @@ export default {
 
     // Read Patrimony
     await Patrimony.fetch()
-      .then(value => this.patrimony = value)
+      .then(value => this.patrimony = parseFloat(value))
       .catch((error) => console.error(`Error On Load User Patrimony`) && console.error(error));
 
     this.loading = false;

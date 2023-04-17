@@ -16,6 +16,7 @@ export default {
     this.investmentInPercent = this.simulation.investment / 100;
   },
   loadList(quantity) {
+    console.log('this.listComplete :>> ', this.listComplete);
     if (quantity) {
       this.list = this.listComplete.slice(0, quantity)
       return
