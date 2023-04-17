@@ -57,6 +57,12 @@ const routes = [
         component: () => import("src/pages/Portfolio/RebalancePage.vue"),
         meta: { title: 'Rebalanceamento de Investimentos' }
       },
+      {
+        path: "import",
+        name: 'import',
+        component: () => import("src/pages/Import/InvestmentCategories.vue"),
+        meta: { title: 'Categorias de Investimentos' }
+      },
     ],
   },
 

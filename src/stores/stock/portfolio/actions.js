@@ -1,5 +1,5 @@
 import { onValue } from "firebase/database";
-import Portfolio from "src/repositories/Stock/Portfolio";
+import Portfolio from "src/repositories/Finance/Portfolio";
 
 export default {
   async load() {
@@ -12,7 +12,7 @@ export default {
 
     onValue(Portfolio.firebaseRef, (snapshot) => {
       if (snapshot.exists()) {
-        this.list = Portfolio.parseBalancesObjToArray(snapshot.val());
+        this.list = Portfolio.parseObjToArray(snapshot.val());
       }
     });
 

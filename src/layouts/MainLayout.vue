@@ -127,6 +127,12 @@ const linksList = [
     icon: "la la-balance-scale-right",
     link: { name: `rebalance` },
   },
+  {
+    title: "Importar Categorias",
+    caption: "Importar Categorias de Insetimentos",
+    icon: "la la-balance-scale-right",
+    link: { name: `import` },
+  },
 ];
 
 import { defineComponent, ref } from "vue";
