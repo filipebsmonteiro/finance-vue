@@ -11,10 +11,6 @@ export class National extends Repository {
     this.endpoint = `https://brapi.dev/api`
   }
 
-  async autocomplete(term) {
-    return this.cleanRequest(`GET`, `${this.endpoint}/available?search=${term}`)
-  }
-
   async fetchQuote(stocks) {
     if (stocks && Array.isArray(stocks)) {
       const limit = stocks.length;

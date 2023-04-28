@@ -2,21 +2,21 @@
 import { QInput, QSelect } from "quasar";
 
 const props = defineProps({
-  list: {
+  fields: {
     type: Array,
     validator: (array) => {
-      // return Object.values(obj).every(v => v.);
-      return array.every((line) =>
-        line.every(
-          (obj) =>
-            obj.hasOwnProperty(`component`) &&
-            (obj.hasOwnProperty(`label`) ||
-              obj.hasOwnProperty(`name`) ||
-              obj.hasOwnProperty(`placeholder`)) &&
-            obj.hasOwnProperty(`model-value`)
-        )
+      return array.every(
+        (obj) =>
+          obj.hasOwnProperty(`component`) &&
+          obj.hasOwnProperty(`key`) &&
+          (obj.hasOwnProperty(`label`) || obj.hasOwnProperty(`placeholder`))
       );
     },
+  },
+  values: Array,
+  addLabel: {
+    type: String,
+    default: `Adicionar linha`,
   },
   hideAddLine: {
     type: Boolean,
@@ -30,14 +30,31 @@ const props = defineProps({
 
 const emit = defineEmits([`update:model-value`]);
 
-const updateValue = (fieldName, value) => {
-  emit("update:model-value", { [fieldName]: value });
+const updateValue = (index, key, value) => {
+  const updated = props.values.map((line, i) => ({
+    ...line,
+    ...(i === index ? { [key]: value } : null),
+  }))[index];
+  emit("update:model-value", updated);
+};
+
+const addLine = () => {
+  const newLine = props.fields.reduce(
+    (acc, cur) => ({
+      ...acc,
+      [cur.key]: null,
+    }),
+    {}
+  );
+  emit("update:model-value", newLine);
 };
 
 const getComponent = (field) => {
   switch (field.component) {
     case `q-select`:
       return QSelect;
+    case `q-input`:
+      return QInput;
 
     default:
       return QInput;
@@ -46,19 +63,29 @@ const getComponent = (field) => {
 </script>
 
 <template>
-  <q-list separator>
+  <q-list>
     <q-item
-      v-for="(line, index) in props.list"
+      v-for="(value, index) in props.values"
       :key="index"
       class="rounded items-center"
       flat
     >
-      <q-item-section v-for="(field, idx) in line" :key="`${index}${idx}`">
+      <q-item-section v-for="(field, idx) in fields" :key="`${index}${idx}`">
         <component
           :is="getComponent(field)"
           v-bind="field"
-          @update:model-value="($evt) => updateValue(field.name, $evt)"
-        ></component>
+          :model-value="value[field.key]"
+          @update:model-value="($evt) => updateValue(index, field.key, $evt)"
+        >
+          <template v-if="field.prepend" v-slot:prepend>
+            <q-icon v-if="field.prepend.icon" :name="field.prepend.icon" />
+            <span v-if="field.prepend.text">{{ field.prepend.text }}</span>
+          </template>
+          <template v-if="field.append" v-slot:append>
+            <q-icon v-if="field.append.icon" :name="field.append.icon" />
+            <span v-if="field.append.text">{{ field.append.text }}</span>
+          </template>
+        </component>
       </q-item-section>
 
       <q-item-section v-if="!props.hideDeleteLine" top side>
@@ -67,15 +94,22 @@ const getComponent = (field) => {
           round
           color="negative"
           icon="delete"
-          @click="removeLine(line)"
+          @click="emit('remove-line', value.id)"
         />
       </q-item-section>
     </q-item>
 
     <q-item v-if="!props.hideAddLine">
-      <q-item-section side></q-item-section>
-      <q-item-section side>
-        <q-btn flat round color="positive" icon="add" @click="addLine()" />
+      <!-- <q-item-section side></q-item-section> -->
+      <q-item-section>
+        <q-btn
+          flat
+          rounded
+          color="positive"
+          icon="add"
+          :label="props.addLabel"
+          @click="addLine()"
+        />
       </q-item-section>
     </q-item>
   </q-list>

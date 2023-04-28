@@ -7,9 +7,11 @@ import StockItem from "src/components/Stock/StockItem.vue";
 import StockContributions from "src/components/Stock/StockContributions.vue";
 import StockResume from "src/components/Stock/StockResume.vue";
 import { mapActions, mapState } from "pinia";
-import { usePortfolioStore } from "src/stores/stock/portfolio";
-import { useNationalQuotationStore } from "src/stores/stock/national";
-import { useInternationalQuotationStore } from "src/stores/stock/international";
+import { usePortfolioStore } from "src/stores/portfolio";
+import { useQuotationStore } from "src/stores/quotation";
+import { useInvestmentStore } from "src/stores/investment";
+import { useREITStore } from "src/stores/reit";
+import { useETFStore } from "src/stores/etf";
 
 export default {
   components: {
@@ -23,40 +25,45 @@ export default {
   },
   computed: {
     ...mapState(usePortfolioStore, {
-      portfolioList: "list",
       portfolioLoading: "loading",
+      portfolioGroupedBySymbol: "groupedBySymbol",
     }),
-    ...mapState(useNationalQuotationStore, {
-      quotations: "list",
-      quotationLoading: "loading",
-    }),
+    ...mapState(useQuotationStore, { quotationLoading: "loading" }),
+    ...mapState(useInvestmentStore, { investments: "positionCategorized" }),
   },
   data() {
     return {
       tab: null,
     };
   },
-  watch: {
-    portfolioList() {
-      this.loadPortfolioQuotations();
-    },
-  },
   methods: {
     ...mapActions(usePortfolioStore, { loadPortfolio: "load" }),
-    ...mapActions(useInternationalQuotationStore, {
-      loadInternational: "loadPortfolioQuotations",
-    }),
-    ...mapActions(useNationalQuotationStore, ["loadPortfolioQuotations"]),
+    ...mapActions(useQuotationStore, { loadQuotations: "load" }),
+    ...mapActions(useREITStore, { loadREITS: "load" }),
+    ...mapActions(useETFStore, { loadETFS: "load" }),
   },
   async mounted() {
-    this.loadPortfolio();
-    this.loadInternational();
+    await Promise.all([
+      this.loadPortfolio(),
+      this.loadREITS(),
+      this.loadETFS(),
+    ]);
+    this.loadQuotations(Object.keys(this.portfolioGroupedBySymbol));
   },
 };
 </script>
 
 <template>
   <q-page class="flex column">
+    <q-inner-loading
+      :showing="portfolioLoading || quotationLoading"
+      :label="
+        portfolioLoading ? `Carregando Portifolio` : `Carregando Cotações`
+      "
+    >
+      <q-spinner-gears size="50px" color="primary" />
+    </q-inner-loading>
+
     <q-expansion-item
       expand-separator
       icon="add"
@@ -85,13 +92,9 @@ export default {
     </q-expansion-item>
 
     <div class="full-width overflow-x-scroll">
-      <q-inner-loading :showing="portfolioLoading || quotationLoading">
-        <q-spinner-gears size="50px" color="primary" />
-      </q-inner-loading>
-
       <StockHeader />
       <ListSimple
-        :items="quotations"
+        :items="investments"
         emptyText="Nenhum Investimento localizado!"
         expansible
       >

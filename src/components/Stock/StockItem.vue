@@ -103,11 +103,13 @@ defineProps({
     </q-item-label>
   </q-item-section>
   <q-item-section v-if="!hidePercentInCategory">
-    <q-item-label lines="1" caption>
-      <span class="text-black">
-        {{ item.percentInCategory.toFixed(2).replace(`.`, `,`) }}%
-      </span>
-      na categoria
-    </q-item-label>
+    <slot name="percentInCategory" v-bind="item">
+      <q-item-label lines="1" caption>
+        <span class="text-black">
+          {{ item.percentInCategory.toFixed(2).replace(`.`, `,`) }}%
+        </span>
+        na categoria
+      </q-item-label>
+    </slot>
   </q-item-section>
 </template>

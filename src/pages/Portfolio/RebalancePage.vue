@@ -3,57 +3,71 @@ import ListSimple from "src/components/List/ListSimple.vue";
 import StockItem from "src/components/Stock/StockItem.vue";
 import { mapActions, mapState } from "pinia";
 import { usePortfolioStore } from "src/stores/portfolio";
-import { useNationalQuotationStore } from "src/stores/stock/national";
-import InputList from "src/components/InputList.vue";
+import { useQuotationStore } from "src/stores/quotation";
+import { useREITStore } from "src/stores/reit";
+import { useETFStore } from "src/stores/etf";
+import { useInvestmentStore } from "src/stores/investment";
+import CategoryTarget from "src/components/Investments/CategoryTarget.vue";
 
 export default {
   components: {
     ListSimple,
     StockItem,
-    InputList,
+    CategoryTarget,
   },
   computed: {
     ...mapState(usePortfolioStore, {
-      portfolioList: "list",
       portfolioLoading: "loading",
+      portfolioGroupedBySymbol: "groupedBySymbol",
     }),
-    ...mapState(useNationalQuotationStore, {
+    ...mapState(useQuotationStore, { quotationLoading: "loading" }),
+    ...mapState(useInvestmentStore, {
+      investmentLoading: "loading",
+      investments: "positionCategorized",
       categories: "categories",
-      quotations: "list",
-      quotationLoading: "loading",
+      userCategoryTargets: "userCategoryTargets",
     }),
     fields() {
+      const options = this.categories.map((category) => ({
+        value: category.code,
+        label: category.label,
+      }));
       return this.categories.map((category) => [
         {
-          component: `q-input`,
+          component: `q-select`,
           label: `Categoria`,
-          modelValue: category,
-          readonly: true,
-          filled: true,
+          modelValue: null,
+          options,
         },
         {
           component: `q-input`,
           label: `Meta`,
-          name: category,
+          name: category.code,
           type: `number`,
           min: 0,
           modelValue: 0,
+          append: { icon: "percentage" },
           filled: true,
         },
       ]);
     },
-  },
-  watch: {
-    portfolioList() {
-      this.loadPortfolioQuotations();
+    groupedStocks() {
+      return this.$groupBy(this.investments, `category`);
     },
   },
   methods: {
     ...mapActions(usePortfolioStore, { loadPortfolio: "load" }),
-    ...mapActions(useNationalQuotationStore, ["loadPortfolioQuotations"]),
+    ...mapActions(useQuotationStore, { loadQuotations: "load" }),
+    ...mapActions(useREITStore, { loadREITS: "load" }),
+    ...mapActions(useETFStore, { loadETFS: "load" }),
   },
   async mounted() {
-    this.loadPortfolio();
+    await Promise.all([
+      this.loadPortfolio(),
+      this.loadREITS(),
+      this.loadETFS(),
+    ]);
+    this.loadQuotations(Object.keys(this.portfolioGroupedBySymbol));
   },
 };
 </script>
@@ -79,28 +93,64 @@ export default {
       label="Definir alvos"
       class="overflow-hidden rounded q-mb-md"
     >
-      <InputList :list="fields" hide-add-line hide-delete-line />
-    </q-expansion-item>
-
-    <div class="full-width overflow-x-scroll">
-      <q-inner-loading :showing="portfolioLoading || quotationLoading">
+      <CategoryTarget />
+      <q-inner-loading :showing="investmentLoading">
         <q-spinner-gears size="50px" color="primary" />
       </q-inner-loading>
+    </q-expansion-item>
 
-      <ListSimple
-        :items="quotations"
-        emptyText="Nenhum Investimento localizado!"
-      >
-        <template v-slot:default="{ item }">
-          <StockItem
-            :item="item"
-            hide-quantity
-            hide-result
-            hide-quotation-change
-          />
-        </template>
-      </ListSimple>
-    </div>
+    <ListSimple
+      :items="userCategoryTargets"
+      emptyText="Nenhuma categoria localizada para rebalanceamento!"
+      expansible
+    >
+      <template #header="{ item }">
+        <q-item-section>
+          <q-item-label caption>Categoria:</q-item-label>
+          <q-item-label class="text-bold">
+            {{ categories.find((c) => c.value === item.category).label }}
+          </q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label caption>Categoria:</q-item-label>
+          <q-item-label class="text-bold"> {{ item.target }}% </q-item-label>
+        </q-item-section>
+      </template>
+
+      <template #default="{ item }">
+        <ListSimple
+          v-if="groupedStocks[item.category]"
+          :items="groupedStocks[item.category]"
+          emptyText="Nenhum Investimento localizado!"
+          dense
+          striped
+        >
+          <template #default="{ item }">
+            <StockItem
+              :item="item"
+              hide-quantity
+              hide-result
+              hide-quotation-change
+              hide-percent-in-portfolio
+            >
+              <template #percentInCategory="{ percentInCategory }">
+                <q-item-label>
+                  Atual: {{ percentInCategory.toFixed(2).replace(`.`, `,`) }}%
+                </q-item-label>
+                <q-item-label>
+                  Meta:
+                  {{
+                    (100 / groupedStocks[item.category].length)
+                      .toFixed(2)
+                      .replace(`.`, `,`)
+                  }}%
+                </q-item-label>
+              </template>
+            </StockItem>
+          </template>
+        </ListSimple>
+      </template>
+    </ListSimple>
   </q-page>
 </template>
 

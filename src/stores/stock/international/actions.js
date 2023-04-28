@@ -1,4 +1,4 @@
-import Internacional from "src/repositories/Stock/Quotation/Internacional"
+import Internacional from "src/repositories/Quotation/Internacional"
 import { usePortfolioStore } from "src/stores/portfolio";
 
 export async function autocomplete(term) {

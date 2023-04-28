@@ -4,9 +4,10 @@
       {{ emptyText }}
     </p>
   </div>
-  <q-list v-else-if="expansible">
+  <q-list v-else-if="expansible" :class="{ striped: striped }">
     <q-expansion-item
       v-for="(item, index) in items"
+      :dense="dense"
       :key="index"
       :class="{
         'bg-white rounded overflow-hidden q-mb-xs': true,
@@ -19,9 +20,10 @@
       <slot v-bind="{ item, index }" />
     </q-expansion-item>
   </q-list>
-  <q-list v-else>
+  <q-list v-else :class="{ striped: striped }">
     <q-item
       v-for="(item, index) in items"
+      :dense="dense"
       :key="index"
       :class="{
         'bg-white q-py-xs q-px-md q-mb-xs rounded overflow-hidden flex items-center': true,
@@ -41,7 +43,15 @@ export default {
       type: Array,
       required: true,
     },
+    dense: {
+      type: Boolean,
+      default: false,
+    },
     expansible: {
+      type: Boolean,
+      default: false,
+    },
+    striped: {
       type: Boolean,
       default: false,
     },
@@ -52,3 +62,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.q-list.striped .q-item:nth-child(even) {
+  background-color: rgb(245, 245, 245) !important;
+}
+</style>
