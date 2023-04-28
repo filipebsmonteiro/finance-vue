@@ -1,7 +1,7 @@
 import { groupBy } from "src/boot/providers"
 
 export default {
-  groupedByStock: (state) => {
+  groupedBySymbol: (state) => {
     return groupBy(state.list, `code`)
   },
 }

@@ -12,18 +12,18 @@ export async function autocomplete(term) {
 
 export async function loadPortfolioQuotations() {
   this.loading = true
-  const { groupedByStock: portfolioList } = usePortfolioStore(),
-    stocks = Object.keys(portfolioList).filter((stock, idx, array) => array.indexOf(stock) === idx); // Filter removing duplicates
+  const { groupedBySymbol: portfolioList } = usePortfolioStore(),
+    symbols = Object.keys(portfolioList).filter((stock, idx, array) => array.indexOf(stock) === idx); // Filter removing duplicates
 
   // When Delete last on portfolio
-  if (stocks.length === 0) this.list = [];
+  if (symbols.length === 0) this.list = [];
 
-  if (stocks.length > 0) {
+  if (symbols.length > 0) {
     const REITStore = useREITStore(),
       ETFStore = useETFStore();
     await Promise.all([REITStore.load(), ETFStore.load()]);
 
-    await National.fetchQuote(stocks)
+    await National.fetchQuote(symbols)
       .then(response => {
         let portfolioAmount = 0, categoryAmount = {};
 

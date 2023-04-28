@@ -10,7 +10,7 @@ export async function autocomplete(term) {
 
 export async function loadPortfolioQuotations() {
   this.loading = true
-  const { groupedByStock: portfolioList } = usePortfolioStore(),
+  const { groupedBySymbol: portfolioList } = usePortfolioStore(),
     stocks = Object.keys(portfolioList).filter((stock, idx, array) => array.indexOf(stock) === idx); // Filter removing duplicates
 
   // When Delete last on portfolio

@@ -4,11 +4,13 @@ import StockItem from "src/components/Stock/StockItem.vue";
 import { mapActions, mapState } from "pinia";
 import { usePortfolioStore } from "src/stores/portfolio";
 import { useNationalQuotationStore } from "src/stores/stock/national";
+import InputList from "src/components/InputList.vue";
 
 export default {
   components: {
     ListSimple,
     StockItem,
+    InputList,
   },
   computed: {
     ...mapState(usePortfolioStore, {
@@ -20,12 +22,27 @@ export default {
       quotations: "list",
       quotationLoading: "loading",
     }),
+    fields() {
+      return this.categories.map((category) => [
+        {
+          component: `q-input`,
+          label: `Categoria`,
+          modelValue: category,
+          readonly: true,
+          filled: true,
+        },
+        {
+          component: `q-input`,
+          label: `Meta`,
+          name: category,
+          type: `number`,
+          min: 0,
+          modelValue: 0,
+          filled: true,
+        },
+      ]);
+    },
   },
-  // data() {
-  //   return {
-  //     tab: null,
-  //   };
-  // },
   watch: {
     portfolioList() {
       this.loadPortfolioQuotations();
@@ -62,16 +79,7 @@ export default {
       label="Definir alvos"
       class="overflow-hidden rounded q-mb-md"
     >
-      <div class="q-pa-md">
-        <q-input
-          v-for="category in categories"
-          :key="category"
-          :label="category"
-          type="number"
-          model-value="0"
-          filled
-        />
-      </div>
+      <InputList :list="fields" hide-add-line hide-delete-line />
     </q-expansion-item>
 
     <div class="full-width overflow-x-scroll">
