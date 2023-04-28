@@ -42,6 +42,20 @@ export default {
 </script>
 
 <template>
+  <ul>
+    <li>
+      Criar uma tabela de portifolio targets no firebase
+      <ul>
+        <li>
+          Acrescentar o id do cara , e os dados serão: Categoria e valor
+          percentual
+        </li>
+        <li>Pra cada categoria organizar esse expaned aqui embaixo</li>
+        <li>OrderBy items por categoria</li>
+        <li>Acrescentar nos items campo quanto tem de vender ou comprar</li>
+      </ul>
+    </li>
+  </ul>
   <q-page class="flex column">
     <q-expansion-item
       icon="la la-bullseye"

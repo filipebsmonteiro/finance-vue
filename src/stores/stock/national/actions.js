@@ -52,7 +52,6 @@ export async function loadPortfolioQuotations() {
             : ETFStore.onlySymbols.includes(code)
               ? `ETF`
               : `STOCK`;
-          console.log('category :>> ', category);
           categoryAmount[category] = categoryAmount[category] ? categoryAmount[category] + amount : amount;
 
           return {

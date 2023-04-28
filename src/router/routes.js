@@ -61,7 +61,7 @@ const routes = [
         path: "import",
         name: 'import',
         component: () => import("src/pages/Import/InvestmentCategories.vue"),
-        meta: { title: 'Categorias de Investimentos' }
+        meta: { title: 'Importar Categorias' }
       },
     ],
   },
