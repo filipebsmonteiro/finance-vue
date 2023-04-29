@@ -54,6 +54,30 @@ export default {
     groupedStocks() {
       return this.$groupBy(this.investments, `category`);
     },
+    categoriesTotal() {
+      if (this.investments.length > 0) {
+        let obj = {};
+        Object.keys(this.groupedStocks).map((key) => {
+          obj[key] = this.groupedStocks[key].reduce(
+            (a, c) => a + c.amount.actual,
+            0
+          );
+        });
+        return obj;
+      }
+      return {};
+    },
+    portfolioTotal() {
+      if (this.investments.length > 0) {
+        return this.investments.reduce((a, c) => a + c.amount.actual, 0);
+      }
+      return 0;
+    },
+  },
+  data() {
+    return {
+      apportValue: 0,
+    };
   },
   methods: {
     ...mapActions(usePortfolioStore, { loadPortfolio: "load" }),
@@ -73,20 +97,6 @@ export default {
 </script>
 
 <template>
-  <ul>
-    <li>
-      Criar uma tabela de portifolio targets no firebase
-      <ul>
-        <li>
-          Acrescentar o id do cara , e os dados serão: Categoria e valor
-          percentual
-        </li>
-        <li>Pra cada categoria organizar esse expaned aqui embaixo</li>
-        <li>OrderBy items por categoria</li>
-        <li>Acrescentar nos items campo quanto tem de vender ou comprar</li>
-      </ul>
-    </li>
-  </ul>
   <q-page class="flex column">
     <q-expansion-item
       icon="la la-bullseye"
@@ -98,6 +108,13 @@ export default {
         <q-spinner-gears size="50px" color="primary" />
       </q-inner-loading>
     </q-expansion-item>
+
+    <q-input
+      v-model="apportValue"
+      type="number"
+      label="Valor a aportar"
+      class="q-pa-xl"
+    />
 
     <ListSimple
       :items="userCategoryTargets"
@@ -112,8 +129,29 @@ export default {
           </q-item-label>
         </q-item-section>
         <q-item-section>
-          <q-item-label caption>Categoria:</q-item-label>
-          <q-item-label class="text-bold"> {{ item.target }}% </q-item-label>
+          <q-item-label caption>Objetivo:</q-item-label>
+          <q-item-label class="text-bold">
+            {{ parseFloat(item.target).toFixed(2).replace(`.`, `,`) }}%
+          </q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label caption>Atual:</q-item-label>
+          <q-item-label class="text-bold">
+            {{
+              (
+                Math.round(categoriesTotal[item.category] * 100) /
+                portfolioTotal
+              )
+                .toFixed(2)
+                .replace(`.`, `,`)
+            }}%
+          </q-item-label>
+        </q-item-section>
+        <q-item-section v-if="groupedStocks[item.category]">
+          <q-item-label caption>Valor Atualizado:</q-item-label>
+          <q-item-label class="text-bold">
+            {{ $formaters.money(categoriesTotal[item.category]) }}
+          </q-item-label>
         </q-item-section>
       </template>
 

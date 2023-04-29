@@ -13,15 +13,14 @@ export default {
 
     let portfolioAmount = 0, categoryAmount = {};
     const stocks = consolidatedPosition.map(stock => {
-      portfolioAmount += stock.amount;
+      portfolioAmount += stock.amount.actual;
 
       const category = REITSymbols.includes(stock.code)
         ? `REIT`
         : ETFSymbols.includes(stock.code)
           ? `ETF`
           : `STOCK`;
-      categoryAmount[category] = categoryAmount[category] ? categoryAmount[category] + stock.amount : stock.amount;
-      categoryAmount[category] = categoryAmount[category] ? categoryAmount[category] + stock.amount : stock.amount;
+      categoryAmount[category] = categoryAmount[category] ? categoryAmount[category] + stock.amount.actual : stock.amount.actual;
 
       return {
         ...stock,
@@ -32,8 +31,8 @@ export default {
     return stocks.map(stock => {
       return {
         ...stock,
-        percentInPortfolio: ((stock.amount * 100) / portfolioAmount),
-        percentInCategory: ((stock.amount * 100) / categoryAmount[stock.category]),
+        percentInPortfolio: (Math.round(stock.amount.actual * 100) / portfolioAmount),
+        percentInCategory: (Math.round(stock.amount.actual * 100) / categoryAmount[stock.category]),
       }
     })
   }

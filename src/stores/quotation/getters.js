@@ -8,12 +8,17 @@ export default {
     if (symbols.length === 0) return [];
 
     return symbols.map(code => {
-      let quantity = 0, averagePrice = 0, result = 0, amount = 0;
-      const quotation = state.list.find(s => s.stock === code);
+      let quantity = 0, averagePrice = 0, result = 0, amount = { original: 0, actual: 0 };
+      let quotation = state.list.find(s => s.stock === code);
+      if (!quotation) {
+        quotation = groupedBySymbol[code].reduce((a, b) => a.date > b.date ? a : b); // Get Last Aport price
+        quotation = { close: quotation.value };
+      }
       const contributions = groupedBySymbol[code].map(c => {
         quantity += c.quantity;
-        amount += c.value * c.quantity;
-        result += quotation ? (quotation.close - c.value) * c.quantity : 0;
+        amount.original += c.value * c.quantity;
+        amount.actual += quotation.close * c.quantity;
+        result += (quotation.close - c.value) * c.quantity;
 
         return {
           id: c.id,
@@ -21,10 +26,10 @@ export default {
           quantity: c.quantity,
           value: c.value,
           amount: c.value * c.quantity,
-          result: quotation ? (quotation.close - c.value) * c.quantity : 0
+          result: (quotation.close - c.value) * c.quantity
         }
       });
-      averagePrice = quantity > 0 ? amount / quantity : 0;
+      averagePrice = quantity > 0 ? amount.original / quantity : 0;
 
       return {
         code,
