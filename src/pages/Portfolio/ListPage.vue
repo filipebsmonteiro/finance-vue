@@ -99,11 +99,7 @@ export default {
         expansible
       >
         <template v-slot:header="{ item }">
-          <StockItem
-            :item="item"
-            hide-percent-in-portfolio
-            hide-percent-in-category
-          />
+          <StockItem :item="item" />
         </template>
         <template v-slot:default="{ item }">
           <StockResume :stock="item" />
