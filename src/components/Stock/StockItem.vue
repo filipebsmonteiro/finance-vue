@@ -70,24 +70,6 @@ const props = defineProps({
               `${(parseFloat(quotation.change) || 0).toFixed(2)}%`,
           },
         },
-        // {
-        //   key: `percentInPortfolio`,
-        //   label: {
-        //     caption: true,
-        //     // class: (item) => ({ "text-black": true }),
-        //     format: (percentInPortfolio) =>
-        //       `${percentInPortfolio.toFixed(2).replace(`.`, `,`)}% na carteira`,
-        //   },
-        // },
-        // {
-        //   key: `percentInCategory`,
-        //   label: {
-        //     caption: true,
-        //     // class: (item) => ({ "text-black": true }),
-        //     format: (percentInCategory) =>
-        //       `${percentInCategory.toFixed(2).replace(`.`, `,`)}% na categoria`,
-        //   },
-        // },
       ];
     },
   },
@@ -102,46 +84,43 @@ const props = defineProps({
     :class="section.class"
     :side="section.side"
   >
-    <!-- {{ section.key }} -->
-    <q-avatar v-if="section.img" size="40px">
-      <q-img :src="section.img.src(item)" />
-    </q-avatar>
-
-    <q-item-label
-      v-else-if="section.badge"
-      :caption="section?.label?.caption"
-      :class="section?.label?.class(item[section.key])"
-    >
-      <q-badge rounded :color="section.badge?.color(item)">
-        <q-icon v-if="section.badge.icon" :name="section.badge.icon(item)" />
+    <slot :name="`section-${section.key}`" v-bind="item">
+      <q-avatar v-if="section.img" size="40px">
+        <q-img :src="section.img.src(item)" />
+      </q-avatar>
+      <q-item-label
+        v-else-if="section.badge"
+        :caption="section?.label?.caption"
+        :class="
+          section?.label?.class && typeof section?.label?.class === `function`
+            ? section?.label?.class(item[section.key])
+            : section?.label?.class
+        "
+      >
+        <q-badge rounded :color="section.badge?.color(item)">
+          <q-icon v-if="section.badge.icon" :name="section.badge.icon(item)" />
+          {{
+            section?.label?.format
+              ? section.label.format(item[section.key])
+              : item[section.key]
+          }}
+        </q-badge>
+      </q-item-label>
+      <q-item-label
+        v-else
+        :caption="section?.label?.caption"
+        :class="
+          section?.label?.class && typeof section?.label?.class === `function`
+            ? section?.label?.class(item[section.key])
+            : section?.label?.class
+        "
+      >
         {{
           section?.label?.format
             ? section.label.format(item[section.key])
             : item[section.key]
         }}
-      </q-badge>
-    </q-item-label>
-    <q-item-label
-      v-else
-      :caption="section?.label?.caption"
-      :class="section?.label?.class(item[section.key])"
-    >
-      {{
-        section?.label?.format
-          ? section.label.format(item[section.key])
-          : item[section.key]
-      }}
-    </q-item-label>
-  </q-item-section>
-
-  <!-- <q-item-section v-if="!hidePercentInCategory">
-    <slot name="percentInCategory" v-bind="item">
-      <q-item-label lines="1" caption>
-        <span class="text-black">
-          {{ item.percentInCategory.toFixed(2).replace(`.`, `,`) }}%
-        </span>
-        na categoria
       </q-item-label>
     </slot>
-  </q-item-section> -->
+  </q-item-section>
 </template>

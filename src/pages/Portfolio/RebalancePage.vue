@@ -77,6 +77,69 @@ export default {
   data() {
     return {
       apportValue: 0,
+      investmentsSection: [
+        {
+          key: `logo`,
+          side: true,
+          img: {
+            src: (item) => item.logo,
+          },
+        },
+        {
+          key: `code`,
+          side: true,
+        },
+        {
+          key: `name`,
+          class: `col`,
+          side: true,
+          // hide: this.$q.screen.lt.md,
+        },
+        {
+          key: `quotation`,
+          class: `col`,
+          badge: {
+            color: (item) =>
+              item.quotation.change > 0
+                ? "positive"
+                : item.quotation.change < 0
+                ? "negative"
+                : "grey",
+            icon: (item) =>
+              item.quotation.change > 0
+                ? "la la-arrow-up"
+                : item.quotation.change < 0
+                ? "la la-arrow-down"
+                : "la la-minus",
+          },
+          label: {
+            class: (item) => ({
+              "text-caption": true,
+              "text-positive": item.result > 0,
+              "text-negative": item.result < 0,
+              "text-grey": item.result === 0,
+            }),
+            format: (quotation) =>
+              `${(parseFloat(quotation.change) || 0).toFixed(2)}%`,
+          },
+        },
+        {
+          key: `percentInPortfolio`,
+          label: {
+            caption: true,
+            format: (percentInPortfolio) =>
+              `${percentInPortfolio.toFixed(2).replace(`.`, `,`)}% na carteira`,
+          },
+        },
+        {
+          key: `percentInCategory`,
+          label: {
+            caption: true,
+            format: (percentInCategory) =>
+              `${percentInCategory.toFixed(2).replace(`.`, `,`)}% na categoria`,
+          },
+        },
+      ],
     };
   },
   methods: {
@@ -130,13 +193,16 @@ export default {
         </q-item-section>
         <q-item-section>
           <q-item-label caption>Objetivo:</q-item-label>
-          <q-item-label class="text-bold">
+          <q-item-label class="text-bold text-black" caption>
             {{ parseFloat(item.target).toFixed(2).replace(`.`, `,`) }}%
+          </q-item-label>
+          <q-item-label class="text-bold text-black" caption>
+            {{ parseFloat(0).toFixed(2).replace(`.`, `,`) }}
           </q-item-label>
         </q-item-section>
         <q-item-section>
           <q-item-label caption>Atual:</q-item-label>
-          <q-item-label class="text-bold">
+          <q-item-label class="text-bold text-black" caption>
             {{
               (
                 Math.round(categoriesTotal[item.category] * 100) /
@@ -145,6 +211,9 @@ export default {
                 .toFixed(2)
                 .replace(`.`, `,`)
             }}%
+          </q-item-label>
+          <q-item-label class="text-bold text-black" caption>
+            {{ parseFloat(0).toFixed(2).replace(`.`, `,`) }}
           </q-item-label>
         </q-item-section>
         <q-item-section v-if="groupedStocks[item.category]">
@@ -164,27 +233,7 @@ export default {
           striped
         >
           <template #default="{ item }">
-            <StockItem
-              :item="item"
-              hide-quantity
-              hide-result
-              hide-quotation-change
-              hide-percent-in-portfolio
-            >
-              <template #percentInCategory="{ percentInCategory }">
-                <q-item-label>
-                  Atual: {{ percentInCategory.toFixed(2).replace(`.`, `,`) }}%
-                </q-item-label>
-                <q-item-label>
-                  Meta:
-                  {{
-                    (100 / groupedStocks[item.category].length)
-                      .toFixed(2)
-                      .replace(`.`, `,`)
-                  }}%
-                </q-item-label>
-              </template>
-            </StockItem>
+            <StockItem :item="item" :sections="investmentsSection" />
           </template>
         </ListSimple>
       </template>
