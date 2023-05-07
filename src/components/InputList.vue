@@ -77,13 +77,11 @@ const getComponent = (field) => {
           :model-value="value[field.key]"
           @update:model-value="($evt) => updateValue(index, field.key, $evt)"
         >
-          <template v-if="field.prepend" v-slot:prepend>
-            <q-icon v-if="field.prepend.icon" :name="field.prepend.icon" />
-            <span v-if="field.prepend.text">{{ field.prepend.text }}</span>
-          </template>
           <template v-if="field.append" v-slot:append>
             <q-icon v-if="field.append.icon" :name="field.append.icon" />
-            <span v-if="field.append.text">{{ field.append.text }}</span>
+          </template>
+          <template v-if="field.prepend" v-slot:prepend>
+            <q-icon v-if="field.prepend.icon" :name="field.prepend.icon" />
           </template>
         </component>
       </q-item-section>

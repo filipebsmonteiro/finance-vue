@@ -18,6 +18,9 @@ export default {
           key: `category`,
           options: this.categories,
           optionValue: `value`,
+          class: `full-width ellipsis`,
+          filled: true,
+          dense: true,
           emitValue: true,
           mapOptions: true,
         },
@@ -28,6 +31,7 @@ export default {
           type: `number`,
           min: 0,
           append: { icon: "percentage" },
+          dense: true,
           filled: true,
           debounce: 1000,
         },
@@ -72,5 +76,13 @@ export default {
   // .shadow-1
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(0, 0, 0, 0.14),
     0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+:deep(.q-field__control > .q-field__control-container) {
+  overflow: hidden;
+}
+// Append Prepend Icons
+:deep(.material-icons) {
+  display: inline;
+  max-width: 1.5rem;
 }
 </style>

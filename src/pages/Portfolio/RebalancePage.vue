@@ -161,23 +161,25 @@ export default {
 
 <template>
   <q-page class="flex column">
-    <q-expansion-item
-      icon="la la-bullseye"
-      label="Definir alvos"
-      class="overflow-hidden rounded q-mb-md"
-    >
-      <CategoryTarget />
-      <q-inner-loading :showing="investmentLoading">
-        <q-spinner-gears size="50px" color="primary" />
-      </q-inner-loading>
-    </q-expansion-item>
+    <div class="row flex items-center">
+      <q-expansion-item
+        icon="la la-bullseye"
+        label="Definir alvos"
+        class="overflow-hidden rounded q-mb-md col"
+      >
+        <CategoryTarget />
+        <q-inner-loading :showing="investmentLoading">
+          <q-spinner-gears size="50px" color="primary" />
+        </q-inner-loading>
+      </q-expansion-item>
 
-    <q-input
-      v-model="apportValue"
-      type="number"
-      label="Valor a aportar"
-      class="q-pa-xl"
-    />
+      <q-input
+        v-model="apportValue"
+        type="number"
+        label="Valor a aportar"
+        class="q-px-xl q-pb-lg col"
+      />
+    </div>
 
     <ListSimple
       :items="userCategoryTargets"
@@ -187,7 +189,7 @@ export default {
       <template #header="{ item }">
         <q-item-section>
           <q-item-label caption>Categoria:</q-item-label>
-          <q-item-label class="text-bold">
+          <q-item-label class="text-bold" lines="1">
             {{ categories.find((c) => c.value === item.category).label }}
           </q-item-label>
         </q-item-section>
@@ -195,9 +197,6 @@ export default {
           <q-item-label caption>Objetivo:</q-item-label>
           <q-item-label class="text-bold text-black" caption>
             {{ parseFloat(item.target).toFixed(2).replace(`.`, `,`) }}%
-          </q-item-label>
-          <q-item-label class="text-bold text-black" caption>
-            {{ parseFloat(0).toFixed(2).replace(`.`, `,`) }}
           </q-item-label>
         </q-item-section>
         <q-item-section>
@@ -211,9 +210,6 @@ export default {
                 .toFixed(2)
                 .replace(`.`, `,`)
             }}%
-          </q-item-label>
-          <q-item-label class="text-bold text-black" caption>
-            {{ parseFloat(0).toFixed(2).replace(`.`, `,`) }}
           </q-item-label>
         </q-item-section>
         <q-item-section v-if="groupedStocks[item.category]">
