@@ -54,7 +54,7 @@ const routes = [
       {
         path: "rebalance",
         name: 'rebalance',
-        component: () => import("src/pages/Portfolio/RebalancePage.vue"),
+        component: () => import("src/pages/Rebalance/MacroPage.vue"),
         meta: { title: 'Rebalanceamento de Investimentos' }
       },
       {
