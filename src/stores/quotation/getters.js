@@ -8,8 +8,9 @@ export default {
     if (symbols.length === 0) return [];
 
     return symbols.map(code => {
-      let quantity = 0, averagePrice = 0, result = 0, amount = { original: 0, actual: 0 };
-      let quotation = state.list.find(s => s.stock === code);
+      let quantity = 0, averagePrice = 0, result = 0, amount = { original: 0, actual: 0 },
+        quotation = state.list.find(s => s.stock === code);
+
       if (!quotation) {
         quotation = groupedBySymbol[code].reduce((a, b) => a.date > b.date ? a : b); // Get Last Aport price
         quotation = { close: quotation.value };
