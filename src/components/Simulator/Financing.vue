@@ -7,52 +7,24 @@
       </q-badge>
       <!-- </div> -->
       <b class="q-ma-none text-center"> Patrimônio </b>
-      <q-badge
-        outline
-        rounded
-        color="secondary"
-        class="cursor-pointer"
-        @click="double(`patrimony`)"
-      >
+      <q-badge outline rounded color="secondary" class="cursor-pointer" @click="double(`patrimony`)">
         x2
         <q-tooltip>Dobrar Limite patrimônio</q-tooltip>
       </q-badge>
     </div>
-    <q-slider
-      v-model="patrimony"
-      :min="0"
-      :max="max.patrimony"
-      :step="100"
-      snap
-      label
-      :label-value="$formaters.money(patrimony)"
-      color="secondary"
-    />
+    <q-slider v-model="patrimony" :min="0" :max="max.patrimony" :step="100" snap label
+      :label-value="$formaters.money(patrimony)" color="secondary" />
 
     <div class="flex justify-between full-width">
-      <q-badge color="red"> {{ $formaters.money(costs) }} </q-badge>
+      <q-badge color="red"> {{ $formaters.money(expenses) }} </q-badge>
       <b class="q-ma-none col text-center"> Gastos </b>
-      <q-badge
-        outline
-        rounded
-        color="red"
-        class="cursor-pointer"
-        @click="double(`costs`)"
-      >
+      <q-badge outline rounded color="red" class="cursor-pointer" @click="double(`expenses`)">
         x2
         <q-tooltip>Dobrar Limite gastos</q-tooltip>
       </q-badge>
     </div>
-    <q-slider
-      v-model="costs"
-      :min="0"
-      :max="max.costs"
-      :step="100"
-      snap
-      label
-      :label-value="$formaters.money(costs)"
-      color="red"
-    />
+    <q-slider v-model="expenses" :min="0" :max="max.expenses" :step="100" snap label
+      :label-value="$formaters.money(expenses)" color="red" />
 
     <div class="flex justify-between full-width">
       <q-badge color="positive">
@@ -60,27 +32,13 @@
       </q-badge>
 
       <b class="q-ma-none text-center"> Ganhos </b>
-      <q-badge
-        outline
-        rounded
-        color="positive"
-        class="cursor-pointer"
-        @click="double(`incomes`)"
-      >
+      <q-badge outline rounded color="positive" class="cursor-pointer" @click="double(`incomes`)">
         x2
         <q-tooltip>Dobrar Limite ganhos</q-tooltip>
       </q-badge>
     </div>
-    <q-slider
-      v-model="incomes"
-      :min="0"
-      :max="max.incomes"
-      :step="100"
-      snap
-      label
-      :label-value="$formaters.money(incomes)"
-      color="positive"
-    />
+    <q-slider v-model="incomes" :min="0" :max="max.incomes" :step="100" snap label
+      :label-value="$formaters.money(incomes)" color="positive" />
   </div>
 </template>
 
@@ -94,7 +52,7 @@ export default {
     ...mapWritableState(useProjectionStore, [
       "patrimony",
       "incomes",
-      "costs",
+      "expenses",
       "month",
       "investment",
       "inflation",
@@ -107,7 +65,7 @@ export default {
       max: {
         patrimony: 100000,
         incomes: 100000,
-        costs: 100000,
+        expenses: 100000,
       },
     };
   },

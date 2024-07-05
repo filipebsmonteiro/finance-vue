@@ -11,7 +11,7 @@ export default {
   FINANCE: {
     BALANCE: {
       INCOME: 'income',
-      COST: 'cost'
+      EXPENSE: 'expense'
     }
   },
 

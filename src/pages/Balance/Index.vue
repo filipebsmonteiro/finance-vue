@@ -2,62 +2,28 @@
   <q-page class="flex column content-center">
     <PatrimonyForm class="q-mt-md" />
 
-    <q-spinner
-      v-if="loading"
-      color="primary"
-      size="3em"
-      class="q-mt-md self-center"
-    />
-    <ListSimple
-      v-else
-      :items="balances"
-      emptyText="Nenhum Balanço localizado!"
-      class="q-mt-md"
-    >
+    <q-spinner v-if="loading" color="primary" size="3em" class="q-mt-md self-center" />
+    <ListSimple v-else :items="balances" emptyText="Nenhum Balanço localizado!" class="q-mt-md">
       <template v-slot:default="{ item, index }">
         <q-item-section>
           <q-item-label v-if="item.isEditing">
-            <BalanceForm
-              dense
-              filled
-              borderless
-              placeholder="Nome"
-              v-model:name="item.name"
-              v-model:value="item.value"
-              @cancel="setEditing(null)"
-              @add="update"
-            />
+            <BalanceForm dense filled borderless placeholder="Nome" v-model:name="item.name" v-model:value="item.value"
+              @cancel="setEditing(null)" @add="update" />
           </q-item-label>
           <q-item-label v-else class="column">
             <span>{{ item.name }}</span>
-            <span
-              :class="{
-                'text-caption': true,
-                'text-negative': item.type === $CONST.FINANCE.BALANCE.COST,
-                'text-positive': item.type === $CONST.FINANCE.BALANCE.INCOME,
-              }"
-              >{{ $formaters.money(item.value) }}
+            <span :class="{
+      'text-caption': true,
+      'text-negative': item.type === $CONST.FINANCE.BALANCE.EXPENSE,
+      'text-positive': item.type === $CONST.FINANCE.BALANCE.INCOME,
+    }">{{ $formaters.money(item.value) }}
             </span>
           </q-item-label>
         </q-item-section>
         <q-item-section side>
-          <q-fab
-            flat
-            padding="8px"
-            text-color="black"
-            icon="more_vert"
-            direction="left"
-          >
-            <q-fab-action
-              icon="las la-trash"
-              text-color="negative"
-              @click="remove(item.id)"
-            />
-            <q-fab-action
-              text-color="info"
-              icon="edit"
-              @click="setEditing(index)"
-            />
+          <q-fab flat padding="8px" text-color="black" icon="more_vert" direction="left">
+            <q-fab-action icon="las la-trash" text-color="negative" @click="remove(item.id)" />
+            <q-fab-action text-color="info" icon="edit" @click="setEditing(index)" />
           </q-fab>
         </q-item-section>
       </template>

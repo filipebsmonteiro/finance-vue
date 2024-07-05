@@ -18,8 +18,8 @@ const monthsInPTBR = [
 export default {
   listComplete: (state) => {
     const {
-      costs,
-      costInPercent,
+      expenses,
+      expenseInPercent,
       incomes,
       investmentInPercent,
       max: maxMonths,
@@ -27,27 +27,27 @@ export default {
     } = state;
 
     // TODO: Validar melhor com negativos oque pode impedir a independencia
-    // if (incomes === 0 && costGrowth === 0 && investmentGrowth === 0) {
+    // if (incomes === 0 && expenseGrowth === 0 && investmentGrowth === 0) {
     //   return [];
     // }
 
-    const balance = incomes - costs;
+    const balance = incomes - expenses;
     let records = [],
       month = date.buildDate(Date.now()),
       monthCounter = 0,
-      costWithInflation = costs,
+      expenseWithInflation = expenses,
       investmentIncome = 0,
       patrimony = patrimonyInitial;
     while (monthCounter < maxMonths) {
-      costWithInflation = parseFloat(
-        (costWithInflation + (costWithInflation * costInPercent)).toFixed(2)
+      expenseWithInflation = parseFloat(
+        (expenseWithInflation + (expenseWithInflation * expenseInPercent)).toFixed(2)
       );
       investmentIncome = parseFloat((patrimony * investmentInPercent).toFixed(2));
       patrimony += parseFloat((balance + investmentIncome).toFixed(2));
 
       records.push({
         patrimony,
-        costWithInflation,
+        expenseWithInflation,
         investmentIncome,
         month: date.formatDate(month, "MMMM", { months: monthsInPTBR }),
         year: date.formatDate(month, "YYYY", { months: monthsInPTBR }),
@@ -60,6 +60,6 @@ export default {
     return records;
   },
   monthsToIndependence() {
-    return this.listComplete.filter((l) => l.investmentIncome < l.costWithInflation).length;
+    return this.listComplete.filter((l) => l.investmentIncome < l.expenseWithInflation).length;
   },
 }

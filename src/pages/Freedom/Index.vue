@@ -1,11 +1,7 @@
 <template>
   <q-page>
-    <FreedomHeader
-      class="q-my-md q-mx-auto"
-      v-model:show-chart="showChart"
-      v-model:show-card="showCard"
-      v-model:show-simulator="showSimulator"
-    />
+    <FreedomHeader class="q-my-md q-mx-auto" v-model:show-chart="showChart" v-model:show-card="showCard"
+      v-model:show-simulator="showSimulator" />
 
     <div v-if="showSimulator" class="q-my-md">
       <div style="margin-bottom: -4rem">
@@ -22,12 +18,8 @@
       </div>
     </div>
 
-    <LineChart
-      v-if="showChart"
-      class="q-ma-md"
-      :data="{ labels, datasets }"
-      :chart-options="{ responsive: true, maintainAspectRatio: false }"
-    />
+    <LineChart v-if="showChart" class="q-ma-md" :data="{ labels, datasets }"
+      :chart-options="{ responsive: true, maintainAspectRatio: false }" />
 
     <ListSimple v-if="showCard" :items="years" expansible class="flex wrap">
       <template v-slot:header="{ item: { year, patrimony } }">
@@ -40,14 +32,8 @@
       </template>
 
       <template v-slot:default="{ item: { months } }">
-        <q-table
-          flat
-          class="q-ma-md"
-          :columns="monthColumns"
-          :rows="months"
-          hide-pagination
-          :rows-per-page-options="[0]"
-        />
+        <q-table flat class="q-ma-md" :columns="monthColumns" :rows="months" hide-pagination
+          :rows-per-page-options="[0]" />
       </template>
     </ListSimple>
   </q-page>
@@ -77,7 +63,7 @@ export default {
     // ...mapState(useProjectionStore, [
     //   "patrimony",
     //   "incomes",
-    //   "costs",
+    //   "expenses",
     //   "inflation",
     //   "investment",
     // ]),
@@ -107,7 +93,7 @@ export default {
         {
           label: "Custos com Inflação",
           backgroundColor: "#f87979",
-          data: this.list.map((l) => l.costWithInflation),
+          data: this.list.map((l) => l.expenseWithInflation),
         },
         {
           label: "Renda Investimentos",
@@ -158,7 +144,7 @@ export default {
     // incomes() {
     //   this.reset();
     // },
-    // costs() {
+    // expenses() {
     //   this.reset();
     // },
     // inflation() {

@@ -2,19 +2,14 @@
   <div class="">
     <p class="text-center">
       Seu saldo Ao fim do mês é:
-      <b>{{ $formaters.money(incomes - costs) }}</b>
+      <b>{{ $formaters.money(incomes - expenses) }}</b>
     </p>
     <p class="text-caption text-center q-mb-none">
       Para alcançar a independência em
     </p>
     <q-input type="number" v-model="months" min="1" class="inline" stack-label>
       <template v-slot:prepend>
-        <q-btn
-          flat
-          rounded
-          icon="remove"
-          @click="months > 1 ? months-- : null"
-        />
+        <q-btn flat rounded icon="remove" @click="months > 1 ? months-- : null" />
       </template>
       <template v-slot:append>
         <q-btn flat rounded icon="add" @click="months++" />
@@ -42,7 +37,7 @@
         <b>
           Seus <u>custos</u> corrigidos pela inflação:
           <span class="text-red">
-            {{ $formaters.money(independency.costsOnFuture) }}
+            {{ $formaters.money(independency.expensesOnFuture) }}
           </span>
         </b>
       </li>
@@ -61,16 +56,16 @@ export default {
       "patrimony",
       "incomes",
       "investment",
-      "costs",
+      "expenses",
       "inflation",
     ]),
     independency() {
       // TODO: Validar melhor com negativos oque pode impedir a independencia
 
-      const costGrowthPercentage = this.inflation / 100;
-      const costsOnFuture = [...Array(parseInt(this.months))].reduce(
-        (acc) => parseFloat((acc + acc * costGrowthPercentage).toFixed(2)),
-        this.costs
+      const expenseGrowthPercentage = this.inflation / 100;
+      const expensesOnFuture = [...Array(parseInt(this.months))].reduce(
+        (acc) => parseFloat((acc + acc * expenseGrowthPercentage).toFixed(2)),
+        this.expenses
       );
 
       const investmentGrowthPercentage = this.investment / 100;
@@ -80,17 +75,17 @@ export default {
       );
       let investmentIncome = initialInvestmentIncome;
       let patrimony = initialPatrimony;
-      while (investmentIncome < costsOnFuture) {
+      while (investmentIncome < expensesOnFuture) {
         investmentIncome = parseFloat(
           (patrimony * investmentGrowthPercentage).toFixed(2)
         );
         patrimony += parseFloat(
-          (this.incomes - this.costs + investmentIncome).toFixed(2)
+          (this.incomes - this.expenses + investmentIncome).toFixed(2)
         ); // Adicionar investimentIncome é juros compostos
       }
 
       return {
-        costsOnFuture,
+        expensesOnFuture,
         investmentIncome,
         patrimony,
       };

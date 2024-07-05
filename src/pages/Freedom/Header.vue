@@ -19,25 +19,12 @@
         </div>
       </template>
       <div class="q-pa-md">
-        <q-input
-          v-model="simulation.inflation"
-          type="number"
-          step="0.01"
-          min="0"
-          label="IPCA (Últimos 12 meses)"
-          @update:model-value="loadList()"
-        >
+        <q-input v-model="simulation.inflation" type="number" step="0.01" min="0" label="IPCA (Últimos 12 meses)"
+          @update:model-value="loadList()">
           <template v-slot:append>%</template>
         </q-input>
-        <q-input
-          v-model="simulation.investment"
-          borderless
-          type="number"
-          step="0.01"
-          min="0"
-          label="Retorno investimentos (Mensal)"
-          @update:model-value="loadList()"
-        >
+        <q-input v-model="simulation.investment" borderless type="number" step="0.01" min="0"
+          label="Retorno investimentos (Mensal)" @update:model-value="loadList()">
           <template v-slot:append>%</template>
         </q-input>
       </div>
@@ -71,7 +58,7 @@
           <q-item-label class="text-negative flex column">
             <b>Custos: </b>
             <span class="text-caption">
-              {{ $formaters.money(getTotalCosts) }}
+              {{ $formaters.money(getTotalExpenses) }}
             </span>
           </q-item-label>
         </q-item>
@@ -95,26 +82,17 @@
       </template>
       <q-list>
         <q-item class="flex column items-center">
-          <q-toggle
-            :model-value="showSimulator"
-            @update:model-value="$emit('update:show-simulator', $event)"
-            label="Mostrar Simulador"
-          />
+          <q-toggle :model-value="showSimulator" @update:model-value="$emit('update:show-simulator', $event)"
+            label="Mostrar Simulador" />
         </q-item>
         <q-item class="flex column items-center">
-          <q-toggle
-            :model-value="showChart"
-            @update:model-value="$emit('update:show-chart', $event)"
-            label="Mostrar Gráfico"
-          />
+          <q-toggle :model-value="showChart" @update:model-value="$emit('update:show-chart', $event)"
+            label="Mostrar Gráfico" />
         </q-item>
         <q-separator />
         <q-item class="flex column items-center">
-          <q-toggle
-            :model-value="showCard"
-            @update:model-value="$emit('update:show-card', $event)"
-            label="Mostrar Anos"
-          />
+          <q-toggle :model-value="showCard" @update:model-value="$emit('update:show-card', $event)"
+            label="Mostrar Anos" />
         </q-item>
       </q-list>
     </q-expansion-item>
@@ -146,7 +124,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(useBalanceStore, ["getTotalCosts", "getTotalIncomes"]),
+    ...mapState(useBalanceStore, ["getTotalExpenses", "getTotalIncomes"]),
     ...mapState(useProjectionStore, ["list", "monthsToIndependence"]),
     ...mapWritableState(useProjectionStore, ["simulation"]),
     ...mapState(useIPCAStore, ["loading"]),
@@ -173,14 +151,17 @@ export default {
     padding: 8px;
   }
 }
+
 :deep(.q-expansion-item__container) {
   width: 100%;
+
   .q-item {
     justify-content: space-between;
 
     .q-focus-helper {
       display: contents;
     }
+
     .q-item__section--side:last-of-type {
       float: right;
       padding-right: 0;

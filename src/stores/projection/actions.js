@@ -11,8 +11,8 @@ export default {
 
     this.patrimony = balance.patrimony;
     this.incomes = balance.getTotalIncomes;
-    this.costs = balance.getTotalCosts;
-    this.costInPercent = this.simulation.inflation / 100;
+    this.expenses = balance.getTotalExpenses;
+    this.expenseInPercent = this.simulation.inflation / 100;
     this.investmentInPercent = this.simulation.investment / 100;
   },
   loadList(quantity) {
@@ -21,6 +21,6 @@ export default {
       return
     }
 
-    this.list = this.listComplete.filter(row => row.investmentIncome < row.costWithInflation)
+    this.list = this.listComplete.filter(row => row.investmentIncome < row.expenseWithInflation)
   }
 }

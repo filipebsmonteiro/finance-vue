@@ -1,47 +1,22 @@
 <template>
   <q-tabs v-model="tab" inline-label no-caps>
-    <q-tab
-      :name="$CONST.FINANCE.BALANCE.COST"
-      class="text-negative rounded-top"
-      icon="add"
-      label="Adicionar Passivo"
-    >
+    <q-tab :name="$CONST.FINANCE.BALANCE.EXPENSE" class="text-negative rounded-top" icon="add"
+      label="Adicionar Passivo">
       <q-tooltip>Adicionar Gasto</q-tooltip>
     </q-tab>
-    <q-tab
-      :name="$CONST.FINANCE.BALANCE.INCOME"
-      class="text-positive rounded-top"
-      icon="add"
-      label="Adicionar Ativo"
-    >
+    <q-tab :name="$CONST.FINANCE.BALANCE.INCOME" class="text-positive rounded-top" icon="add" label="Adicionar Ativo">
       <q-tooltip>Adicionar Ganho</q-tooltip>
     </q-tab>
   </q-tabs>
 
-  <q-tab-panels
-    id="tab-panels"
-    style="overflow: visible"
-    class="bg-transparent"
-    v-model="tab"
-    animated
-  >
-    <q-tab-panel :name="$CONST.FINANCE.BALANCE.COST" class="bg-white">
-      <BalanceForm
-        placeholder="Nome do Custo"
-        v-model:name="name"
-        v-model:value="value"
-        @cancel="tab = null"
-        @add="addOnStore"
-      />
+  <q-tab-panels id="tab-panels" style="overflow: visible" class="bg-transparent" v-model="tab" animated>
+    <q-tab-panel :name="$CONST.FINANCE.BALANCE.EXPENSE" class="bg-white">
+      <BalanceForm placeholder="Nome do Custo" v-model:name="name" v-model:value="value" @cancel="tab = null"
+        @add="addOnStore" />
     </q-tab-panel>
     <q-tab-panel :name="$CONST.FINANCE.BALANCE.INCOME" class="bg-white">
-      <BalanceForm
-        placeholder="Nome da Renda"
-        v-model:name="name"
-        v-model:value="value"
-        @cancel="tab = null"
-        @add="addOnStore"
-      />
+      <BalanceForm placeholder="Nome da Renda" v-model:name="name" v-model:value="value" @cancel="tab = null"
+        @add="addOnStore" />
     </q-tab-panel>
   </q-tab-panels>
 </template>

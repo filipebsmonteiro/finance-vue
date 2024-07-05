@@ -40,7 +40,7 @@
           </span>
           <q-spinner v-if="loading" color="negative" size="3em" />
           <div v-else class="text-weight-medium">
-            <p class="q-mb-none">{{ $formaters.money(getTotalCosts) }}</p>
+            <p class="q-mb-none">{{ $formaters.money(getTotalExpenses) }}</p>
             <p class="text-grey-6 q-mb-none">
               <span class="text-grey-7">Gastos</span>
               Totais
@@ -66,7 +66,7 @@ export default defineComponent({
   computed: {
     ...mapState(useAuthStore, ["user"]),
     ...mapState(useBalanceStore, [
-      "getTotalCosts",
+      "getTotalExpenses",
       "getTotalIncomes",
       "loading",
     ]),
