@@ -7,8 +7,8 @@
       <template v-slot:default="{ item, index }">
         <q-item-section>
           <q-item-label v-if="item.isEditing">
-            <BalanceForm dense filled borderless placeholder="Nome" v-model:name="item.name" v-model:value="item.value"
-              @cancel="setEditing(null)" @add="update" />
+            <BalanceForm dense filled borderless placeholder="Nome" v-model:name="item.name"
+              v-model:amount="item.amount" @cancel="setEditing(null)" @add="update" />
           </q-item-label>
           <q-item-label v-else class="column">
             <span>{{ item.name }}</span>
@@ -16,7 +16,7 @@
       'text-caption': true,
       'text-negative': item.type === $CONST.FINANCE.BALANCE.EXPENSE,
       'text-positive': item.type === $CONST.FINANCE.BALANCE.INCOME,
-    }">{{ $formaters.money(item.value) }}
+    }">{{ $formaters.money(item.amount) }}
             </span>
           </q-item-label>
         </q-item-section>

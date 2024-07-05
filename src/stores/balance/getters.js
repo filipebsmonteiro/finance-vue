@@ -4,9 +4,10 @@ export default {
   getTotalExpenses(state) {
     const balances = state.list;
     if (balances && balances.length > 0) {
+      console.log('balances :>> ', balances);
       return balances
         .filter((b) => b.type === constants.FINANCE.BALANCE.EXPENSE)
-        .reduce((a, c) => a + parseFloat(c.value), 0);
+        .reduce((a, c) => a + parseFloat(c.amount), 0);
     }
 
     return 0;
@@ -16,7 +17,7 @@ export default {
     if (balances && balances.length > 0) {
       return balances
         .filter((b) => b.type === constants.FINANCE.BALANCE.INCOME)
-        .reduce((a, c) => a + parseFloat(c.value), 0);
+        .reduce((a, c) => a + parseFloat(c.amount), 0);
     }
 
     return 0;
